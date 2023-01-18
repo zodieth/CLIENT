@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 // import { gql, useQuery } from "@apollo/client";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/NavBar/NavBar";
 import style from "../app.module.css";
 
 // const allBrands = gql`
