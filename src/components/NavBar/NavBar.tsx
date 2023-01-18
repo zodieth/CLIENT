@@ -21,12 +21,6 @@ function NavBar() {
       </div>
       <div className={style.buttons}>
         <Link to="/cart" className={style.cartI}>
-          {/* <Icon
-            className={style.cart}
-            as={FaShoppingCart}
-            color="black"
-            boxSize={8}
-          /> */}
           <Button
             leftIcon={<FaShoppingCart />}
             className={style.items}
