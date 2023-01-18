@@ -1,6 +1,5 @@
 import React from "react";
 import style from "./navBar.module.css";
-
 import { Button } from "@chakra-ui/react";
 import SearchBar from "../SearchBar/SearchBar";
 import { HamburgerIcon } from "@chakra-ui/icons";
@@ -17,7 +16,7 @@ function NavBar() {
       </div>
       {/* --------------buttons */}
       <div className={style.buttons}>
-        <Button className={style.button} colorScheme="teal" variant="solid">
+        <Button className={style.button} colorScheme="blue" variant="solid">
           Arma tu PC
         </Button>
         <Button className={style.button} colorScheme="teal" variant="solid">

@@ -12,7 +12,7 @@ function SearchBar() {
         placeholder="Buscar Producto..."
         size="md"
       />
-      <Button className={style.button}>
+      <Button colorScheme="blue" className={style.button}>
         <SearchIcon />
       </Button>
     </div>
