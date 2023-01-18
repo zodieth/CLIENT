@@ -1,6 +1,7 @@
 import React from "react";
 import { Select, Button } from "@chakra-ui/react";
 import style from "./navBar.module.css";
+import { MdCall } from "react-icons/md";
 
 function SubNav() {
   return (
@@ -57,7 +58,9 @@ function SubNav() {
         </div>
       </div>
       <div className={style.ayuda}>
-        <Button colorScheme="blue">AYUDA</Button>
+        <Button rightIcon={<MdCall />} colorScheme="blue" variant="outline">
+          Call us
+        </Button>
       </div>
     </div>
   );
