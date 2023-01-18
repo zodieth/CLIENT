@@ -4,6 +4,8 @@ import { Provider } from "react-redux";
 import { store } from "./app/store";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router/index";
+import { ChakraProvider } from "@chakra-ui/react";
+
 import {
   ApolloClient,
   ApolloProvider,
@@ -35,7 +37,9 @@ root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <Provider store={store}>
-        <RouterProvider router={router} />
+        <ChakraProvider>
+          <RouterProvider router={router} />
+        </ChakraProvider>
       </Provider>
     </ApolloProvider>
   </React.StrictMode>
