@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./navBar.module.css";
 import { Button } from "@chakra-ui/react";
 import SearchBar from "../SearchBar/SearchBar";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import { FaShoppingCart } from "react-icons/fa";
+import { MdComputer } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 function NavBar() {
+  const [cartItems, setCartItems] = useState(1);
+
   return (
     <div className={style.navBar}>
       <div className={style.logo}>
@@ -14,16 +19,36 @@ function NavBar() {
       <div>
         <SearchBar />
       </div>
-      {/* --------------buttons */}
       <div className={style.buttons}>
-        <Button className={style.button} colorScheme="blue" variant="solid">
+        <Link to="/cart" className={style.cartI}>
+          {/* <Icon
+            className={style.cart}
+            as={FaShoppingCart}
+            color="black"
+            boxSize={8}
+          /> */}
+          <Button
+            leftIcon={<FaShoppingCart />}
+            className={style.items}
+            colorScheme="blue"
+            variant="solid"
+          >
+            {cartItems}
+          </Button>
+        </Link>
+
+        <Button
+          rightIcon={<MdComputer />}
+          className={style.button}
+          colorScheme="blue"
+          variant="solid"
+        >
           Arma tu PC
         </Button>
         <Button className={style.button} colorScheme="teal" variant="solid">
           Ingresar
         </Button>
       </div>
-      {/* --------------buttons */}
     </div>
   );
 }

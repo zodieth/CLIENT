@@ -6,6 +6,9 @@
   align-items: center;
   justify-content: space-between;
 }
+a {
+  margin: 0 auto;
+}
 
 .subNav {
   width: 100%;
@@ -59,4 +62,21 @@
 
 .buttons {
   margin-right: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cart {
+  margin-right: 1rem;
+  cursor: pointer;
+}
+.cartI {
+  display: flex;
+  flex-direction: row;
+}
+
+.items {
+  color: black;
+  margin-right: 0.5rem;
 }
