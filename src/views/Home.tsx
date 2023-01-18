@@ -1,9 +1,7 @@
-import { useEffect } from 'react'
-import { gql, useQuery } from '@apollo/client'
-import NavBar from '../components/NavBar'
-import style from '../app.module.css'
-
-
+import { useEffect } from "react";
+// import { gql, useQuery } from "@apollo/client";
+import NavBar from "../components/NavBar";
+import style from "../app.module.css";
 
 // const allBrands = gql`
 //   query {
@@ -26,11 +24,11 @@ function Home() {
   // },[])
 
   // const { data, error, loading } = useQuery(allBrands)
-  
+
   // if(error){
   //   return (
   //     <div>{error.message}</div>
-  //   )   
+  //   )
   // }
 
   // if(loading){
@@ -45,11 +43,10 @@ function Home() {
 
   return (
     <div className={style.app}>
-      <NavBar/>
+      <NavBar />
       {/* {brands} */}
-
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
