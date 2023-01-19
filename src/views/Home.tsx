@@ -9,7 +9,9 @@ function Home() {
     <div className={style.app}>
       <NavBar />
       <SubNav />
+
       <Carousel />
+
       <Footer />
     </div>
   );

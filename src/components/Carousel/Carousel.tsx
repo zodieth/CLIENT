@@ -1,7 +1,6 @@
 import React from "react";
 import Slider from "react-slick";
 import { Box, IconButton, useBreakpointValue } from "@chakra-ui/react";
-
 import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
 
 const settings = {
@@ -23,18 +22,13 @@ export default function Carousel() {
   const side = useBreakpointValue({ base: "10%", md: "10px" });
 
   const cards = [
-    "https://www.anahuac.mx/generacion-anahuac/sites/default/files/articles/hyper_x.jpeg",
-    "https://www.lavoz.com.ar/resizer/S-ccGwfM3cMYCJUq7gHngfUVYEA=/1023x683/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/6BNOR4YHWRHPPE35CK4XR2FMVU.jpg",
-    "https://blog.tiendasishop.com/wp-content/uploads/2022/07/productos-tecnologicos-2.webp",
+    "https://www.qloud.com.ar/SITES/IMG/hypergaming-01-2020/117_07-12-2022-05-12-05-banner-mundo-itx.jpg",
+    // "https://www.lavoz.com.ar/resizer/S-ccGwfM3cMYCJUq7gHngfUVYEA=/1023x683/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/6BNOR4YHWRHPPE35CK4XR2FMVU.jpg",
+    // "https://blog.tiendasishop.com/wp-content/uploads/2022/07/productos-tecnologicos-2.webp",
   ];
 
   return (
-    <Box
-      position={"relative"}
-      height={"600px"}
-      width={"full"}
-      overflow={"hidden"}
-    >
+    <Box height={"400px"} width={"full"} overflow={"hidden"}>
       <link
         rel="stylesheet"
         type="text/css"
@@ -77,15 +71,7 @@ export default function Carousel() {
 
       <Slider {...settings} ref={(slider: any) => setSlider(slider)}>
         {cards.map((url, index) => (
-          <Box
-            key={index}
-            height={"6xl"}
-            position="relative"
-            backgroundPosition="center"
-            backgroundRepeat="no-repeat"
-            backgroundSize="cover"
-            backgroundImage={`url(${url})`}
-          />
+          <Box key={index} height={"6xl"} backgroundImage={`url(${url})`} />
         ))}
       </Slider>
     </Box>
