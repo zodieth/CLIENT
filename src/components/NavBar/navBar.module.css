@@ -31,6 +31,7 @@ a {
   color: #495057;
   border-color: #495057;
   margin: 0.25rem;
+  cursor: pointer;
 }
 
 .ayuda {
@@ -79,4 +80,8 @@ a {
 .items {
   color: black;
   margin-right: 0.5rem;
+}
+
+.avatar {
+  margin-left: 1.5rem;
 }
