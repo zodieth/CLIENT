@@ -80,7 +80,7 @@ export default function Carousel() {
         <BiRightArrowAlt />
       </IconButton>
       {/* Slider */}
-      <Slider {...settings} ref={(slider) => setSlider(slider)}>
+      <Slider {...settings} ref={(slider: any) => setSlider(slider)}>
         {cards.map((url, index) => (
           <Box
             key={index}
