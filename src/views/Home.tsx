@@ -7,7 +7,6 @@ function Home() {
     <div className={style.app}>
       <NavBar />
       <SubNav />
-      <div className={style.footer}></div>
     </div>
   );
 }
