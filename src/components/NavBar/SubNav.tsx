@@ -48,7 +48,6 @@ function SubNav() {
             className={style.select}
             placeholder="Monitores"
             color="Gray"
-            // bg="tomato"
             borderColor="Gray"
           >
             <option value="option1">Option 1</option>
