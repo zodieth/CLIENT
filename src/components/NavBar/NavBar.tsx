@@ -50,14 +50,16 @@ function NavBar() {
         >
           Arma tu PC
         </Button>
-        <Button
-          rightIcon={<FiLogIn />}
-          className={style.button}
-          colorScheme="teal"
-          variant="solid"
-        >
-          Ingresar
-        </Button>
+        <Link to="/signup">
+          <Button
+            rightIcon={<FiLogIn />}
+            className={style.button}
+            colorScheme="teal"
+            variant="solid"
+          >
+            Ingresar
+          </Button>
+        </Link>
 
         <Stack direction={"row"} spacing={7}>
           <Menu>
