@@ -4,70 +4,12 @@
   color: #000000;
 }
 
-.img1 {
-  width: 10px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  background-image: url(./imagenes/razerIcon.webp);
-  background-repeat: no-repeat;
-}
-
-.img1 {
-  margin: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.img2 {
+.img {
   width: 10px;
   height: 50px;
   align-items: center;
   display: flex;
   justify-content: center;
-  background-image: url(./imagenes/aeroIcon.webp);
-  background-repeat: no-repeat;
-  margin: 1rem;
-}
-
-.img3 {
-  width: 10px;
-  height: 50px;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  background-image: url(./imagenes/asusIcon.webp);
-  background-repeat: no-repeat;
-  margin: 1rem;
-}
-.img4 {
-  width: 10px;
-  height: 50px;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  background-image: url(./imagenes/corsairIcon.webp);
-  background-repeat: no-repeat;
-  margin: 1rem;
-}
-.img5 {
-  width: 10px;
-  height: 50px;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  background-image: url(./imagenes/intelIcon.webp);
-  background-repeat: no-repeat;
-  margin: 1rem;
-}
-.img6 {
-  width: 10px;
-  height: 50px;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  background-image: url(./imagenes/asusIcon.webp);
   background-repeat: no-repeat;
   margin: 1rem;
 }
