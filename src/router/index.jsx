@@ -5,6 +5,7 @@ import Admin from "../views/Admin";
 import SignUp from "../views/SignUp/SignUp";
 import SignIn from "../views/SignIn/SignIn";
 
+
 export const router = createBrowserRouter([
   {
     path: "/",

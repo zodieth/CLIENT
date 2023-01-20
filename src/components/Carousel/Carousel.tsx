@@ -69,7 +69,7 @@ export default function Carousel() {
       >
         <BiRightArrowAlt />
       </IconButton>
-
+      {/* Slider */}
       <Slider {...settings} ref={(slider: any) => setSlider(slider)}>
         {cards.map((url, index) => (
           <Box key={index} height={"6xl"} backgroundImage={`url(${url})`} />
