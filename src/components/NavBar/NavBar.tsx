@@ -24,8 +24,12 @@ function NavBar() {
   return (
     <div className={style.navBar}>
       <div className={style.logo}>
-        <HamburgerIcon boxSize={8} color="black" />
-        <h1 className={style.h1Logo}> AllTech</h1>
+        <Link to="/">
+          <HamburgerIcon boxSize={8} color="black" />
+        </Link>
+        <Link to="/">
+          <h1 className={style.h1Logo}> AllTech</h1>
+        </Link>
       </div>
       <div>
         <SearchBar />
