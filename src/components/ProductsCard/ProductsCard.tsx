@@ -11,7 +11,7 @@ import {
   } from '@chakra-ui/react';
   import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
   import { FiShoppingCart } from 'react-icons/fi';
-  import style from "./products.module.css";
+  import style from "./productsCard.module.css";
   
   const data = {
     isNew: true,
@@ -56,7 +56,7 @@ import {
     );
   }
   
-  function Products() {
+  function ProductsCard() {
     return (
       <Flex p={50} w="full" alignItems="center" justifyContent="center">
         <Box
@@ -126,4 +126,4 @@ import {
     );
   }
   
-  export default Products;
+  export default ProductsCard;
