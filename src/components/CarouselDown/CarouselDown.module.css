@@ -19,3 +19,55 @@
   justify-content: center;
   align-items: center;
 }
+
+.img2 {
+  width: 10px;
+  height: 50px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  background-image: url(./imagenes/aeroIcon.webp);
+  background-repeat: no-repeat;
+  margin: 1rem;
+}
+
+.img3 {
+  width: 10px;
+  height: 50px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  background-image: url(./imagenes/asusIcon.webp);
+  background-repeat: no-repeat;
+  margin: 1rem;
+}
+.img4 {
+  width: 10px;
+  height: 50px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  background-image: url(./imagenes/corsairIcon.webp);
+  background-repeat: no-repeat;
+  margin: 1rem;
+}
+.img5 {
+  width: 10px;
+  height: 50px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  background-image: url(./imagenes/intelIcon.webp);
+  background-repeat: no-repeat;
+  margin: 1rem;
+}
+.img6 {
+  width: 10px;
+  height: 50px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  background-image: url(./imagenes/asusIcon.webp);
+  background-repeat: no-repeat;
+  margin: 1rem;
+}

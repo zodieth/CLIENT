@@ -18,20 +18,25 @@ export default class PauseOnHover extends Component {
           <div className={style.img1}>
             <img />
           </div>
-          <div>
-            <h3>2</h3>
+
+            <div className={style.img2}>
+              <img />
+            </div>
+
+          <div className={style.img3}>
+          <img />
           </div>
-          <div>
-            <h3>3</h3>
+
+          <div className={style.img4}>
+          <img />
           </div>
-          <div>
-            <h3>4</h3>
+
+          <div className={style.img5}>
+          <img />
           </div>
-          <div>
-            <h3>5</h3>
-          </div>
-          <div>
-            <h3>6</h3>
+
+          <div className={style.img6}>
+          <img />
           </div>
         </Slider>
       </div>
