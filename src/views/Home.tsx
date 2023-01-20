@@ -3,6 +3,8 @@ import style from "../app.module.css";
 import SubNav from "../components/NavBar/SubNav";
 import Footer from "../components/Footer/Footer";
 import Carousel from "../components/Carousel/Carousel";
+import PauseOnHover from "../components/CarouselDown/CarouselDown";
+
 
 function Home() {
   return (
@@ -10,6 +12,7 @@ function Home() {
       <NavBar />
       <SubNav />
       <Carousel />
+      <PauseOnHover />
       <Footer />
     </div>
   );
