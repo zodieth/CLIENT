@@ -4,7 +4,7 @@ import SubNav from "../components/NavBar/SubNav";
 import Footer from "../components/Footer/Footer";
 import Carousel from "../components/Carousel/Carousel";
 import PauseOnHover from "../components/CarouselDown/CarouselDown";
-
+import ProductsCard from "../components/ProductsCard/ProductsCard";
 
 function Home() {
   return (
@@ -12,6 +12,7 @@ function Home() {
       <NavBar />
       <SubNav />
       <Carousel />
+      <ProductsCard />
       <PauseOnHover />
       <Footer />
     </div>
