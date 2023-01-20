@@ -16,11 +16,11 @@ import {
   const data = {
     isNew: true,
     imageURL:
-      'https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=4600&q=80',
+      'https://www.accesorios.com.ar/4696-home_default/combo-gaming-essential-k551-rgb-ba-redragon.jpg',
     name: 'Wayfarer Classic',
-    price: 4.5,
+    price: 25999,
     rating: 4.2,
-    numReviews: 34,
+    numReviews: 10,
   };
   
   interface RatingProps {
@@ -115,7 +115,7 @@ import {
               <Rating rating={data.rating} numReviews={data.numReviews} />
               <Box fontSize="2xl" color={useColorModeValue('gray.800', 'white')}>
                 <Box as="span" color={'gray.600'} fontSize="lg">
-                  £
+                  $
                 </Box>
                 {data.price.toFixed(2)}
               </Box>
