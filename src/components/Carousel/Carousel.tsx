@@ -4,7 +4,7 @@ import { Box, IconButton, useBreakpointValue } from "@chakra-ui/react";
 import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
 
 const settings = {
-  dots: true,
+  // dots: true,
   arrows: false,
   fade: true,
   infinite: true,
