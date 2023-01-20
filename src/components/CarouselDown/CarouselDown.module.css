@@ -4,18 +4,12 @@
   color: #000000;
 }
 
-.img1 {
+.img {
   width: 10px;
   height: 50px;
-  display: flex;
   align-items: center;
-  background-image: url(./imagenes/razerIcon.webp);
-  background-repeat: no-repeat;
-}
-
-.img1 {
-  margin: 1rem;
   display: flex;
   justify-content: center;
-  align-items: center;
+  background-repeat: no-repeat;
+  margin: 1rem;
 }

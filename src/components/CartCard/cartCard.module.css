@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.card {
+  margin: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 40rem;
+  border: 1px solid black;
+}
+
+.left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10rem;
+}
+
+.img {
+  width: 8rem;
+  margin: 1rem;
+}
+
+.counter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+.price {
+  margin-right: 1rem;
+}
+
+.cards {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
