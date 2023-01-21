@@ -7,6 +7,8 @@ import PauseOnHover from "../components/CarouselDown/CarouselDown";
 import { useAppSelector, useAppDispatch } from '../app/hooks'
 import { useEffect } from 'react'
 import { fetchProductsApi, productsFilter } from '../app/actionsCreators'
+import CarouselDown from "../components/CarouselDown/CarouselDown";
+import Cards from "../components/ProductCards/Cards";
 
 function Home() {
   const dispatch = useAppDispatch();
@@ -27,7 +29,8 @@ function Home() {
       <NavBar />
       <SubNav />
       <Carousel />
-      <PauseOnHover />
+      <Cards />
+      <CarouselDown />
       <Footer />
     </div>
   );
