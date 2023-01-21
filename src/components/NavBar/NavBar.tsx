@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import style from "./navBar.module.css";
-import { Button } from "@chakra-ui/react";
+import { Button, Box } from "@chakra-ui/react";
 import SearchBar from "../SearchBar/SearchBar";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { FaShoppingCart } from "react-icons/fa";
@@ -17,12 +18,18 @@ import {
   Stack,
   Center,
 } from "@chakra-ui/react";
+import { LoginButton } from "../buttons/LoginButton";
+import { LogoutButton } from "../buttons/LogoutButton";
 
 function NavBar() {
   const [cartItems, setCartItems] = useState(1);
 
   return (
     <div className={style.navBar}>
+      <Box>
+        <LogoutButton />
+        <LoginButton />
+      </Box>
       <div className={style.logo}>
         <Link to="/">
           <HamburgerIcon boxSize={8} color="black" />

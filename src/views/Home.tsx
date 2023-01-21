@@ -6,7 +6,13 @@ import Carousel from "../components/Carousel/Carousel";
 import CarouselDown from "../components/CarouselDown/CarouselDown";
 import Cards from "../components/ProductCards/Cards";
 
+
+
+
 function Home() {
+
+
+
   return (
     <div className={style.app}>
       <NavBar />
