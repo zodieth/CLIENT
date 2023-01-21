@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { LoginButton } from "../buttons/LoginButton";
 import { LogoutButton } from "../buttons/LogoutButton";
+import { GoToProfile } from "../buttons/GoToProfile";
 
 function NavBar() {
   const [cartItems, setCartItems] = useState(1);
@@ -28,6 +29,8 @@ function NavBar() {
     <div className={style.navBar}>
       <Box>
         <LogoutButton />
+        <GoToProfile />
+
         <LoginButton />
       </Box>
       <div className={style.logo}>
