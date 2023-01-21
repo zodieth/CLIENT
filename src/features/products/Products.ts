@@ -33,7 +33,7 @@ export const Products = (
         ...state,
         isLoading: false,
         errMess: action.payload,
-        countriesFilter: [],
+        productsFilter: [],
       };
 
     case ActionTypes.PRODUCT_FILTER:

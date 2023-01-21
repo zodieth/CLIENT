@@ -21,14 +21,14 @@ export const productsFailed = (value:String) => ({
 export const productsFilter = (value:String, type:String, order:String, costMin:Number, costMax:Number, categorySearch:String, brand:String) => {
   return ({
     type: ActionTypes.PRODUCT_FILTER,
-    payload: {value, type, order, costMin, costMax, categorySearch, brand}
+    payload: { value, type, order, costMin, costMax, categorySearch, brand }
   })
 };
 
 export const fetchProductsApi = (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
   dispatch(productsLoading());
   
-  return fetch("http://localhost:3001/products")
+  return await fetch("http://localhost:3001/products")
   .then(response => {
     if(response.ok){
       return response;

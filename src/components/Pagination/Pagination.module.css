@@ -1,0 +1,38 @@
+.pagination {
+  display: block;
+  padding-bottom: 20px;
+}
+
+.pagination span{
+  clear: both;
+  display: block;
+}
+
+button {
+  background: none;
+  border: 0;
+  color: inherit;
+  /* cursor: default; */
+  font: inherit;
+  line-height: normal;
+  overflow: visible;
+  padding: 0;
+  cursor: pointer;
+}
+
+.pagination button {
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination button.active {
+  background-color: #4bb8ff;
+  color: white;
+  border-radius: 5px;
+}
+
+.pagination button:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
+}
