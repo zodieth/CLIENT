@@ -6,15 +6,6 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./router/index";
 import { ChakraProvider } from "@chakra-ui/react";
 
-
-import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-  HttpLink,
-  gql,
-} from "@apollo/client";
-
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 
@@ -23,25 +14,12 @@ const getAuth = () => {
   return token ? token : null;
 };
 
-const client = new ApolloClient({
-  connectToDevTools: true,
-  cache: new InMemoryCache(),
-  link: new HttpLink({
-    headers: {
-      authorization: getAuth(),
-    },
-    uri: "http://localhost:4000",
-  }),
-});
-
 root.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <Provider store={store}>
-        <ChakraProvider>
-          <RouterProvider router={router} />
-        </ChakraProvider>
-      </Provider>
-    </ApolloProvider>
+    <Provider store={store}>
+      <ChakraProvider>
+        <RouterProvider router={router} />
+      </ChakraProvider>
+    </Provider>
   </React.StrictMode>
 );

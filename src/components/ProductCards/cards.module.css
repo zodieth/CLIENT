@@ -1,6 +1,12 @@
-.cards {
+.container{
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cards {
+  gap: 10px;
   align-items: center;
   justify-content: center;
   margin-top: 3rem;
@@ -11,3 +17,4 @@
   margin: 3rem;
   font-size: 1.5rem;
 }
+
