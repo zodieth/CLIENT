@@ -19,9 +19,9 @@ function Cards({products}) {
             })
           : ""}
       </div>
-      <Pagination page={actualPage} total={getTotalPages()} onChange={((pageChange) => {
+      {/* <Pagination page={actualPage} total={getTotalPages()} onChange={((pageChange) => {
           setActualPage(pageChange)
-        })}/>
+        })}/> */}
     </div>
   );
 }
