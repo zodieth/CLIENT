@@ -1,10 +1,10 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import { store } from "./app/store";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router/index";
 import { ChakraProvider } from "@chakra-ui/react";
+import store from "./redux/store";
 
 import {
   ApolloClient,
@@ -29,7 +29,7 @@ const client = new ApolloClient({
     headers: {
       authorization: getAuth(),
     },
-    uri: "http://localhost:4000",
+    uri: "http://localhost:3001",
   }),
 });
 

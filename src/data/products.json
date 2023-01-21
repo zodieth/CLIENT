@@ -1,0 +1,16 @@
+{
+  "products": [
+    {
+      "name": "computer",
+      "price": 23,
+      "category": "computer",
+      "description": "computadora de escritorio"
+    },
+    {
+      "name": "laptop",
+      "price": 32,
+      "category": "laptop",
+      "description": "computadora portatil"
+    }
+  ]
+} 
