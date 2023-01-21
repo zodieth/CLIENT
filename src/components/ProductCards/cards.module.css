@@ -1,0 +1,13 @@
+.cards {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.title {
+  color: black;
+  margin: 3rem;
+  font-size: 1.5rem;
+}

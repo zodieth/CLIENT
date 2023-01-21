@@ -3,8 +3,8 @@ import style from "../app.module.css";
 import SubNav from "../components/NavBar/SubNav";
 import Footer from "../components/Footer/Footer";
 import Carousel from "../components/Carousel/Carousel";
-import PauseOnHover from "../components/CarouselDown/CarouselDown";
-
+import CarouselDown from "../components/CarouselDown/CarouselDown";
+import Cards from "../components/ProductCards/Cards";
 
 function Home() {
   return (
@@ -12,7 +12,8 @@ function Home() {
       <NavBar />
       <SubNav />
       <Carousel />
-      <PauseOnHover />
+      <Cards />
+      <CarouselDown />
       <Footer />
     </div>
   );
