@@ -1,0 +1,5 @@
+export const PRODUCT_ADD = 'PRODUCT_ADD';
+export const PRODUCT_LOADING = 'PRODUCT_LOADING';
+export const PRODUCT_FAILED = 'PRODUCT_FAILED';
+export const PRODUCT_FIND = 'PRODUCT_FIND';
+export const PRODUCT_FILTER = 'PRODUCT_FILTER'
