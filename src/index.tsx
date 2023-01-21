@@ -6,6 +6,7 @@ import { router } from "./router/index";
 import { ChakraProvider } from "@chakra-ui/react";
 import store from "./redux/store";
 
+
 import {
   ApolloClient,
   ApolloProvider,

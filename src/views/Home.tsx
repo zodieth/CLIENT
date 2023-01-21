@@ -1,22 +1,20 @@
 import NavBar from "../components/NavBar/NavBar";
 import style from "../app.module.css";
 import SubNav from "../components/NavBar/SubNav";
-import { CardComponent } from "../components/Card/CardComponent";
-import productos from "../data/products.json";
-
+import Footer from "../components/Footer/Footer";
+import Carousel from "../components/Carousel/Carousel";
+import CarouselDown from "../components/CarouselDown/CarouselDown";
+import Cards from "../components/ProductCards/Cards";
 
 function Home() {
   return (
     <div className={style.app}>
       <NavBar />
       <SubNav />
-      {
-        productos.products.map(p => {
-          return (
-            <CardComponent name={p.name} price={p.price} category={p.category} description={p.description} />
-          )
-        })
-      }
+      <Carousel />
+      <Cards />
+      <CarouselDown />
+      <Footer />
     </div>
   );
 }
