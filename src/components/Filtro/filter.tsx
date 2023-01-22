@@ -60,7 +60,7 @@ function Filter() {
           </Select>
         </div>
         <div className={style.options}>
-          <input className={styleSearchBar.input} type="number" id="min" placeholder="Mínimo" pattern="^[0-9]+([,.][0-9]+)?$" onChange={handleSearch}/> - <input className={styleSearchBar.input} type="number" id="max" placeholder="Máximo" pattern="^[0-9]+([,.][0-9]+)?$" onChange={handleSearch}/>
+          <Input className={styleSearchBar.input} style={{ width: "auto" }} type="number" id="min" placeholder="Mínimo" pattern="^[0-9]+([,.][0-9]+)?$" onChange={handleSearch}/> - <Input className={styleSearchBar.input} style={{ width: "auto" }} type="number" id="max" placeholder="Máximo" pattern="^[0-9]+([,.][0-9]+)?$" onChange={handleSearch}/>
         </div>
         <div className={style.options}>
           <Select
