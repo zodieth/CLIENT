@@ -6,22 +6,33 @@ import Pagination from '../Pagination/Pagination';
 import { useEffect, useState } from 'react'
 
 function Cards({products}) {
+  const [actualPage, setActualPage] = useState(1);
+  const total_Page = 9;
+  let productsPagination;
 
+  useEffect(() => {
+    setActualPage(1);
+  }, []);
 
+  productsPagination = products.productsFilter.slice((actualPage - 1) * total_Page ,( actualPage * total_Page - 1));
+
+  const getTotalPages = () => {
+    return Math.ceil(products.productsFilter.length / total_Page);
+  }
 
   return (
     <div>
       <div className={style.title}>Últimos ingresos</div>
       <div className={style.container}>
         {products
-          ? products.allProducts.map((e) => {
+          ? productsPagination.map((e) => {
               return <ProductCard name={e.name} key={e.name} price={e.price} img={e.images[0]} />;
             })
           : ""}
       </div>
-      {/* <Pagination page={actualPage} total={getTotalPages()} onChange={((pageChange) => {
+      <Pagination page={actualPage} total={getTotalPages()} onChange={((pageChange) => {
           setActualPage(pageChange)
-        })}/> */}
+        })}/>
     </div>
   );
 }

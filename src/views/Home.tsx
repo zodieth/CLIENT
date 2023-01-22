@@ -5,37 +5,32 @@ import Footer from "../components/Footer/Footer";
 import Carousel from "../components/Carousel/Carousel";
 import PauseOnHover from "../components/CarouselDown/CarouselDown";
 import { useAppSelector, useAppDispatch } from '../app/hooks'
-import { useEffect, useState } from 'react'
-import { fetchProductsApi, productsFilter } from '../app/actionsCreators'
+import { useEffect } from 'react'
+import { fetchProductsApi, productsFilter, fetchBrandApi, fetchCategoryApi } from '../app/actionsCreators'
 import CarouselDown from "../components/CarouselDown/CarouselDown";
 import Cards from "../components/ProductCards/Cards";
-import Pagination from '../components/Pagination/Pagination';
-import interfaceProduct from "../features/products/interfaceProduct";
+import Filter from "../components/Filtro/filter";
 
 function Home() {
   const dispatch = useAppDispatch();
   
-
   useEffect(() => {
     dispatch(fetchProductsApi());
+    dispatch(fetchBrandApi());
+    dispatch(fetchCategoryApi());
   }, [])
 
   const products = useAppSelector((state) => state.products);
   
-  const prueba = () => {
-    dispatch(productsFilter("", "PRICE", "DESC", 0, 0, "Laptop", "Asus"));
-  }
 
-  
-  
-  
+
   return (
     <div className={style.app}>
       <NavBar />
       <SubNav />
       <Carousel />
+      <Filter />
       <Cards products={products}/>
-      
       <CarouselDown />
       <Footer />
     </div>

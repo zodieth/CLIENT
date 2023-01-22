@@ -31,9 +31,9 @@ function NavBar() {
           <h1 className={style.h1Logo}> AllTech</h1>
         </Link>
       </div>
-      <div>
+      {/* <div>
         <SearchBar />
-      </div>
+      </div> */}
       <div className={style.buttons}>
         <Link to="/cart" className={style.cartI}>
           <Button
