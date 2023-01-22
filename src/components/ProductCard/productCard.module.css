@@ -19,6 +19,7 @@
   align-items: center;
   margin-left: 3rem;
 }
+
 .ahora12 {
   height: 60px;
   margin-right: 3rem;
@@ -35,11 +36,13 @@
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
 }
+
 .imgBx {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .name {
   margin: 0.5rem;
   height: 60px;
