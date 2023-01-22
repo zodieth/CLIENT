@@ -60,16 +60,18 @@ export const Products = (
           product.name.toUpperCase().includes(value.toUpperCase())
       );
 
-        const filterBrand = filterName.filter(
-          (product:interfaceProduct) =>
-            product.brand.name.toUpperCase().includes(brand.toUpperCase())
-        );
-
+      const filterBrand = filterName.filter(
+        (product:interfaceProduct) =>
+          product.brand.name.toUpperCase().includes(brand.toUpperCase())
+      );
+      console.log(costMax)
       let filterCost;
-      if (costMin === 0 && costMax !== 0) {
+      if (costMin === '' && costMax != 0) {
         filterCost = filterBrand.filter((product:interfaceProduct) => product.price <= costMax)
-      }else if(costMin !== 0 && costMax !== 0){
+      }else if(costMin != 0 && costMax != 0){
         filterCost = filterBrand.filter((product:interfaceProduct) => costMin <= product.price  && product.price <= costMax)
+      }else if(costMin != 0 && costMax === ''){
+        filterCost = filterBrand.filter((product:interfaceProduct) => product.price >= costMin)
       }else{
         filterCost = filterBrand;
       }

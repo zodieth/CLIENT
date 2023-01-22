@@ -1,6 +1,8 @@
 .pagination {
-  display: block;
+  display: flex;
   padding-bottom: 20px;
+  align-content: center;
+  justify-content: center;
 }
 
 .pagination span{

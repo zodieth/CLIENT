@@ -18,7 +18,7 @@ export const productsFailed = (value:String) => ({
   payload: value
 });
 
-export const productsFilter = (value:String, type:String, order:String, costMin:Number, costMax:Number, categorySearch:String, brand:String) => {
+export const productsFilter = (value:String, type:String, order:String, costMin:String, costMax:String, categorySearch:String, brand:String) => {
   return ({
     type: ActionTypes.PRODUCT_FILTER,
     payload: { value, type, order, costMin, costMax, categorySearch, brand }
@@ -45,4 +45,82 @@ export const fetchProductsApi = (): ThunkAction<void, RootState, unknown, AnyAct
     dispatch(addProducts(products));
   })
   .catch(error => dispatch(productsFailed(error.message)));
+}
+
+//Marcas
+export const addBrand = (value:any) => {
+  return ({
+    type: ActionTypes.BRAND_ADD,
+    payload: value
+  })
+};
+
+export const brandLoading = () => ({
+  type: ActionTypes.BRAND_LOADING
+});
+
+export const brandFailed = (value:String) => ({
+  type: ActionTypes.BRAND_FAILED,
+  payload: value
+});
+
+export const fetchBrandApi = (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+  dispatch(brandLoading());
+  
+  return await fetch("http://localhost:3001/brands")
+  .then(response => {
+    if(response.ok){
+      return response;
+    }else{
+      var error = new Error('Error ' + response.status + ': ' + response.statusText);
+      throw error;
+    }
+  }, error => {
+    var errMess = new Error(error.message);
+    throw errMess;
+  })
+  .then(response => response.json())
+  .then(brands => {
+    dispatch(addBrand(brands));
+  })
+  .catch(error => dispatch(brandFailed(error.message)));
+}
+
+//Categorias
+export const addCategory = (value:any) => {
+  return ({
+    type: ActionTypes.CATEGORY_ADD,
+    payload: value
+  })
+};
+
+export const categoryLoading = () => ({
+  type: ActionTypes.CATEGORY_LOADING
+});
+
+export const categoryFailed = (value:String) => ({
+  type: ActionTypes.CATEGORY_FAILED,
+  payload: value
+});
+
+export const fetchCategoryApi = (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+  dispatch(categoryLoading());
+  
+  return await fetch("http://localhost:3001/category")
+  .then(response => {
+    if(response.ok){
+      return response;
+    }else{
+      var error = new Error('Error ' + response.status + ': ' + response.statusText);
+      throw error;
+    }
+  }, error => {
+    var errMess = new Error(error.message);
+    throw errMess;
+  })
+  .then(response => response.json())
+  .then(categories => {
+    dispatch(addCategory(categories));
+  })
+  .catch(error => dispatch(categoryFailed(error.message)));
 }
