@@ -19,16 +19,11 @@ import {
   Container,
   Text
 } from "@chakra-ui/react";
-import { LoginButton } from "../Buttons/LoginButton";
 import { useAuth0 } from "@auth0/auth0-react";
-import { LogoutButton } from "../Buttons/LogoutButton";
-
-
 
 function NavBar() {
   const [cartItems, setCartItems] = useState(1);
-  const { user, isAuthenticated } = useAuth0();
-  console.log(user);
+  const { isAuthenticated, logout } = useAuth0();
 
   return (
     <div className={style.navBar}>
@@ -43,19 +38,6 @@ function NavBar() {
       {/* <div>
         <SearchBar />
       </div> */}
-      <Container>
-        {
-          isAuthenticated ?
-          <Container>
-            <Text>Estas logueado bro</Text>
-            <LogoutButton />
-          </Container>
-            : <>
-            <Text>No estas logueado bro</Text>
-            <LoginButton />
-            </>
-        }
-      </Container>
       <div className={style.buttons}>
         <Link to="/cart" className={style.cartI}>
           <Button
@@ -76,16 +58,32 @@ function NavBar() {
         >
           Arma tu PC
         </Button>
-        <Link to="/signin">
-          <Button
-            rightIcon={<FiLogIn />}
-            className={style.button}
-            colorScheme="teal"
-            variant="solid"
-          >
-            Ingresar
-          </Button>
-        </Link>
+        {
+          isAuthenticated ?
+            <Button
+              rightIcon={<FiLogIn />}
+              className={style.button}
+              colorScheme="teal"
+              variant="solid"
+              onClick={() => logout()}
+            >
+              Logout
+            </Button> :
+            <Link to="/signin">
+              <Button
+                rightIcon={<FiLogIn />}
+                className={style.button}
+                colorScheme="teal"
+                variant="solid"
+
+              >
+                Ingresar
+              </Button>
+            </Link>
+
+        }
+
+
 
         <Stack direction={"row"} spacing={7}>
           <Menu>
