@@ -20,17 +20,15 @@ function Home() {
     dispatch(fetchCategoryApi());
   }, [])
 
-  const products = useAppSelector((state) => state.products);
   
-
-
+  
   return (
     <div className={style.app}>
       <NavBar />
       <SubNav />
       <Carousel />
       <Filter />
-      <Cards products={products}/>
+      <Cards/>
       <CarouselDown />
       <Footer />
     </div>

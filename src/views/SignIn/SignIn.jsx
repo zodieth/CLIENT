@@ -10,9 +10,11 @@ import {
   Heading,
   Text,
   useColorModeValue,
+  Center,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { FcGoogle } from "react-icons/fc";
 
 export default function SimpleCard() {
   const [email, setEmail] = useState("");
@@ -66,6 +68,12 @@ export default function SimpleCard() {
                 <Checkbox>Remember me</Checkbox>
                 <Link color={"blue.400"}>Forgot password?</Link>
               </Stack>
+              <Button w={"full"} variant={"outline"} leftIcon={<FcGoogle />}>
+                <Center>
+                  <Text>Sign in with Google</Text>
+                </Center>
+              </Button>
+
               <Link
                 to={
                   email === "admin@gmail.com" && password === "admin"
@@ -76,6 +84,7 @@ export default function SimpleCard() {
                 }
               >
                 <Button
+                  width={"full"}
                   bg={"blue.400"}
                   color={"white"}
                   _hover={{
@@ -85,6 +94,18 @@ export default function SimpleCard() {
                   Sign in
                 </Button>
               </Link>
+              <Stack pt={6}>
+                <Text align={"center"}>
+                  Don't you have a user?{" "}
+                  <Link
+                    style={{ color: "blue" }}
+                    to="/signup"
+                    color={"blue.400"}
+                  >
+                    Sign Up
+                  </Link>
+                </Text>
+              </Stack>
             </Stack>
           </Stack>
         </Box>

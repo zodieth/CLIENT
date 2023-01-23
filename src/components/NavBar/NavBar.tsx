@@ -76,7 +76,7 @@ function NavBar() {
         >
           Arma tu PC
         </Button>
-        <Link to="/signup">
+        <Link to="/signin">
           <Button
             rightIcon={<FiLogIn />}
             className={style.button}
