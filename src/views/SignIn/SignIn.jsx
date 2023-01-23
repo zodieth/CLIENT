@@ -15,10 +15,13 @@ import {
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function SimpleCard() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { loginWithRedirect } = useAuth0();
 
   return (
     <Flex
@@ -70,7 +73,7 @@ export default function SimpleCard() {
               </Stack>
               <Button w={"full"} variant={"outline"} leftIcon={<FcGoogle />}>
                 <Center>
-                  <Text>Sign in with Google</Text>
+                  <Text onClick={() => loginWithRedirect()}>Sign in with Google</Text>
                 </Center>
               </Button>
 
