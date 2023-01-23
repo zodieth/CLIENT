@@ -93,7 +93,7 @@ export default function SignupCard() {
             <Stack pt={6}>
               <Text align={"center"}>
                 Already a user?{" "}
-                <Link to="/signin" color={"blue.400"}>
+                <Link style={{ color: "blue" }} to="/signin" color={"blue.400"}>
                   Login
                 </Link>
               </Text>
