@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import style from "./searchBar.module.css";
-import { Input } from "@chakra-ui/react";
+import { Input, Button } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
-import { Button } from "@chakra-ui/react";
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 
 function SearchBar() {
@@ -33,6 +32,8 @@ function SearchBar() {
         size="md"
         onChange={handleChange}
       />
+
+
       <Button colorScheme="blue" className={style.button} onClick={handleSubmit}>
         <SearchIcon />
       </Button>

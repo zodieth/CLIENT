@@ -16,10 +16,19 @@ import {
   MenuDivider,
   Stack,
   Center,
+  Container,
+  Text
 } from "@chakra-ui/react";
+import { LoginButton } from "../Buttons/LoginButton";
+import { useAuth0 } from "@auth0/auth0-react";
+import { LogoutButton } from "../Buttons/LogoutButton";
+
+
 
 function NavBar() {
   const [cartItems, setCartItems] = useState(1);
+  const { user, isAuthenticated } = useAuth0();
+  console.log(user);
 
   return (
     <div className={style.navBar}>
@@ -34,6 +43,19 @@ function NavBar() {
       {/* <div>
         <SearchBar />
       </div> */}
+      <Container>
+        {
+          isAuthenticated ?
+          <Container>
+            <Text>Estas logueado bro</Text>
+            <LogoutButton />
+          </Container>
+            : <>
+            <Text>No estas logueado bro</Text>
+            <LoginButton />
+            </>
+        }
+      </Container>
       <div className={style.buttons}>
         <Link to="/cart" className={style.cartI}>
           <Button
