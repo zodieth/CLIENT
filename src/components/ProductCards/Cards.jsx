@@ -5,14 +5,15 @@ import { useAppSelector } from '../../app/hooks'
 import Pagination from '../Pagination/Pagination';
 import { useEffect, useState } from 'react'
 
-function Cards({products}) {
+function Cards() {
   const [actualPage, setActualPage] = useState(1);
   const total_Page = 9;
   let productsPagination;
+  const products = useAppSelector((state) => state.products);
 
   useEffect(() => {
     setActualPage(1);
-  }, []);
+  }, [products]);
 
   productsPagination = products.productsFilter.slice((actualPage - 1) * total_Page ,( actualPage * total_Page - 1));
 

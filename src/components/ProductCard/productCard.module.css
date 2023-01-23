@@ -13,16 +13,30 @@
   cursor: pointer;
 }
 
+.cardShop{
+  position: absolute !important;
+  right: 15px;
+  top: 16px;
+}
+
+.favorite {
+  position: absolute !important;
+  top: 65px;
+  right: 16px;
+}
+
 .price_Discount {
   display: flex;
-  justify-content: space-between;
+  /*ustify-content: space-between;*/
+  justify-content: center;
   align-items: center;
-  margin-left: 3rem;
 }
 
 .ahora12 {
+  position: absolute;
   height: 60px;
   margin-right: 3rem;
+  right: -37px;
 }
 
 .card {
