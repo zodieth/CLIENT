@@ -25,7 +25,7 @@ function Home() {
   return (
     <div className={style.app}>
       <NavBar />
-      <SubNav />
+      {/* <SubNav /> */}
       <Carousel />
       <Filter />
       <Cards/>

@@ -15,6 +15,10 @@ import { ReactNode } from "react";
 import { BiMailSend } from "react-icons/bi";
 import style from "./footer.module.css";
 
+const  myFunction = () =>{
+  alert("¡Dirección de correo recibido, pronto recibiras descuentos!");
+}
+
 const Logo = (props: any) => {
   return (
     <svg
@@ -110,7 +114,7 @@ export default function LargeWithNewsletter() {
             <Link href={"#"}>Satus</Link>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>Recibe Descuentos!</ListHeader>
+            <ListHeader>¡Recibe Descuentos!</ListHeader>
             <Stack direction={"row"}>
               <Input
                 placeholder={"Your email address"}
@@ -128,6 +132,7 @@ export default function LargeWithNewsletter() {
                 }}
                 aria-label="Subscribe"
                 icon={<BiMailSend />}
+                onClick={() => myFunction()}
               />
             </Stack>
           </Stack>
