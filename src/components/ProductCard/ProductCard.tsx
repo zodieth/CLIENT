@@ -1,4 +1,4 @@
-import { FiShoppingCart } from "react-icons/fi";
+import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
 import { BsHeartFill } from "react-icons/bs";
 import style from "./productCard.module.css";
 import { Button } from "@chakra-ui/react";
@@ -36,6 +36,15 @@ function ProductCard(props: any) {
     dispatch(addToCart(value));
   };
 
+  const [onCart, setOncart] = useState(false);
+  const onCartFuncion = () => {
+    if (onCart === false) {
+      setOncart(true);
+    } else if (onCart === true) {
+      setOncart(false);
+    }
+  };
+
   return (
     <div className={style.container}>
       <div className={style.card}>
@@ -49,9 +58,13 @@ function ProductCard(props: any) {
           <Button
             colorScheme="blue"
             className={style.cardShop}
-            onClick={() => addCart(props)}
+            onClick={() => [addCart(props), onCartFuncion()]}
           >
-            <FiShoppingCart height={8} />
+            {onCart ? (
+              <HiShoppingCart />
+            ) : (
+              <HiOutlineShoppingCart height={8} color={"white"} />
+            )}
           </Button>
           <Button
             colorScheme="blue"

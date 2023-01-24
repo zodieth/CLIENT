@@ -27,7 +27,6 @@
 
 .price_Discount {
   display: flex;
-  /*ustify-content: space-between;*/
   justify-content: center;
   align-items: center;
 }
