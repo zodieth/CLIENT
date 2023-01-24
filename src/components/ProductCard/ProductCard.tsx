@@ -14,7 +14,6 @@ function ProductCard(props: any) {
       const newFavorites = local.replace(props.name + ' ', '');
       localStorage.setItem("favorites", newFavorites);
       setFavorites(newFavorites)
-      console.log("HOLA")
     }else{
       localStorage.setItem("favorites", local!.concat(props.name + " "))
       setFavorites(local)

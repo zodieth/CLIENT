@@ -83,8 +83,8 @@ export default function LargeWithNewsletter() {
   return (
     <Box
       className={style.box}
-      bg={useColorModeValue("gray.50", "gray.900")}
-      color={useColorModeValue("gray.700", "gray.200")}
+      /* bg={useColorModeValue("gray.50", "gray.900")} */
+      color={useColorModeValue("black", "white")}
     >
       <Container as={Stack} maxW={"6xl"} py={10}>
         <SimpleGrid
@@ -118,10 +118,10 @@ export default function LargeWithNewsletter() {
             <Stack direction={"row"}>
               <Input
                 placeholder={"Your email address"}
-                bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
+                bg={useColorModeValue("white", "white")}
                 border={0}
                 _focus={{
-                  bg: "whiteAlpha.300",
+                  bg: "white",
                 }}
               />
               <IconButton

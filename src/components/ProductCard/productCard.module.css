@@ -43,12 +43,19 @@
   position: relative;
   width: 400px;
   height: 450px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.856);
+  border: solid 1px rgba(5, 4, 4, 0.288);
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+}
+
+.card:hover{
+  background-position: right center;
+    transform: scale(1.1);
+    box-shadow: 10px 10px 20px #ffffff, -10px -10px 20px #ffffff;
 }
 
 .imgBx {
