@@ -10,8 +10,6 @@ export const addToCart = (value: any) => {
 };
 
 export const addProducts = (value: any) => {
-  console.log(value);
-
   return {
     type: ActionTypes.PRODUCT_ADD,
     payload: value,

@@ -1,9 +1,10 @@
-import { FiShoppingCart, FiHeart } from "react-icons/fi";
-import { BsHeart, BsHeartFill } from "react-icons/bs";
+import { FiShoppingCart } from "react-icons/fi";
+import { BsHeartFill } from "react-icons/bs";
 import style from "./productCard.module.css";
-import { Button, useFocusEffect } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Button } from "@chakra-ui/react";
+import { useState } from "react";
 import { addToCart } from "../../app/actionsCreators";
+import { useAppDispatch } from "../../app/hooks";
 
 function ProductCard(props: any) {
   const [favorites, setFavorites] = useState<any>("");
@@ -30,6 +31,11 @@ function ProductCard(props: any) {
     return false;
   };
 
+  const dispatch = useAppDispatch();
+  const addCart = (value: {}) => {
+    dispatch(addToCart(value));
+  };
+
   return (
     <div className={style.container}>
       <div className={style.card}>
@@ -43,7 +49,7 @@ function ProductCard(props: any) {
           <Button
             colorScheme="blue"
             className={style.cardShop}
-            onClick={() => addToCart(props)}
+            onClick={() => addCart(props)}
           >
             <FiShoppingCart height={8} />
           </Button>
