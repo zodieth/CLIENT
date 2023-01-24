@@ -1,7 +1,7 @@
 .box {
   width: 100%;
+  background-image: linear-gradient(to bottom, #c3c3cb, #bdbdc3, #b7b6ba, #b0b0b2, #aaaaaa);
 
- 
 }
 
 .box1 {
@@ -12,9 +12,3 @@
   align-items: center;
   justify-content: space-between;
 }
-
-/* .container {
-    width: 100%;
-
-   
-  } */

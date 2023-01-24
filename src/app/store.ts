@@ -1,20 +1,20 @@
-import { configureStore, ThunkAction, AnyAction  } from '@reduxjs/toolkit';
-import cartReducer from '../features/cart/CartSlice';
+import { configureStore, ThunkAction, AnyAction } from "@reduxjs/toolkit";
+import { Cart } from "../features/cart/Cart";
 import { Products } from "../features/products/Products";
-import { Brands } from "../features/brands/Brands"
-import logger from 'redux-logger';
-import thunk from 'redux-thunk';
-import { Categories } from '../features/categories/Categories';
+import { Brands } from "../features/brands/Brands";
+import logger from "redux-logger";
+import thunk from "redux-thunk";
+import { Categories } from "../features/categories/Categories";
 
 export const store = configureStore({
   reducer: {
-    counter: cartReducer,
+    cart: Cart,
     products: Products,
     brands: Brands,
-    categories: Categories
+    categories: Categories,
   },
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(thunk).concat(logger)
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(thunk).concat(logger),
 });
 
 export type AppDispatch = typeof store.dispatch;
