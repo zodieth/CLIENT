@@ -20,8 +20,6 @@ function Home() {
     dispatch(fetchCategoryApi());
   }, [])
 
-  
-  
   return (
     <div className={style.app}>
       <NavBar />

@@ -79,9 +79,44 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 2rem;
 }
 
 .cart {
   height: 20px;
+}
+
+/* Estilo de estrellas */
+.calificacion {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.starsOuter {
+  display: inline-block;
+  position: relative;
+  margin-top: -30px;
+  margin: 0 auto;
+
+}
+
+.starsOuter::before {
+  content: "\2606 \2606 \2606 \2606 \2606";
+  color: rgba(108, 108, 108, 0.314);
+  font-size: 50px;
+}
+
+.starsInner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 50%;
+}
+
+.starsInner::before {
+  content: "\2605 \2605 \2605 \2605 \2605";
+  color: #f8ce0b;
+  font-size: 50px;
 }
