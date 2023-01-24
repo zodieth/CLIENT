@@ -10,7 +10,7 @@ const settings = {
   infinite: true,
   autoplay: true,
   speed: 500,
-  autoplaySpeed: 5000,
+  autoplaySpeed: 4000,
   slidesToShow: 1,
   slidesToScroll: 1,
 };
@@ -23,7 +23,7 @@ export default function Carousel() {
 
   const cards = [
     "https://www.qloud.com.ar/SITES/IMG/hypergaming-01-2020/117_07-12-2022-05-12-05-banner-mundo-itx.jpg",
-    // "https://media.discordapp.net/attachments/1064640307213377546/1065686851014365285/image_2.png?width=1920&height=400",
+    "https://media.discordapp.net/attachments/1064640307213377546/1065686851014365285/image_2.png?width=1920&height=400",
     // "https://www.lavoz.com.ar/resizer/S-ccGwfM3cMYCJUq7gHngfUVYEA=/1023x683/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/6BNOR4YHWRHPPE35CK4XR2FMVU.jpg",
     // "https://blog.tiendasishop.com/wp-content/uploads/2022/07/productos-tecnologicos-2.webp",
   ];

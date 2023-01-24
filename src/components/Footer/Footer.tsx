@@ -15,6 +15,10 @@ import { ReactNode } from "react";
 import { BiMailSend } from "react-icons/bi";
 import style from "./footer.module.css";
 
+const  myFunction = () =>{
+  alert("¡Dirección de correo recibido, pronto recibiras descuentos!");
+}
+
 const Logo = (props: any) => {
   return (
     <svg
@@ -79,8 +83,8 @@ export default function LargeWithNewsletter() {
   return (
     <Box
       className={style.box}
-      bg={useColorModeValue("gray.50", "gray.900")}
-      color={useColorModeValue("gray.700", "gray.200")}
+      /* bg={useColorModeValue("gray.50", "gray.900")} */
+      color={useColorModeValue("black", "white")}
     >
       <Container as={Stack} maxW={"6xl"} py={10}>
         <SimpleGrid
@@ -110,14 +114,14 @@ export default function LargeWithNewsletter() {
             <Link href={"#"}>Satus</Link>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>Recibe Descuentos!</ListHeader>
+            <ListHeader>¡Recibe Descuentos!</ListHeader>
             <Stack direction={"row"}>
               <Input
                 placeholder={"Your email address"}
-                bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
+                bg={useColorModeValue("white", "white")}
                 border={0}
                 _focus={{
-                  bg: "whiteAlpha.300",
+                  bg: "white",
                 }}
               />
               <IconButton
@@ -128,6 +132,7 @@ export default function LargeWithNewsletter() {
                 }}
                 aria-label="Subscribe"
                 icon={<BiMailSend />}
+                onClick={() => myFunction()}
               />
             </Stack>
           </Stack>
