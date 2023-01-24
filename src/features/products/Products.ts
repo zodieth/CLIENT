@@ -47,14 +47,14 @@ export const Products = (
 
       let productsFilter;
 
-      if (categorySearch !== "ALL") { //Arreglar
+      if (categorySearch !== "") { //Arreglar
         productsFilter = state.allProducts.filter((product:interfaceProduct) =>
           product.category.name.toUpperCase().includes(categorySearch.toUpperCase())
         );
       } else {
         productsFilter = state.allProducts;
       }
-
+      productsFilter = state.allProducts;
       const filterName = productsFilter.filter(
         (product:interfaceProduct) =>
           product.name.toUpperCase().includes(value.toUpperCase())
