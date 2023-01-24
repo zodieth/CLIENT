@@ -9,6 +9,13 @@ export const addToCart = (value: any) => {
   };
 };
 
+export const deleteFromCart = (value: any) => {
+  return {
+    type: ActionTypes.DELETE_FROM_CART,
+    payload: value,
+  };
+};
+
 export const addProducts = (value: any) => {
   return {
     type: ActionTypes.PRODUCT_ADD,

@@ -2,8 +2,16 @@ import React, { useState } from "react";
 import style from "./cartCard.module.css";
 import { Button } from "@chakra-ui/react";
 import { HiMinus, HiOutlinePlusSm } from "react-icons/hi";
+import { useAppDispatch } from "../../hooks/hooks";
+import { deleteFromCart } from "../../app/actionsCreators";
 function CartCard(props: any) {
   const [counter, setCounter] = useState(1);
+
+  const dispatch = useAppDispatch();
+
+  const handleDelete = (value: {}) => {
+    dispatch(deleteFromCart(value));
+  };
 
   return (
     <div className={style.container}>
@@ -33,6 +41,7 @@ function CartCard(props: any) {
                 <HiOutlinePlusSm />
               </Button>
             </div>
+            <Button onClick={() => handleDelete(props)}>x</Button>
             <div className={style.price}> ${props.price}</div>
           </div>
         </div>
