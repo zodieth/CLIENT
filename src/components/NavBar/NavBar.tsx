@@ -17,12 +17,14 @@ import {
   Stack,
   Center,
   Container,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useAppSelector } from "../../hooks/hooks";
 
 function NavBar() {
-  const [cartItems, setCartItems] = useState(1);
+  const cartItems = useAppSelector((state) => state.cart);
+
   const { isAuthenticated, logout } = useAuth0();
 
   return (
@@ -46,7 +48,7 @@ function NavBar() {
             colorScheme="blue"
             variant="solid"
           >
-            {cartItems}
+            {cartItems.cart.length}
           </Button>
         </Link>
 
@@ -58,32 +60,28 @@ function NavBar() {
         >
           Arma tu PC
         </Button>
-        {
-          isAuthenticated ?
+        {isAuthenticated ? (
+          <Button
+            rightIcon={<FiLogIn />}
+            className={style.button}
+            colorScheme="teal"
+            variant="solid"
+            onClick={() => logout()}
+          >
+            Logout
+          </Button>
+        ) : (
+          <Link to="/signin">
             <Button
               rightIcon={<FiLogIn />}
               className={style.button}
               colorScheme="teal"
               variant="solid"
-              onClick={() => logout()}
             >
-              Logout
-            </Button> :
-            <Link to="/signin">
-              <Button
-                rightIcon={<FiLogIn />}
-                className={style.button}
-                colorScheme="teal"
-                variant="solid"
-
-              >
-                Ingresar
-              </Button>
-            </Link>
-
-        }
-
-
+              Ingresar
+            </Button>
+          </Link>
+        )}
 
         <Stack direction={"row"} spacing={7}>
           <Menu>
