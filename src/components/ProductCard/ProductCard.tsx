@@ -3,6 +3,7 @@ import { BsHeart, BsHeartFill } from "react-icons/bs";
 import style from "./productCard.module.css";
 import { Button, useFocusEffect } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { addToCart } from "../../app/actionsCreators";
 
 function ProductCard(props: any) {
   const [favorites, setFavorites] = useState<any>("");
@@ -10,25 +11,24 @@ function ProductCard(props: any) {
 
   const handleFavorite = () => {
     local = localStorage?.getItem("favorites");
-    if(local?.includes(props.name)){
-      const newFavorites = local.replace(props.name + ' ', '');
+    if (local?.includes(props.name)) {
+      const newFavorites = local.replace(props.name + " ", "");
       localStorage.setItem("favorites", newFavorites);
-      setFavorites(newFavorites)
-      console.log("HOLA")
-    }else{
-      localStorage.setItem("favorites", local!.concat(props.name + " "))
-      setFavorites(local)
+      setFavorites(newFavorites);
+      console.log("HOLA");
+    } else {
+      localStorage.setItem("favorites", local!.concat(props.name + " "));
+      setFavorites(local);
     }
-  }
+  };
 
-  const isFavorite = (name:string) => {
+  const isFavorite = (name: string) => {
     local = localStorage.getItem("favorites");
-    if(local?.includes(name)){
-      return true
+    if (local?.includes(name)) {
+      return true;
     }
-    return false
-  }
-
+    return false;
+  };
 
   return (
     <div className={style.container}>
@@ -40,11 +40,22 @@ function ProductCard(props: any) {
           <div className={style.name}>
             <h2>{props.name}</h2>
           </div>
-          <Button colorScheme="blue" className={style.cardShop}>
+          <Button
+            colorScheme="blue"
+            className={style.cardShop}
+            onClick={() => addToCart(props)}
+          >
             <FiShoppingCart height={8} />
           </Button>
-          <Button colorScheme="blue" className={style.favorite} onClick={handleFavorite}>
-            <BsHeartFill height={8} color={isFavorite(props.name) ? "red" :"white"}/>
+          <Button
+            colorScheme="blue"
+            className={style.favorite}
+            onClick={handleFavorite}
+          >
+            <BsHeartFill
+              height={8}
+              color={isFavorite(props.name) ? "red" : "white"}
+            />
           </Button>
         </div>
         <div className={style.price_Discount}>
