@@ -1,7 +1,9 @@
 .div1 {
-  width: 97%;
+  width: 100%;
   background-color: #ffffff;
   color: #000000;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  
 }
 
 .img {
