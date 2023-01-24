@@ -13,7 +13,7 @@
   cursor: pointer;
 }
 
-.cardShop{
+.cardShop {
   position: absolute !important;
   right: 15px;
   top: 16px;
@@ -27,7 +27,6 @@
 
 .price_Discount {
   display: flex;
-  /*ustify-content: space-between;*/
   justify-content: center;
   align-items: center;
 }
@@ -35,7 +34,7 @@
 .ahora12 {
   position: absolute;
   height: 60px;
-  margin-right: 3rem;
+  margin-right: 4rem;
   right: -37px;
 }
 
