@@ -30,14 +30,9 @@ function Cards() {
       <div className={style.container}>
         {products
           ? productsPagination.map((e) => {
-              return (
-                <ProductCard
-                  name={e.name}
-                  key={e.name}
-                  price={e.price}
-                  img={e.images[0]}
-                />
-              );
+
+              return <ProductCard name={e.name} key={e.name} price={e.price} img={e.images[0]} reviews={e.reviews} />;
+
             })
           : ""}
       </div>
