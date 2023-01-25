@@ -6,6 +6,7 @@ import { useState } from "react";
 import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import { useAppDispatch } from "../../app/hooks";
 import interfaceProduct from "../../features/products/interfaceProduct";
+import Swal from "sweetalert2";
 
 function ProductCard(props: any) {
   const [favorites, setFavorites] = useState<any>("");
@@ -50,6 +51,25 @@ function ProductCard(props: any) {
     dispatch(deleteFromCart(value));
   };
 
+  const addToCartAlert = () => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: "success",
+      title: "Agregado Correctamente",
+    });
+  };
+
   return (
     <div className={style.container}>
       <div className={style.card}>
@@ -67,7 +87,7 @@ function ProductCard(props: any) {
               onCart
                 ? [handleDeleteFromCart(props), onCartFuncion()]
                 : onCart === false
-                ? [addCart(props), onCartFuncion()]
+                ? [addCart(props), onCartFuncion(), addToCartAlert()]
                 : ""
             }
           >
