@@ -41,9 +41,18 @@ function CartCard(props: any) {
               >
                 <HiOutlinePlusSm />
               </Button>
+              <div className={style.price_Delete}>
+                <div className={style.price}> ${props.price}</div>
+                <Button
+                  colorScheme="red"
+                  height={8}
+                  width={4}
+                  onClick={() => handleDelete(props)}
+                >
+                  x
+                </Button>
+              </div>
             </div>
-            <Button onClick={() => handleDelete(props)}>x</Button>
-            <div className={style.price}> ${props.price}</div>
           </div>
         </div>
       </div>
