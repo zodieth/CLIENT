@@ -28,7 +28,6 @@ root.render(
         >
           <RouterProvider router={router} />
         </Auth0Provider>
-
       </ChakraProvider>
     </Provider>
   </React.StrictMode>

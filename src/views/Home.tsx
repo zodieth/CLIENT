@@ -11,6 +11,7 @@ import CarouselDown from "../components/CarouselDown/CarouselDown";
 import Cards from "../components/ProductCards/Cards";
 import Filter from "../components/Filtro/filter";
 
+
 function Home() {
   const dispatch = useAppDispatch();
   
@@ -23,7 +24,6 @@ function Home() {
   return (
     <div className={style.app}>
       <NavBar />
-      {/* <SubNav /> */}
       <Carousel />
       <Filter />
       <Cards/>
