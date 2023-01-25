@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CartCard from "../CartCard/CartCard";
 import NavBar from "../NavBar/NavBar";
 import SubNav from "../NavBar/SubNav";
@@ -10,19 +10,12 @@ import interfaceProduct from "../../features/products/interfaceProduct";
 
 function Cart(props: any) {
   const products = useAppSelector((state) => state.cart);
-
-  // const total = products.cart.map((e: any) => {
-  //   return e.price;
-  // });
-
   let total = products.cart.map((e: any) => {
     return e.price;
   });
 
-  const [total2, setTotal2] = useState(0);
-  // const total2 = 0;
-  // console.log(total2);
-
+  const [totalCompra, setTotalCompra] = useState(total.reduce((a: any, b: any) => a + b, 0));
+  
   return (
     <div>
       <NavBar />
@@ -31,11 +24,12 @@ function Cart(props: any) {
         {products.cart.length ? (
           products.cart.map((e: any) => {
             return (
-              <div key={e}>
+              <div key={e.name}>
                 <div>
                   <CartCard
-                    totalCompra={total2}
-                    setTotalCompra={setTotal2}
+                    key={e.name}
+                    totalCompra={totalCompra}
+                    setTotalCompra={setTotalCompra}
                     name={e.name}
                     price={e.price}
                     img={e.img}
@@ -60,7 +54,7 @@ function Cart(props: any) {
               <div className={style.total}>
                 <div>TOTAL</div>
 
-                <div> ${total.reduce((a: any, b: any) => a + b, 0)}</div>
+                <div>{totalCompra}</div>
               </div>
               <Button className={style.btn_finish}>Finalizar Compra</Button>
             </div>

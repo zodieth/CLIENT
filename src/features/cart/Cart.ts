@@ -12,6 +12,7 @@ type Product = {
     name: String;
   };
   active: Boolean;
+  count: number;
 };
 
 export const Cart = (
@@ -33,6 +34,25 @@ export const Cart = (
           (product: Product) => product.name !== action.payload.name
         ),
       };
+    case ActionTypes.ADD_COUNT:
+      return {
+        ...state,
+        cart: state.cart.filter((product: Product) => {
+            if(product.name === action.payload.productName)
+              return product.count + 1
+          }),
+      }
+
+    case ActionTypes.REMOVE_COUNT:
+      return {
+        ...state,
+        cart: state.cart.filter(
+          (product: Product)  => {
+            if(product.name === action.payload.name)
+              return product.count - action.payload.count
+          }
+        ),
+      }
 
     default:
       return state;

@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import style from "./cartCard.module.css";
 import { Button } from "@chakra-ui/react";
 import { HiMinus, HiOutlinePlusSm } from "react-icons/hi";
 import { useAppDispatch } from "../../hooks/hooks";
 import { deleteFromCart } from "../../app/actionsCreators";
 import interfaceProduct from "../../features/products/interfaceProduct";
-import { addToCart } from "../../app/actionsCreators";
-import { useAppSelector } from "../../app/hooks";
+import { addCountCart, removeCountCart } from "../../app/actionsCreators";
 
 function CartCard(props: any) {
   const [quantity, setQuantity] = useState(1);
@@ -14,7 +13,9 @@ function CartCard(props: any) {
   const dispatch = useAppDispatch();
 
   const handleDelete = (value: interfaceProduct) => {
+    props.setTotalCompra(props.totalCompra - props.price * quantity)
     dispatch(deleteFromCart(value));
+    dispatch(removeCountCart(props.name, quantity))
   };
 
   let [total, setTotal] = useState(props.price);
@@ -34,7 +35,8 @@ function CartCard(props: any) {
                     : [
                         setQuantity(quantity - 1),
                         setTotal(total - props.price),
-                        props.totalCompra - props.price,
+                        props.setTotalCompra(props.totalCompra - props.price),
+                        dispatch(removeCountCart(props.name, 1))
                       ]
                 }
               >
@@ -45,8 +47,8 @@ function CartCard(props: any) {
                 onClick={() => [
                   setTotal(total + props.price),
                   setQuantity(quantity + 1),
-                  props.setTotalCompra(props.total2 + props.price),
-                  console.log(props.total2),
+                  props.setTotalCompra(props.totalCompra + props.price),
+                  dispatch(addCountCart(props.name))
                 ]}
               >
                 <HiOutlinePlusSm />
