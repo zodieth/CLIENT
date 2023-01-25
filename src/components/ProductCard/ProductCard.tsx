@@ -3,8 +3,9 @@ import { BsHeartFill } from "react-icons/bs";
 import style from "./productCard.module.css";
 import { Button } from "@chakra-ui/react";
 import { useState } from "react";
-import { addToCart } from "../../app/actionsCreators";
+import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import { useAppDispatch } from "../../app/hooks";
+import interfaceProduct from "../../features/products/interfaceProduct";
 
 function ProductCard(props: any) {
   const [favorites, setFavorites] = useState<any>("");
@@ -32,7 +33,7 @@ function ProductCard(props: any) {
   };
 
   const dispatch = useAppDispatch();
-  const addCart = (value: {}) => {
+  const addCart = (value: interfaceProduct) => {
     dispatch(addToCart(value));
   };
 
@@ -43,6 +44,10 @@ function ProductCard(props: any) {
     } else if (onCart === true) {
       setOncart(false);
     }
+  };
+
+  const handleDeleteFromCart = (value: interfaceProduct) => {
+    dispatch(deleteFromCart(value));
   };
 
   return (
@@ -58,7 +63,13 @@ function ProductCard(props: any) {
           <Button
             colorScheme="blue"
             className={style.cardShop}
-            onClick={() => [addCart(props), onCartFuncion()]}
+            onClick={() =>
+              onCart
+                ? [handleDeleteFromCart(props), onCartFuncion()]
+                : onCart === false
+                ? [addCart(props), onCartFuncion()]
+                : ""
+            }
           >
             {onCart ? (
               <HiShoppingCart />

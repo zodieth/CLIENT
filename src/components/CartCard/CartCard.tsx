@@ -4,12 +4,13 @@ import { Button } from "@chakra-ui/react";
 import { HiMinus, HiOutlinePlusSm } from "react-icons/hi";
 import { useAppDispatch } from "../../hooks/hooks";
 import { deleteFromCart } from "../../app/actionsCreators";
+import interfaceProduct from "../../features/products/interfaceProduct";
 function CartCard(props: any) {
   const [counter, setCounter] = useState(1);
 
   const dispatch = useAppDispatch();
 
-  const handleDelete = (value: {}) => {
+  const handleDelete = (value: interfaceProduct) => {
     dispatch(deleteFromCart(value));
   };
 
