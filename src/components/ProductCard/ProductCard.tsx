@@ -14,11 +14,14 @@ function ProductCard(props: any) {
 
   const handleFavorite = () => {
     local = localStorage?.getItem("favorites");
+    if(!local)
+      localStorage.setItem("favorites", "");
+      
     if (local?.includes(props.name)) {
-      const newFavorites = local.replace(props.name + " ", "");
+      console.log("HOLA")
+      const newFavorites = local.replace(props.name, "");
       localStorage.setItem("favorites", newFavorites);
       setFavorites(newFavorites);
-      console.log("HOLA");
     } else {
       localStorage.setItem("favorites", local!.concat(props.name + " "));
       setFavorites(local);

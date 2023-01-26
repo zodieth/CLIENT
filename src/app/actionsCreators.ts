@@ -9,6 +9,21 @@ export const addToCart = (value: any) => {
   };
 };
 
+export const addCountCart = (productName:string) => {
+  return {
+    type: ActionTypes.ADD_COUNT,
+    payload: { productName },
+  };
+};
+
+export const removeCountCart = (productName:string, count: number) => {
+  console.log(count)
+  return {
+    type: ActionTypes.REMOVE_COUNT,
+    payload: { productName, count },
+  };
+};
+
 export const deleteFromCart = (value: any) => {
   return {
     type: ActionTypes.DELETE_FROM_CART,

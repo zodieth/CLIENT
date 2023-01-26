@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CartCard from "../CartCard/CartCard";
 import NavBar from "../NavBar/NavBar";
 import SubNav from "../NavBar/SubNav";
@@ -6,14 +6,16 @@ import style from "./cart.module.css";
 import { Button, Center } from "@chakra-ui/react";
 import { useAppSelector } from "../../app/hooks";
 import { Link } from "react-router-dom";
+import interfaceProduct from "../../features/products/interfaceProduct";
 
-function Cart() {
+function Cart(props: any) {
   const products = useAppSelector((state) => state.cart);
-
-  const total = products.cart.map((e: any) => {
+  let total = products.cart.map((e: any) => {
     return e.price;
   });
 
+  const [totalCompra, setTotalCompra] = useState(total.reduce((a: any, b: any) => a + b, 0));
+  
   return (
     <div>
       <NavBar />
@@ -22,9 +24,16 @@ function Cart() {
         {products.cart.length ? (
           products.cart.map((e: any) => {
             return (
-              <div>
+              <div key={e.name}>
                 <div>
-                  <CartCard name={e.name} price={e.price} img={e.img} />
+                  <CartCard
+                    key={e.name}
+                    totalCompra={totalCompra}
+                    setTotalCompra={setTotalCompra}
+                    name={e.name}
+                    price={e.price}
+                    img={e.img}
+                  />
                 </div>
               </div>
             );
@@ -44,7 +53,8 @@ function Cart() {
             <div className={style.finish}>
               <div className={style.total}>
                 <div>TOTAL</div>
-                <div> ${total.reduce((a, b) => a + b, 0)}</div>
+
+                <div>{totalCompra}</div>
               </div>
               <Button className={style.btn_finish}>Finalizar Compra</Button>
             </div>
