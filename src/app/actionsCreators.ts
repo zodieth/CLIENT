@@ -17,6 +17,7 @@ export const addCountCart = (productName:string) => {
 };
 
 export const removeCountCart = (productName:string, count: number) => {
+  console.log(count)
   return {
     type: ActionTypes.REMOVE_COUNT,
     payload: { productName, count },
