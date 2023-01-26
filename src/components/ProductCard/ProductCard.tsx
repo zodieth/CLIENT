@@ -3,8 +3,10 @@ import { BsHeartFill } from "react-icons/bs";
 import style from "./productCard.module.css";
 import { Button } from "@chakra-ui/react";
 import { useState } from "react";
-import { addToCart } from "../../app/actionsCreators";
+import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import { useAppDispatch } from "../../app/hooks";
+import interfaceProduct from "../../features/products/interfaceProduct";
+import Swal from "sweetalert2";
 
 function ProductCard(props: any) {
   const [favorites, setFavorites] = useState<any>("");
@@ -13,11 +15,14 @@ function ProductCard(props: any) {
 
   const handleFavorite = () => {
     local = localStorage?.getItem("favorites");
+    if(!local)
+      localStorage.setItem("favorites", "");
+      
     if (local?.includes(props.name)) {
-      const newFavorites = local.replace(props.name + " ", "");
+      console.log("HOLA")
+      const newFavorites = local.replace(props.name, "");
       localStorage.setItem("favorites", newFavorites);
       setFavorites(newFavorites);
-      console.log("HOLA");
     } else {
       localStorage.setItem("favorites", local!.concat(props.name + " "));
       setFavorites(local);
@@ -47,7 +52,7 @@ function ProductCard(props: any) {
   }
 
   const dispatch = useAppDispatch();
-  const addCart = (value: {}) => {
+  const addCart = (value: interfaceProduct) => {
     dispatch(addToCart(value));
   };
 
@@ -60,6 +65,28 @@ function ProductCard(props: any) {
     }
   };
 
+  const handleDeleteFromCart = (value: interfaceProduct) => {
+    dispatch(deleteFromCart(value));
+  };
+
+  const addToCartAlert = () => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: "success",
+      title: "Agregado Correctamente",
+    });
+  };
 
   return (
     <div className={style.container}>
@@ -74,7 +101,13 @@ function ProductCard(props: any) {
           <Button
             colorScheme="blue"
             className={style.cardShop}
-            onClick={() => [addCart(props), onCartFuncion()]}
+            onClick={() =>
+              onCart
+                ? [handleDeleteFromCart(props), onCartFuncion()]
+                : onCart === false
+                ? [addCart(props), onCartFuncion(), addToCartAlert()]
+                : ""
+            }
           >
             {onCart ? (
               <HiShoppingCart />
