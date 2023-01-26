@@ -1,21 +1,38 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import CartCard from "../CartCard/CartCard";
 import NavBar from "../NavBar/NavBar";
 import SubNav from "../NavBar/SubNav";
 import style from "./cart.module.css";
-import { Button, Center } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { useAppSelector } from "../../app/hooks";
 import { Link } from "react-router-dom";
-import interfaceProduct from "../../features/products/interfaceProduct";
+import { useAppDispatch } from "../../hooks/hooks";
+import { payMercadoPagoApi } from "../../app/actionsCreators";
 
-function Cart(props: any) {
+function Cart() {
+  const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.cart);
+
   let total = products.cart.map((e: any) => {
     return e.price;
   });
 
   const [totalCompra, setTotalCompra] = useState(total.reduce((a: any, b: any) => a + b, 0));
   
+  const pay = async () => {
+    let productos = products.cart
+    const data:any = await dispatch(payMercadoPagoApi(productos))
+
+    var script = document.createElement("script");
+    console.log(data)
+    script.src = "https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js";
+    script.type = "text/javascript";
+    script.setAttribute("data-preference-id", data.body.id);
+    const form = document.getElementById("pagar");
+    form?.appendChild(script);
+
+  }
+
   return (
     <div>
       <NavBar />
@@ -56,7 +73,9 @@ function Cart(props: any) {
 
                 <div>{totalCompra}</div>
               </div>
-              <Button className={style.btn_finish}>Finalizar Compra</Button>
+              <Button className={style.btn_finish} onClick={pay}>Finalizar Compra</Button>
+              <form id="pagar" method="GET"></form>
+
             </div>
           </div>
         ) : (
