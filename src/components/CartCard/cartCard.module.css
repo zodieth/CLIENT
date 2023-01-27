@@ -5,13 +5,17 @@
   justify-content: center;
 }
 .card {
+  border-radius: 10px;
+  height: 100px;
   margin: 1rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 40rem;
-  border: 1px solid black;
+  width: 50rem;
+  background-color: #fff;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f7fafc;
 }
 
 .left {
@@ -29,9 +33,15 @@
   margin-left: 10rem;
 }
 
+.price_Delete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .img {
-  width: 8rem;
-  margin: 1rem;
+  height: 80px;
+  margin: 2rem;
 }
 
 .counter {
@@ -44,6 +54,7 @@
 
 .price {
   margin-right: 1rem;
+  margin-left: 1rem;
 }
 
 .cards {
