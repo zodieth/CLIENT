@@ -38,13 +38,15 @@ import { ReactText } from "react";
 interface LinkItemProps {
   name: string;
   icon: IconType;
+  url: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome },
-  { name: "Productos", icon: FiTrendingUp },
-  { name: "Categorias", icon: FiCompass },
-  { name: "Marcas", icon: FiStar },
-  { name: "Settings", icon: FiSettings },
+  { name: "Home", icon: FiHome, url: "#"},
+  { name: "Productos", icon: FiTrendingUp, url: "./products" },
+  { name: "Categorias", icon: FiCompass, url: "#" },
+  { name: "Marcas", icon: FiStar, url: "#" },
+  { name: "Sucursales", icon: FiSettings, url: "#" },
+  { name: "Usuarios", icon: FiSettings, url: "#" },
 ];
 
 export default function SidebarWithHeader({
@@ -85,6 +87,7 @@ interface SidebarProps extends BoxProps {
   onClose: () => void;
 }
 
+//formacion del menu de la izquierda
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
     <Box
@@ -104,7 +107,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem key={link.name} icon={link.icon} url={link.url}>
           {link.name}
         </NavItem>
       ))}
@@ -115,11 +118,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 interface NavItemProps extends FlexProps {
   icon: IconType;
   children: ReactText;
+  url: string;
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+
+//items que van en el menu de la izquierda
+const NavItem = ({ icon, children, url, ...rest }: NavItemProps) => {
   return (
     <Link
-      href="#"
+      href={url}
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}
     >
@@ -155,6 +161,7 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
 interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
+
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   return (
     <Flex
@@ -185,7 +192,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         Logo
       </Text>
 
-      <HStack spacing={{ base: "0", md: "6" }}>
+      <HStack spacing={{ base: "0", md: "6" }}> {/* Arriba a la derecha */}
         <IconButton
           size="lg"
           variant="ghost"
