@@ -47,7 +47,7 @@ export const Products = (
 
       let productsFilter;
 
-      if (categorySearch !== "ALL") { //Arreglar
+      if (categorySearch !== "") { //Arregla
         productsFilter = state.allProducts.filter((product:interfaceProduct) =>
           product.category.name.toUpperCase().includes(categorySearch.toUpperCase())
         );
@@ -64,7 +64,7 @@ export const Products = (
         (product:interfaceProduct) =>
           product.brand.name.toUpperCase().includes(brand.toUpperCase())
       );
-      console.log(costMax)
+
       let filterCost;
       if (costMin === '' && costMax != 0) {
         filterCost = filterBrand.filter((product:interfaceProduct) => product.price <= costMax)

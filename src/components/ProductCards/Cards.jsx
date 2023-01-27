@@ -36,6 +36,7 @@ function Cards() {
                   key={e.name}
                   price={e.price}
                   img={e.images[0]}
+                  reviews={e.reviews}
                   count={1}
                 />
               );
