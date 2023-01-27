@@ -51,15 +51,17 @@ function NavBar() {
             {cartItems.cart.length}
           </Button>
         </Link>
+        <Link to="armatupc">
+          <Button
+            rightIcon={<MdComputer />}
+            className={style.button}
+            colorScheme="blue"
+            variant="solid"
+          >
+            Arma tu PC
+          </Button>
+        </Link>
 
-        <Button
-          rightIcon={<MdComputer />}
-          className={style.button}
-          colorScheme="blue"
-          variant="solid"
-        >
-          Arma tu PC
-        </Button>
         {isAuthenticated ? (
           <div className={style.avatar_login}>
             <Button

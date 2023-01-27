@@ -14,8 +14,10 @@ function Cart(props: any) {
     return e.price;
   });
 
-  const [totalCompra, setTotalCompra] = useState(total.reduce((a: any, b: any) => a + b, 0));
-  
+  const [totalCompra, setTotalCompra] = useState(
+    total.reduce((a: any, b: any) => a + b, 0)
+  );
+
   return (
     <div>
       <NavBar />
@@ -54,7 +56,7 @@ function Cart(props: any) {
               <div className={style.total}>
                 <div>TOTAL</div>
 
-                <div>{totalCompra}</div>
+                <div>${totalCompra}</div>
               </div>
               <Button className={style.btn_finish}>Finalizar Compra</Button>
             </div>
