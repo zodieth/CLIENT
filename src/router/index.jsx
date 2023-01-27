@@ -4,7 +4,8 @@ import Cart from "../components/Cart/Cart";
 import Admin from "../views/Admin";
 import SignUp from "../views/SignUp/SignUp";
 import SignIn from "../views/SignIn/SignIn";
-import productAdmin from "../components/Admin/Products/products"
+import ArmaPC from "../views/ArmaPC/ArmaPC";
+import productAdmin from "../components/Admin/Products/products";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
   {
     path: "/signin",
     element: <SignIn />,
+  },
+  {
+    path: "/armatupc",
+    element: <ArmaPC />,
   },
   {
     path: "/Admin/products",

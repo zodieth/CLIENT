@@ -18,6 +18,10 @@
   margin: 1rem;
 }
 
+.mpPay {
+  margin-right: 2rem;
+}
+
 .container_finish {
   display: flex;
   flex-direction: row;
