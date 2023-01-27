@@ -35,6 +35,9 @@ function Cart() {
     form?.appendChild(script);
   };
 
+  const [submitButton, setSubmitButton] = useState(false);
+  const [submitDisappear, setSubmitDisappear] = useState(true);
+
   return (
     <div>
       <NavBar />
@@ -74,13 +77,29 @@ function Cart() {
             <div className={style.finish}>
               <div className={style.total}>
                 <div>TOTAL</div>
-
                 <div>${totalCompra}</div>
               </div>
-              <Button className={style.btn_finish} onClick={pay}>
-                Finalizar Compra
-              </Button>
-              <form id="pagar" method="GET"></form>
+              {submitDisappear === true ? (
+                <div>
+                  {" "}
+                  <Button
+                    className={style.btn_finish}
+                    onClick={() => [
+                      pay(),
+                      setSubmitButton(true),
+                      setInterval(() => {
+                        setSubmitDisappear(false);
+                      }, 1000),
+                    ]}
+                    isLoading={submitButton}
+                  >
+                    Finalizar Compra
+                  </Button>
+                </div>
+              ) : (
+                ""
+              )}
+              <form className={style.mpPay} id="pagar" method="GET"></form>
             </div>
           </div>
         ) : (
