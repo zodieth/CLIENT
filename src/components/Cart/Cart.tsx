@@ -21,6 +21,20 @@ function Cart() {
     total.reduce((a: any, b: any) => a + b, 0)
   );
 
+  const pay = async () => {
+    let productos = products.cart;
+    const data: any = await dispatch(payMercadoPagoApi(productos));
+
+    var script = document.createElement("script");
+    console.log(data);
+    script.src =
+      "https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js";
+    script.type = "text/javascript";
+    script.setAttribute("data-preference-id", data.body.id);
+    const form = document.getElementById("pagar");
+    form?.appendChild(script);
+  };
+
   return (
     <div>
       <NavBar />
@@ -61,7 +75,7 @@ function Cart() {
               <div className={style.total}>
                 <div>TOTAL</div>
 
-                <div>{totalCompra}</div>
+                <div>${totalCompra}</div>
               </div>
               <Button className={style.btn_finish} onClick={pay}>
                 Finalizar Compra
