@@ -1,7 +1,5 @@
-import React, { useState } from "react";
 import style from "./navBar.module.css";
 import { Button } from "@chakra-ui/react";
-import SearchBar from "../SearchBar/SearchBar";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdComputer } from "react-icons/md";
@@ -15,9 +13,7 @@ import {
   MenuItem,
   MenuDivider,
   Stack,
-  Center,
-  Container,
-  Text,
+  Center
 } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useAppSelector } from "../../hooks/hooks";

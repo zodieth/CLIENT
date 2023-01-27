@@ -65,7 +65,7 @@ function Filter() {
         <div className={style.options}>
           <Select
             className={style.select}
-            placeholder="Todas"
+            placeholder="Todas las categorias"
             color="Gray"
             id="category"
             borderColor="Gray"
@@ -79,7 +79,7 @@ function Filter() {
         <div className={style.options}>
           <Select
             className={style.select}
-            placeholder="Todas"
+            placeholder="Todas las marcas"
             color="Gray"
             id="brand"
             borderColor="Gray"

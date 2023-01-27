@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 function ProductCard(props: any) {
   const [favorites, setFavorites] = useState<any>("");
   let local = localStorage.getItem("favorites");
+  const starTotal = 5;
 
   const handleFavorite = () => {
     local = localStorage?.getItem("favorites");
@@ -35,6 +36,20 @@ function ProductCard(props: any) {
     }
     return false;
   };
+
+
+  type review = {
+    review:number
+  }
+
+  const startPercentage = () => {
+    let total = 0;
+    props.reviews.forEach(function(a:review){total += a.review;});
+    const percentage = (total / props.reviews.length);
+    const starPercentage = (percentage ? percentage : 0 / 100) / 5 * 100;
+
+    return starPercentage
+  }
 
   const dispatch = useAppDispatch();
   const addCart = (value: interfaceProduct) => {
@@ -99,6 +114,7 @@ function ProductCard(props: any) {
             ) : (
               <HiOutlineShoppingCart height={8} color={"white"} />
             )}
+
           </Button>
           <Button
             colorScheme="blue"
@@ -110,6 +126,11 @@ function ProductCard(props: any) {
               color={isFavorite(props.name) ? "red" : "white"}
             />
           </Button>
+        </div>
+        <div className={style.calificacion}>
+          <div className={style.starsOuter}>
+            <div className={style.starsInner} style={{ width: `${startPercentage()}%` }}></div>
+          </div>
         </div>
         <div className={style.price_Discount}>
           <div className={style.price}>${props.price}</div>
