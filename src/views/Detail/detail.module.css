@@ -1,0 +1,34 @@
+.detail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.imgDetail {
+  height: 300px;
+  margin: 10rem;
+}
+
+.name {
+  font-size: 3rem;
+}
+
+.price {
+  margin: 1rem;
+  font-size: 1.5rem;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10rem;
+}
+
+.price_cart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -6,6 +6,7 @@ import SignUp from "../views/SignUp/SignUp";
 import SignIn from "../views/SignIn/SignIn";
 import ArmaPC from "../views/ArmaPC/ArmaPC";
 import productAdmin from "../components/Admin/Products/products";
+import Detail from "../views/Detail/Detail";
 
 export const router = createBrowserRouter([
   {
@@ -35,5 +36,9 @@ export const router = createBrowserRouter([
   {
     path: "/Admin/products",
     element: <Admin children={productAdmin()} />,
+  },
+  {
+    path: "/productos/:name",
+    element: <Detail />,
   },
 ]);
