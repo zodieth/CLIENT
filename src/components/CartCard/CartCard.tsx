@@ -13,9 +13,9 @@ function CartCard(props: any) {
   const dispatch = useAppDispatch();
 
   const handleDelete = (value: interfaceProduct) => {
-    props.setTotalCompra(props.totalCompra - props.price * quantity)
+    props.setTotalCompra(props.totalCompra - props.price * quantity);
     dispatch(deleteFromCart(value));
-    dispatch(removeCountCart(props.name, quantity))
+    dispatch(removeCountCart(props.name, quantity));
   };
 
   let [total, setTotal] = useState(props.price);
@@ -36,7 +36,7 @@ function CartCard(props: any) {
                         setQuantity(quantity - 1),
                         setTotal(total - props.price),
                         props.setTotalCompra(props.totalCompra - props.price),
-                        dispatch(removeCountCart(props.name, 1))
+                        dispatch(removeCountCart(props.name, 1)),
                       ]
                 }
               >
@@ -48,7 +48,7 @@ function CartCard(props: any) {
                   setTotal(total + props.price),
                   setQuantity(quantity + 1),
                   props.setTotalCompra(props.totalCompra + props.price),
-                  dispatch(addCountCart(props.name))
+                  dispatch(addCountCart(props.name)),
                 ]}
               >
                 <HiOutlinePlusSm />
