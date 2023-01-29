@@ -29,13 +29,11 @@
 .texto{
   position:absolute;
   top: 70px;
-  /* left: 500px; */
   bottom: 1px;
   display: flex;
   align-items: center;
   justify-content:right;
   flex-direction: row;
-  /* float: left; */
 }
 
 .name {

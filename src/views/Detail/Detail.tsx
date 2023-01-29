@@ -15,7 +15,6 @@ import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
 import { Button } from "@chakra-ui/react";
 import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import Swal from "sweetalert2";
-
 import NuevoCarrusel from "./NuevoCarrusel";
 
 function Detail() {
@@ -116,19 +115,14 @@ function Detail() {
                   </div>
                   <div className={style.texto}><h4>* Las imágenes se exhiben con fines ilustrativos.</h4></div>
               </div>
-              
             </div>
-            
           );
         })
       )}
-      
       <div>
-      
       <NuevoCarrusel/>
       <Footer />
       </div>
-      
     </div>
   );
 }
