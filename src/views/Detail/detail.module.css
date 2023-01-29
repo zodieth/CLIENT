@@ -1,13 +1,41 @@
+.navBar{
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
 .detail {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
+  
+}
+.contenedor{
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  height: 400px;
+  margin: 10rem;
+  border-radius: 20px;
 }
 
 .imgDetail {
   height: 300px;
   margin: 10rem;
+  position: relative;
+}
+.texto{
+  position:absolute;
+  top: 70px;
+  /* left: 500px; */
+  bottom: 1px;
+  display: flex;
+  align-items: center;
+  justify-content:right;
+  flex-direction: row;
+  /* float: left; */
 }
 
 .name {

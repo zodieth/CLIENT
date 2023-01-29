@@ -16,6 +16,8 @@ import { Button } from "@chakra-ui/react";
 import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import Swal from "sweetalert2";
 
+import NuevoCarrusel from "./NuevoCarrusel";
+
 function Detail() {
   const { name } = useParams();
   const products = useAppSelector((state: any) => state.products);
@@ -68,7 +70,10 @@ function Detail() {
 
   return (
     <div>
-      <NavBar />
+      <div className={style.navBar}>
+        <NavBar />
+      </div>
+      
       {!findDetail.length ? (
         <div>No se encontró el producto</div>
       ) : (
@@ -77,38 +82,53 @@ function Detail() {
 
           return (
             <div className={style.detail} key={e}>
-              <img
-                src={e.images[0]}
-                alt="imgDetail"
-                className={style.imgDetail}
-              />
-              <div className={style.right}>
-                <div className={style.name}>{e.name}</div>
-                <div className={style.price_cart}>
-                  <div className={style.price}>${e.price}</div>
-                  <Button
-                    colorScheme="blue"
-                    onClick={() =>
-                      onCart
-                        ? [handleDeleteFromCart(e), onCartFuncion()]
-                        : onCart === false
-                        ? [addCart(e), onCartFuncion(), addToCartAlert()]
-                        : ""
-                    }
-                  >
-                    {onCart ? (
-                      <HiShoppingCart />
-                    ) : (
-                      <HiOutlineShoppingCart height={8} color={"white"} />
-                    )}
-                  </Button>
-                </div>
+              
+              <div className={style.contenedor}>
+                <div>
+                  <img
+                    src={e.images[0]}
+                    alt="imgDetail"
+                    className={style.imgDetail}
+                  />
+                  
+                  </div>
+                  <div className={style.right}>
+                    <div className={style.name}>{e.name}</div>
+                        <div className={style.price_cart}>
+                          <div className={style.price}>${e.price}</div>
+                          <Button
+                            colorScheme="blue"
+                            onClick={() =>
+                              onCart
+                                ? [handleDeleteFromCart(e), onCartFuncion()]
+                                : onCart === false
+                                ? [addCart(e), onCartFuncion(), addToCartAlert()]
+                                : ""
+                            }
+                          >
+                            {onCart ? (
+                              <HiShoppingCart />
+                            ) : (
+                              <HiOutlineShoppingCart height={8} color={"white"} />
+                            )}
+                          </Button>
+                        </div>
+                  </div>
+                  <div className={style.texto}><h4>* Las imágenes se exhiben con fines ilustrativos.</h4></div>
               </div>
+              
             </div>
+            
           );
         })
       )}
+      
+      <div>
+      
+      <NuevoCarrusel/>
       <Footer />
+      </div>
+      
     </div>
   );
 }
