@@ -90,6 +90,36 @@ export const fetchProductsApi =
       .catch((error) => dispatch(productsFailed(error.message)));
   };
 
+     //Agregar Productos 
+  export const createProducts = 
+  (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+   const products= await fetch("http://localhost:3001/products" , {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(addProducts),
+      })
+      .then(res => res.json())
+      .catch((error) => dispatch(productsFailed(error.message)));
+
+      const results= await products.json()
+      return results
+      
+  };
+
+  export const categoryBrands = (
+    categorySearch: String,
+    brand: String
+  ) => {
+    return {
+      type: ActionTypes.PRODUCT_FILTER,
+      payload: { categorySearch, brand },
+    };
+  };
+
+
 //Marcas
 export const addBrand = (value: any) => {
   return {
