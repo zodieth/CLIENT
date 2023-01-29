@@ -1,6 +1,5 @@
 import style from "./products.module.css"
 import { Input } from "@chakra-ui/input";
-import { SetStateAction, useState } from "react";
 
 export default function ProductAdmin() {
 

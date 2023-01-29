@@ -10,13 +10,17 @@ export const Categories = (
   action:any
 ) => {
   switch (action.type) {
+    case ActionTypes.CATEGORIES_ADD:
+      return {...state, isLoading: false, errMess: null, categoriesFilter: action.payload,
+        allCategories: action.payload,};
+
     case ActionTypes.CATEGORY_ADD:
       return {
         ...state,
         isLoading: false,
         errMess: null,
         categoriesFilter: action.payload,
-        allCategories: action.payload
+        allCategories: state.allCategories.concat(action.payload),
       };
 
     case ActionTypes.CATEGORY_LOADING:

@@ -136,6 +136,13 @@ export const fetchBrandApi =
   };
 
 //Categorias
+export const addCategories = (value: any) => {
+  return {
+    type: ActionTypes.CATEGORIES_ADD,
+    payload: value,
+  };
+};
+
 export const addCategory = (value: any) => {
   return {
     type: ActionTypes.CATEGORY_ADD,
@@ -175,7 +182,7 @@ export const fetchCategoryApi =
       )
       .then((response) => response.json())
       .then((categories) => {
-        dispatch(addCategory(categories));
+        dispatch(addCategories(categories));
       })
       .catch((error) => dispatch(categoryFailed(error.message)));
   };
@@ -215,4 +222,43 @@ export const fetchCategoryApi =
   };
 };
         
-        
+//Category admin
+
+export const postCateogry = (name:string, description:string, father:any=null): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
+  dispatch(categoryLoading());
+  
+  if(father === '') father = null;
+
+  const newCategory = {
+    name: name,
+    description: description,
+    father: father,
+  }
+console.log(newCategory);
+
+  return fetch('http://localhost:3001/category', {
+    method: 'POST',
+    body: JSON.stringify(newCategory),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+      if (response.ok) {
+          return response;
+      } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          throw error;
+      }
+  }, error => {
+      throw error;
+  })
+  .then(response => response.json())
+  .then(response => {
+    dispatch(addCategory(response))
+  })
+  .catch(error => { 
+    console.log('Post activity', error.message); 
+    dispatch(categoryFailed(error.message))
+  });
+}
