@@ -1,11 +1,13 @@
 import * as ActionTypes from "../ActionTypes";
+import interfaceCategory from  "../categories/interfaceCategory";
 
 export const Categories = (
   state = {
     isLoading: true,
     errMess: null,
     categoriesFilter: [],
-    allCategories: []
+    allCategories: [],
+    selectedCategory: null
   },
   action:any
 ) => {
@@ -37,6 +39,15 @@ export const Categories = (
         isLoading: false,
         errMess: action.payload,
         categoriesFilter: [],
+      };
+
+    case ActionTypes.CATEGORY_DELETE:
+      return {
+        ...state,
+        isLoading: false,
+        errMess: null,
+        categoriesFilter: action.payload,
+        allCategories: state.allCategories.filter((category:interfaceCategory) => category._id !== action.payload),
       };
 
     default:

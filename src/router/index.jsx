@@ -5,35 +5,54 @@ import Admin from "../views/Admin";
 import SignUp from "../views/SignUp/SignUp";
 import SignIn from "../views/SignIn/SignIn";
 import productAdmin from "../components/Admin/Products/products"
-import CategoryAdmin from "../components/Admin/Categories/category"
+import CategoryAdmin from "../components/Admin/Categories/createCategory"
+import CategoriesAdmin from "../components/Admin/Categories/categories"
+import EditCategoryAdmin from "../components/Admin/Categories/editCategory"
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+    exact: true
   },
   {
     path: "/cart",
     element: <Cart />,
+    exact: true
   },
   {
     path: "/admin",
     element: <Admin />,
+    exact: true
   },
   {
     path: "/signup",
     element: <SignUp />,
+    exact: true
   },
   {
     path: "/signin",
     element: <SignIn />,
+    exact: true
   },
   {
     path: "/Admin/products",
     element: <Admin children={<productAdmin/>} />,
+    exact: true
   },
   {
     path: "/Admin/categories",
+    element: <Admin children={<CategoriesAdmin/>} />,
+    exact: true
+  },
+  {
+    path: "/Admin/categories/create",
     element: <Admin children={<CategoryAdmin/>} />,
+    exact: true
+  },
+  {
+    path: "/Admin/categories/edit/:id",
+    element: <Admin children={<EditCategoryAdmin />} />,
+    exact: true
   },
 ]);

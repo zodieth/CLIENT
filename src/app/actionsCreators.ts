@@ -187,14 +187,14 @@ export const fetchCategoryApi =
       .catch((error) => dispatch(categoryFailed(error.message)));
   };
 
-  //MercadoPago
+//MercadoPago
 
-  type Product = {
-    name: String;
-    price: Number;
-    images: [String];
-    count: number;
-  };
+type Product = {
+  name: String;
+  price: Number;
+  images: [String];
+  count: number;
+};
 
   export const payMercadoPagoApi = (products:Product[]) => {
     return async (dispatch: any) => {
@@ -234,7 +234,6 @@ export const postCateogry = (name:string, description:string, father:any=null): 
     description: description,
     father: father,
   }
-console.log(newCategory);
 
   return fetch('http://localhost:3001/category', {
     method: 'POST',
@@ -259,6 +258,38 @@ console.log(newCategory);
   })
   .catch(error => { 
     console.log('Post activity', error.message); 
+    dispatch(categoryFailed(error.message))
+  });
+}
+
+export const deleteCategory = (value: any) => {
+  return {
+    type: ActionTypes.CATEGORY_DELETE,
+    payload: value,
+  };
+};
+
+export const deleteCateogry = (id: string): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
+  dispatch(categoryLoading());
+
+  return fetch(`http://localhost:3001/category/${id}`, {
+    method: 'DELETE',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+    if (response.ok) {
+      dispatch(deleteCategory(id))
+    } else {
+      var error = new Error('Error ' + response.status + ': ' + response.statusText);
+      throw error;
+    }
+  }, error => {
+      throw error;
+  })
+  .catch(error => { 
+    console.log('Delete category', error.message); 
     dispatch(categoryFailed(error.message))
   });
 }

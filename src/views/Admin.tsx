@@ -35,7 +35,7 @@ import {
 import { IconType } from "react-icons";
 import { ReactText } from "react";
 import { useAppDispatch } from '../app/hooks'
-import { fetchProductsApi, productsFilter, fetchBrandApi, fetchCategoryApi } from '../app/actionsCreators'
+import { fetchProductsApi, fetchBrandApi, fetchCategoryApi } from '../app/actionsCreators'
 
 interface LinkItemProps {
   name: string;
@@ -45,8 +45,8 @@ interface LinkItemProps {
 
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, url: "#"},
-  { name: "Productos", icon: FiTrendingUp, url: "Admin/products" },
-  { name: "Categorias", icon: FiCompass, url: "Admin/categories" },
+  { name: "Productos", icon: FiTrendingUp, url: "./products" },
+  { name: "Categorias", icon: FiCompass, url: "http://localhost:3000/Admin/categories" },
   { name: "Marcas", icon: FiStar, url: "#" },
   { name: "Sucursales", icon: FiSettings, url: "#" },
   { name: "Usuarios", icon: FiSettings, url: "#" },

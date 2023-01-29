@@ -61,7 +61,6 @@ export default function CategoryAdmin() {
           inputs.father,
         )
       );
-      //Cartel
 
       const Toast = Swal.mixin({
         toast: true,
@@ -130,7 +129,7 @@ export default function CategoryAdmin() {
         <hr className={style.hrLineDashed}/>
         
         <div className={style.groupButtons}>
-          <button className={style.btnWhite}>Cancelar</button>
+          <a href="./" className={style.btnWhite}>Cancelar</a>
           <button type="submit" className={style.btnPrimary}>Guardar</button>
         </div>
       </form>
