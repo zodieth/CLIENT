@@ -10,6 +10,7 @@ import { fetchProductsApi, productsFilter, fetchBrandApi, fetchCategoryApi } fro
 import CarouselDown from "../components/CarouselDown/CarouselDown";
 import Cards from "../components/ProductCards/Cards";
 import Filter from "../components/Filtro/filter";
+import Crear from '../components/CrearProducts/Crear';
 
 
 function Home() {
@@ -27,6 +28,7 @@ function Home() {
       <Carousel />
       <Filter />
       <Cards/>
+      <Crear/>
       <CarouselDown />
       <Footer />
     </div>
