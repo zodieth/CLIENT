@@ -34,8 +34,13 @@ import {
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
-import { useAppDispatch } from '../app/hooks'
-import { fetchProductsApi, fetchBrandApi, fetchCategoryApi } from '../app/actionsCreators'
+import { useAppDispatch } from "../app/hooks";
+import {
+  fetchProductsApi,
+  fetchBrandApi,
+  fetchCategoryApi,
+} from "../app/actionsCreators";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface LinkItemProps {
   name: string;
@@ -44,9 +49,13 @@ interface LinkItemProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome, url: "#"},
-  { name: "Productos", icon: FiTrendingUp, url: "./products" },
-  { name: "Categorias", icon: FiCompass, url: "http://localhost:3000/Admin/categories" },
+  { name: "Home", icon: FiHome, url: "#" },
+  { name: "Productos", icon: FiTrendingUp, url: "/admin/products" },
+  {
+    name: "Categorias",
+    icon: FiCompass,
+    url: "/admin/categories",
+  },
   { name: "Marcas", icon: FiStar, url: "#" },
   { name: "Sucursales", icon: FiSettings, url: "#" },
   { name: "Usuarios", icon: FiSettings, url: "#" },
@@ -57,14 +66,44 @@ export default function SidebarWithHeader({
 }: {
   children: ReactNode;
 }) {
+  const { getAccessTokenSilently, user, isAuthenticated, isLoading, error } =
+    useAuth0();
+
+  useEffect(() => {
+    console.log("My user: ", user);
+    console.log("Authenticated: ", isAuthenticated);
+    console.log("Loading: ", isLoading);
+    console.log("Error: ", error);
+  }, [user, isAuthenticated, isLoading, error]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const getToken = async () => {
+        const accessToken = await getAccessTokenSilently();
+        console.log("Token: ", accessToken);
+        const response = await fetch("http://localhost:3001/claims", {
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const allClaims = await response.json();
+        console.log("Claims: ", allClaims);
+        return allClaims;
+      };
+      getToken();
+    }
+  }, [getAccessTokenSilently, isAuthenticated]);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
-  
+
   useEffect(() => {
     dispatch(fetchProductsApi());
     dispatch(fetchBrandApi());
     dispatch(fetchCategoryApi());
-  }, [])
+  }, []);
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       <SidebarContent
@@ -111,9 +150,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
-        </Text>
+        <Link href="/admin">
+          <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
+            Logo
+          </Text>
+        </Link>
+
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
@@ -202,7 +244,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         Logo
       </Text>
 
-      <HStack spacing={{ base: "0", md: "6" }}> {/* Arriba a la derecha */}
+      <HStack spacing={{ base: "0", md: "6" }}>
+        {" "}
+        {/* Arriba a la derecha */}
         <IconButton
           size="lg"
           variant="ghost"
@@ -220,7 +264,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 <Avatar
                   size={"sm"}
                   src={
-                    "https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
+                    "https://imgs.search.brave.com/YkRbL8xLopUPaN7VXs6KifkdQH7BuixzHZwtx8cQKr4/rs:fit:980:980:1/g:ce/aHR0cHM6Ly9jZG4u/b25saW5ld2ViZm9u/dHMuY29tL3N2Zy9p/bWdfMjU4MDgzLnBu/Zw"
                   }
                 />
                 <VStack
@@ -229,7 +273,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Justina Clark</Text>
+                  <Text fontSize="sm">Username</Text>
                   <Text fontSize="xs" color="gray.600">
                     Admin
                   </Text>

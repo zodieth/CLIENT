@@ -6,9 +6,17 @@ export const LogoutButton: React.FC<any> = () => {
 
   const { logout } = useAuth0();
 
+  const handleLogout = () => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin
+      }
+    });
+  };
+
   return (
     <Box>
-      <Button onClick={() => logout()}>
+      <Button onClick={handleLogout}>
         Logout
       </Button>
     </Box>

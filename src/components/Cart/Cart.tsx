@@ -42,9 +42,8 @@ function Cart() {
       <NavBar />
       <SubNav />
       <div className={style.cards}>
-        {products.cart.length ? ( /// si tengo todos los productos
+        {products.cart.length ? (
           products.cart.map((e: any) => {
-            /// traerme lo que se selecciono
             return (
               <div key={e.name}>
                 <div>
@@ -61,7 +60,6 @@ function Cart() {
             );
           })
         ) : (
-          /// si no tengo los productos o ya compre, que me mande a seguir comprando
           <div className={style.nothing}>
             <div className={style.withouth_elements}>
               No hay elementos en el carrito
@@ -71,7 +69,7 @@ function Cart() {
             </Link>
           </div>
         )}
-        {products.cart.length ? ( /// si tengo los productos en el carrito, y aprieto finalizar compra me da el boton de pagar
+        {products.cart.length ? (
           <div className={style.container_finish}>
             <div className={style.finish}>
               <div className={style.total}>
