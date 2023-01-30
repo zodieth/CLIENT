@@ -3,7 +3,8 @@ export default interface interfaceProduct {
   name: string,
   description: string,
   father: {
-    name: string
+    name: string,
+    _id: string
   }
   active: Boolean
 }

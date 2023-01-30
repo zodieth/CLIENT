@@ -293,3 +293,37 @@ export const deleteCateogry = (id: string): ThunkAction<void, RootState, unknown
     dispatch(categoryFailed(error.message))
   });
 }
+
+export const putCateogry = (id:string, name:string, description:string, father:any=null): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
+  dispatch(categoryLoading());
+  
+  if(father === '') father = null;
+
+  const myCategory = {
+    name: name,
+    description: description,
+    father: father,
+  }
+
+  return fetch('http://localhost:3001/category/'+id, {
+    method: 'PUT',
+    body: JSON.stringify(myCategory),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+      if (response.ok) {
+          return response;
+      } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          throw error;
+      }
+  }, error => {
+      throw error;
+  })
+  .catch(error => { 
+    console.log('Post activity', error.message); 
+    dispatch(categoryFailed(error.message))
+  });
+}
