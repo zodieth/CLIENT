@@ -11,15 +11,15 @@ export const addToCart = (value: any) => {
   };
 };
 
-export const addCountCart = (productName:string) => {
+export const addCountCart = (productName: string) => {
   return {
     type: ActionTypes.ADD_COUNT,
     payload: { productName },
   };
 };
 
-export const removeCountCart = (productName:string, count: number) => {
-  console.log(count)
+export const removeCountCart = (productName: string, count: number) => {
+  console.log(count);
   return {
     type: ActionTypes.REMOVE_COUNT,
     payload: { productName, count },
@@ -185,6 +185,13 @@ export const fetchBrandApi =
   };
 
 //Categorias
+export const addCategories = (value: any) => {
+  return {
+    type: ActionTypes.CATEGORIES_ADD,
+    payload: value,
+  };
+};
+
 export const addCategory = (value: any) => {
   return {
     type: ActionTypes.CATEGORY_ADD,
@@ -224,44 +231,114 @@ export const fetchCategoryApi =
       )
       .then((response) => response.json())
       .then((categories) => {
-        dispatch(addCategory(categories));
+        dispatch(addCategories(categories));
       })
       .catch((error) => dispatch(categoryFailed(error.message)));
   };
 
-  //MercadoPago
+//MercadoPago
 
-  type Product = {
-    name: String;
-    price: Number;
-    images: [String];
-    count: number;
-  };
+type Product = {
+  name: String;
+  price: Number;
+  images: [String];
+  count: number;
+};
 
-  export const payMercadoPagoApi = (products:Product[]) => {
-    return async (dispatch: any) => {
-      try {
-        const response = await fetch('http://localhost:3001/api/pay', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(products)
-        });
-  
-        if (!response.ok) {
-          throw new Error('Error loading countries');
-        }
+export const payMercadoPagoApi = (products: Product[]) => {
+  return async (dispatch: any) => {
+    try {
+      const response = await fetch("http://localhost:3001/api/pay", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(products),
+      });
 
-        const data = await response.json();
-        return data;
-        // despacha una acción con la respuesta del servidor
-        //dispatch({ type: 'PAYMENT_SUCCESS', payload: data });
-      } catch (error) {
-        // despacha una acción con el error
-        //dispatch({ type: 'PAYMENT_ERROR', payload: error });
+      if (!response.ok) {
+        throw new Error("Error loading countries");
+      }
+
+      const data = await response.json();
+      return data;
+      // despacha una acción con la respuesta del servidor
+      //dispatch({ type: 'PAYMENT_SUCCESS', payload: data });
+    } catch (error) {
+      // despacha una acción con el error
+      //dispatch({ type: 'PAYMENT_ERROR', payload: error });
     }
   };
 };
         
-        
+//Category admin
+
+export const postCateogry = (name:string, description:string, father:any=null): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
+  dispatch(categoryLoading());
+  
+  if(father === '') father = null;
+
+  const newCategory = {
+    name: name,
+    description: description,
+    father: father,
+  }
+
+  return fetch('http://localhost:3001/category', {
+    method: 'POST',
+    body: JSON.stringify(newCategory),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+      if (response.ok) {
+          return response;
+      } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          throw error;
+      }
+  }, error => {
+      throw error;
+  })
+  .then(response => response.json())
+  .then(response => {
+    dispatch(addCategory(response))
+  })
+  .catch(error => { 
+    console.log('Post activity', error.message); 
+    dispatch(categoryFailed(error.message))
+  });
+}
+
+export const deleteCategory = (value: any) => {
+  return {
+    type: ActionTypes.CATEGORY_DELETE,
+    payload: value,
+  };
+};
+
+export const deleteCateogry = (id: string): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
+  dispatch(categoryLoading());
+
+  return fetch(`http://localhost:3001/category/${id}`, {
+    method: 'DELETE',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+    if (response.ok) {
+      dispatch(deleteCategory(id))
+    } else {
+      var error = new Error('Error ' + response.status + ': ' + response.statusText);
+      throw error;
+    }
+  }, error => {
+      throw error;
+  })
+  .catch(error => { 
+    console.log('Delete category', error.message); 
+    dispatch(categoryFailed(error.message))
+  });
+}
