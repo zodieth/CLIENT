@@ -49,7 +49,7 @@ interface LinkItemProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome, url: "#" },
+  { name: "Home", icon: FiHome, url: "/admin" },
   { name: "Productos", icon: FiTrendingUp, url: "/admin/products" },
   {
     name: "Categorias",
