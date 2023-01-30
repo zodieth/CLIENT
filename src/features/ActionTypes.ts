@@ -4,6 +4,7 @@ export const PRODUCT_FAILED = "PRODUCT_FAILED";
 export const PRODUCT_FIND = "PRODUCT_FIND";
 export const PRODUCT_FILTER = "PRODUCT_FILTER";
 export const GET_PRODUCT_NAME = "GET_PRODUCT_NAME";
+export const CREATE_PRODUCT = "CREATE_PRODUCT";
 
 export const ADD_TO_CART = "ADD_TO_CART";
 export const DELETE_FROM_CART = "DELETE_FROM_CART";
