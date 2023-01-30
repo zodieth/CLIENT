@@ -4,7 +4,6 @@ import Cart from "../components/Cart/Cart";
 import Admin from "../views/Admin";
 import SignUp from "../views/SignUp/SignUp";
 import SignIn from "../views/SignIn/SignIn";
-import productAdmin from "../components/Admin/Products/products"
 import CategoryAdmin from "../components/Admin/Categories/createCategory"
 import CategoriesAdmin from "../components/Admin/Categories/categories"
 import EditCategoryAdmin from "../components/Admin/Categories/editCategory"
