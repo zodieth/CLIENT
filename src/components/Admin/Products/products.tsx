@@ -1,15 +1,20 @@
 import style from "./products.module.css";
-import { Input } from "@chakra-ui/input";
+import { Input, Select } from "@chakra-ui/react";
 import { useState } from "react";
 import { formData } from "./types";
 import { createProduct } from "../../../app/actionsCreators";
 import Swal from "sweetalert2";
+import { useAppSelector } from "../../../app/hooks";
+import interfaceCategory from  "../../../features/categories/interfaceCategory";
+import interfaceBrand from  "../../../features/brands/interfaceBrand";
+import CloudinaryUploadWidget from "../../Cloudinary/CloudinaryUploadWidget";
 
 interface FormState {
   inputValues: formData;
 }
 
 export default function ProductAdmin() {
+  const Store = useAppSelector((state) => state)
   const [inputProducts, setInputValues] = useState<FormState["inputValues"]>({
     name: "",
     description: "",
@@ -20,18 +25,18 @@ export default function ProductAdmin() {
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     setInputValues({
       ...inputProducts,
       [e.target.name]: e.target.value,
     });
-    console.log(inputProducts);
+    
   };
 
   const handeleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    console.log("hola2", inputProducts);
     e.preventDefault();
+    console.log(test)
     createProduct(inputProducts);
     createdAlert();
     setInputValues({
@@ -72,13 +77,13 @@ export default function ProductAdmin() {
           type="text"
           name="name"
           placeholder="Nombre del producto"
-          width="200"
+          width='sm'
         />
       </div>
       <div className={style.groupInputs}>
         <label>Description</label>
         <Input
-          width="200"
+          width='sm'
           type="text"
           placeholder="Descripcción del producto"
           onChange={(e) => handleChange(e)}
@@ -89,7 +94,7 @@ export default function ProductAdmin() {
       <div className={style.groupInputs}>
         <label>Price</label>
         <Input
-          width="200"
+          width='sm'
           type="number"
           placeholder="Precio del producto"
           onChange={(e) => handleChange(e)}
@@ -99,8 +104,10 @@ export default function ProductAdmin() {
       </div>
       <div className={style.groupInputs}>
         <label>Images</label>
+        <CloudinaryUploadWidget />
         <Input
-          width="200"
+          id="images"
+          width='sm'
           type="text"
           placeholder="Imagen del producto"
           onChange={(e) => handleChange(e)}
@@ -110,26 +117,31 @@ export default function ProductAdmin() {
       </div>
       <div className={style.groupInputs}>
         <label>Brand</label>
-        <Input
-          width="200"
-          type="text"
-          placeholder="Marca del producto"
-          onChange={(e) => handleChange(e)}
-          name="brand"
-          value={inputProducts.brand}
-        />
+        <Select
+            name='brand'
+            onChange={(e) => handleChange(e)}
+            placeholder="Marca del producto"
+            value={inputProducts.brand}
+            width='sm' >
+            { Store.brands.allBrands.map((brand:interfaceBrand) => {
+                return <option key={brand._id} value={brand._id}>{brand.name}</option>
+              })}
+          </Select>
       </div>
       <div className={style.groupInputs}>
         <label>Category</label>
-        <Input
-          width="200"
-          type="text"
-          placeholder="Categoría del producto"
-          onChange={(e) => handleChange(e)}
-          name="category"
-          value={inputProducts.category}
-        />
+        <Select
+            name='category'
+            onChange={(e) => handleChange(e)}
+            placeholder="Categoría del producto"
+            value={inputProducts.category}
+            width='sm' >
+            { Store.categories.allCategories.map((category:interfaceCategory) => {
+                return <option key={category._id} value={category._id}>{category.name}</option>
+              })}
+          </Select>
       </div>
+      <img id="uploadedimage" src=""></img>
       <hr className={style.hrLineDashed} />
       <div className={style.groupButtons}>
         <button className={style.btnWhite}>Cancelar</button>
