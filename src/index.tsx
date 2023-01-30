@@ -7,7 +7,6 @@ import { router } from "./router/index";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Auth0Provider } from "@auth0/auth0-react";
 
-
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 
@@ -25,8 +24,8 @@ root.render(
           clientId="2EHZJm086BzkgwY5HXmPeK5UnbHegBXl"
           cacheLocation="localstorage"
           authorizationParams={{
-          redirect_uri: "http://localhost:3000",
-          audience: "https://all-tech.com"
+            redirect_uri: "https://client-zodieth.vercel.app/",
+            audience: "https://all-tech.com",
           }}
         >
           <RouterProvider router={router} />
