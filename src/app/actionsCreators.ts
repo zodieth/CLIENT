@@ -2,6 +2,22 @@ import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import * as ActionTypes from "../features/ActionTypes";
 import { RootState } from "./store";
 
+export const createProduct = (value: any) => {
+  fetch("http://localhost:3001/products", {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(value),
+  });
+
+  return {
+    type: ActionTypes.CREATE_PRODUCT,
+    payload: value,
+  };
+};
+
 export const addToCart = (value: any) => {
   return {
     type: ActionTypes.ADD_TO_CART,
