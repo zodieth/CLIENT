@@ -36,6 +36,7 @@ import { IconType } from "react-icons";
 import { ReactText } from "react";
 import { useAppDispatch } from '../app/hooks'
 import { fetchProductsApi, fetchBrandApi, fetchCategoryApi } from '../app/actionsCreators'
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface LinkItemProps {
   name: string;
@@ -57,6 +58,36 @@ export default function SidebarWithHeader({
 }: {
   children: ReactNode;
 }) {
+
+  const { getAccessTokenSilently, user, isAuthenticated, isLoading, error } = useAuth0();
+  
+  useEffect(() => {
+    console.log("My user: ", user);
+    console.log("Authenticated: ", isAuthenticated);
+    console.log("Loading: ", isLoading);
+    console.log("Error: ", error);
+  }, [user, isAuthenticated, isLoading, error]);
+
+  useEffect(() => {
+    if(isAuthenticated) {
+      const getToken = async () => {
+      const accessToken = await getAccessTokenSilently();
+      console.log("Token: ", accessToken);
+      const response = await fetch("http://localhost:3001/claims", {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${accessToken}`
+        },
+      });
+      const allClaims = await response.json();
+      console.log("Claims: ", allClaims);
+      return allClaims;
+    };
+    getToken();
+    };
+  }, [getAccessTokenSilently, isAuthenticated]);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
   

@@ -21,10 +21,12 @@ root.render(
     <Provider store={store}>
       <ChakraProvider>
         <Auth0Provider
-          domain="dev-q8r68soch6pmim4b.us.auth0.com"
-          clientId="kdJp165cYY5EsTRlUK4pC9LOCyyyGN0Z"
+          domain="dev-6d0rlv0acg7xdkxt.us.auth0.com"
+          clientId="2EHZJm086BzkgwY5HXmPeK5UnbHegBXl"
+          cacheLocation="localstorage"
           authorizationParams={{
-            redirect_uri: window.location.origin
+          redirect_uri: "http://localhost:3000",
+          audience: "https://all-tech.com"
           }}
         >
           <RouterProvider router={router} />
