@@ -3,7 +3,7 @@ import * as ActionTypes from "../features/ActionTypes";
 import { RootState } from "./store";
 
 export const createProduct = (value: any) => {
-  fetch("http://localhost:3001/products", {
+  fetch("henry-PF-back.up.railway.app/products", {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -82,7 +82,7 @@ export const fetchProductsApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(productsLoading());
 
-    return await fetch("http://localhost:3001/products")
+    return await fetch("henry-PF-back.up.railway.app/products")
       .then(
         (response) => {
           if (response.ok) {
@@ -127,7 +127,7 @@ export const fetchBrandApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(brandLoading());
 
-    return await fetch("http://localhost:3001/brands")
+    return await fetch("henry-PF-back.up.railway.app/brands")
       .then(
         (response) => {
           if (response.ok) {
@@ -172,7 +172,7 @@ export const fetchCategoryApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(categoryLoading());
 
-    return await fetch("http://localhost:3001/category")
+    return await fetch("henry-PF-back.up.railway.app/category")
       .then(
         (response) => {
           if (response.ok) {
@@ -208,7 +208,7 @@ type Product = {
 export const payMercadoPagoApi = (products: Product[]) => {
   return async (dispatch: any) => {
     try {
-      const response = await fetch("http://localhost:3001/api/pay", {
+      const response = await fetch("henry-PF-back.up.railway.app/api/pay", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
