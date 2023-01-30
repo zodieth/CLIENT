@@ -92,42 +92,22 @@ export const fetchProductsApi =
       .catch((error) => dispatch(productsFailed(error.message)));
   };
   
-export const algo= async (crearProd:any) => {
-  console.log('hola5', crearProd);
-  const products= await fetch("http://localhost:3001/products" , {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body:crearProd,
-      
-      })
-      .then(res => res.json())
-      const results= await products.json()
-      return results
-  
-}
-
    //Agregar Productos 
-  export const createProducts = 
-  (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
-  console.log('hola3')
-   const products= await fetch("http://localhost:3001/products" , {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(addProducts),
-      })
-      .then(res => res.json())
-      .catch((error) => dispatch(productsFailed(error.message)));
+  export const createProduct = (value: any) => {
+  fetch("http://localhost:3001/products", {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(value),
+  });
 
-      const results= await products.json()
-      return results
-      
+  return {
+    type: ActionTypes.CREATE_PRODUCT,
+    payload: value,
   };
+};
 
   export const categoryBrands = (
     categorySearch: String,
