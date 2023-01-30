@@ -101,6 +101,7 @@ export const algo= async (crearProd:any) => {
         'Content-Type': 'application/json'
       },
       body:crearProd,
+      
       })
       .then(res => res.json())
       const results= await products.json()
