@@ -8,6 +8,9 @@ import productAdmin from "../components/Admin/Products/products"
 import CategoryAdmin from "../components/Admin/Categories/createCategory"
 import CategoriesAdmin from "../components/Admin/Categories/categories"
 import EditCategoryAdmin from "../components/Admin/Categories/editCategory"
+import ArmaPC from "../views/ArmaPC/ArmaPC";
+import productAdmin from "../components/Admin/Products/products";
+import Detail from "../views/Detail/Detail";
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +39,10 @@ export const router = createBrowserRouter([
     exact: true
   },
   {
+    path: "/armatupc",
+    element: <ArmaPC />,
+  },
+  {
     path: "/Admin/products",
     element: <Admin children={<productAdmin/>} />,
     exact: true
@@ -54,5 +61,9 @@ export const router = createBrowserRouter([
     path: "/Admin/categories/edit/:id",
     element: <Admin children={<EditCategoryAdmin />} />,
     exact: true
+  },
+  {
+    path: "/productos/:name",
+    element: <Detail />,
   },
 ]);

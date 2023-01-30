@@ -7,6 +7,7 @@ import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import { useAppDispatch } from "../../app/hooks";
 import interfaceProduct from "../../features/products/interfaceProduct";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 function ProductCard(props: any) {
   const [favorites, setFavorites] = useState<any>("");
@@ -15,9 +16,8 @@ function ProductCard(props: any) {
 
   const handleFavorite = () => {
     local = localStorage?.getItem("favorites");
-    if(!local)
-      localStorage.setItem("favorites", "");
-      
+    if (!local) localStorage.setItem("favorites", "");
+
     if (local?.includes(props.name)) {
       const newFavorites = local.replace(props.name, "");
       localStorage.setItem("favorites", newFavorites);
@@ -36,19 +36,20 @@ function ProductCard(props: any) {
     return false;
   };
 
-
   type review = {
-    review:number
-  }
+    review: number;
+  };
 
   const startPercentage = () => {
     let total = 0;
-    props.reviews.forEach(function(a:review){total += a.review;});
-    const percentage = (total / props.reviews.length);
-    const starPercentage = (percentage ? percentage : 0 / 100) / 5 * 100;
+    props.reviews.forEach(function (a: review) {
+      total += a.review;
+    });
+    const percentage = total / props.reviews.length;
+    const starPercentage = ((percentage ? percentage : 0 / 100) / 5) * 100;
 
-    return starPercentage
-  }
+    return starPercentage;
+  };
 
   const dispatch = useAppDispatch();
   const addCart = (value: interfaceProduct) => {
@@ -90,13 +91,17 @@ function ProductCard(props: any) {
   return (
     <div className={style.container}>
       <div className={style.card}>
-        <div className={style.imgBx}>
-          <img className={style.img} src={props.img} />
-        </div>
+        <Link to={`/productos/${props.name}`}>
+          <div className={style.imgBx}>
+            <img className={style.img} src={props.img} />
+          </div>
+        </Link>
+
         <div className={style.contentBx}>
           <div className={style.name}>
             <h2>{props.name}</h2>
           </div>
+
           <Button
             colorScheme="blue"
             className={style.cardShop}
@@ -113,7 +118,6 @@ function ProductCard(props: any) {
             ) : (
               <HiOutlineShoppingCart height={8} color={"white"} />
             )}
-
           </Button>
           <Button
             colorScheme="blue"
@@ -128,7 +132,10 @@ function ProductCard(props: any) {
         </div>
         <div className={style.calificacion}>
           <div className={style.starsOuter}>
-            <div className={style.starsInner} style={{ width: `${startPercentage()}%` }}></div>
+            <div
+              className={style.starsInner}
+              style={{ width: `${startPercentage()}%` }}
+            ></div>
           </div>
         </div>
         <div className={style.price_Discount}>

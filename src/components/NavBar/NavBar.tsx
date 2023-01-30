@@ -13,7 +13,7 @@ import {
   MenuItem,
   MenuDivider,
   Stack,
-  Center
+  Center,
 } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useAppSelector } from "../../hooks/hooks";
@@ -47,15 +47,17 @@ function NavBar() {
             {cartItems.cart.length}
           </Button>
         </Link>
+        <Link to="armatupc">
+          <Button
+            rightIcon={<MdComputer />}
+            className={style.button}
+            colorScheme="blue"
+            variant="solid"
+          >
+            Arma tu PC
+          </Button>
+        </Link>
 
-        <Button
-          rightIcon={<MdComputer />}
-          className={style.button}
-          colorScheme="blue"
-          variant="solid"
-        >
-          Arma tu PC
-        </Button>
         {isAuthenticated ? (
           <div className={style.avatar_login}>
             <Button
@@ -92,7 +94,7 @@ function NavBar() {
                   <MenuDivider />
                   <MenuItem>Cart</MenuItem>
                   <MenuItem>Account Settings</MenuItem>
-                  <MenuItem>Logout</MenuItem>
+                  <MenuItem onClick={() => logout()}>Logout</MenuItem>
                 </MenuList>
               </Menu>
             </Stack>

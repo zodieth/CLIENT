@@ -18,6 +18,10 @@
   margin: 1rem;
 }
 
+.mpPay {
+  margin-right: 2rem;
+}
+
 .container_finish {
   display: flex;
   flex-direction: row;
@@ -35,8 +39,4 @@
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   border: 1px solid #f7fafc;
   border-radius: 10px;
-}
-
-.btn_finish {
-  margin-right: 2rem;
 }
