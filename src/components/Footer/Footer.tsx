@@ -14,10 +14,13 @@ import {
 import { ReactNode } from "react";
 import { BiMailSend } from "react-icons/bi";
 import style from "./footer.module.css";
+import MensajeMail from "./MensajeMail";
+
 
 const  myFunction = () =>{
   alert("¡Dirección de correo recibido, pronto recibiras descuentos!");
 }
+
 
 const Logo = (props: any) => {
   return (
@@ -83,7 +86,6 @@ export default function LargeWithNewsletter() {
   return (
     <Box
       className={style.box}
-      /* bg={useColorModeValue("gray.50", "gray.900")} */
       color={useColorModeValue("black", "white")}
     >
       <Container as={Stack} maxW={"6xl"} py={10}>
@@ -123,8 +125,8 @@ export default function LargeWithNewsletter() {
                 _focus={{
                   bg: "white",
                 }}
-              />
-              <IconButton
+              /> 
+              {/* <IconButton
                 bg={useColorModeValue("green.400", "green.800")}
                 color={useColorModeValue("white", "gray.800")}
                 _hover={{
@@ -133,7 +135,8 @@ export default function LargeWithNewsletter() {
                 aria-label="Subscribe"
                 icon={<BiMailSend />}
                 onClick={() => myFunction()}
-              />
+              /> */}
+              <MensajeMail/>
             </Stack>
           </Stack>
         </SimpleGrid>
