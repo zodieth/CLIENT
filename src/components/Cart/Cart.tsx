@@ -26,7 +26,6 @@ function Cart() {
     const data: any = await dispatch(payMercadoPagoApi(productos));
 
     var script = document.createElement("script");
-    console.log(data);
     script.src =
       "https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js";
     script.type = "text/javascript";
