@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createProducts, categoryBrands  } from "../../app/actionsCreators";
+import { createProducts, algo, categoryBrands, addBrand  } from "../../app/actionsCreators";
 import {formData} from './types'
 import { Button } from "@chakra-ui/react";
 import style from "./crear.module.css";
@@ -25,7 +25,7 @@ function AddProdu() {
   // }
 
 
-  const[inputValues,setInputValues]=useState<FormState['inputValues']>({
+  const[inputProducts,setInputValues]=useState<FormState['inputValues']>({
     name:'',
     description:'',
     price: 0,
@@ -37,11 +37,11 @@ function AddProdu() {
 
   const handleChange= (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setInputValues({
-      ...inputValues,
+      ...inputProducts,
       [e.target.name]: e.target.value
       
     })
-    console.log(inputValues);
+    console.log(inputProducts);
   }
 
   // const handleSelect= (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -51,7 +51,9 @@ function AddProdu() {
   //   })
 
 const handeleSubmit= (e:React.ChangeEvent<HTMLFormElement>) => {
+  console.log('hola2', inputProducts);
   e.preventDefault();
+  algo(inputProducts)
   createProducts()
   alert('Creado')
   
@@ -59,13 +61,18 @@ const handeleSubmit= (e:React.ChangeEvent<HTMLFormElement>) => {
     return (
       <div >
         <form className={style.form} onSubmit={handeleSubmit}>
-          <input className={style.input} onChange={(e) => handleChange(e)} value={inputValues.name} type='text' name='name' placeholder="name"/>
-          <textarea className={style.input} onChange={(e) => handleChange(e)} value={inputValues.description}  name='description' placeholder="description"/>
-          <input className={style.input} onChange={(e) => handleChange(e)} value={inputValues.price} type='number' name='price' placeholder="price"/>
-          <input className={style.input} onChange={(e) => handleChange(e)} value={inputValues.images} type='text' name='images' placeholder="images"/>
-          <input className={style.input} onChange={(e) => handleChange(e)} value={inputValues.brand} type='text' name='brand' placeholder="brand"/>
-          <input className={style.input} onChange={(e) => handleChange(e)} value={inputValues.category} type='text' name='category' placeholder="category"/>
-          
+          <input className={style.input} onChange={(e) => handleChange(e)} value={inputProducts.name} type='text' name='name' placeholder="name"/>
+          <textarea className={style.input} onChange={(e) => handleChange(e)} value={inputProducts.description}  name='description' placeholder="description"/>
+          <input className={style.input} onChange={(e) => handleChange(e)} value={inputProducts.price} type='number' name='price' placeholder="price"/>
+          <input className={style.input} onChange={(e) => handleChange(e)} value={inputProducts.images} type='text' name='images' placeholder="images"/>
+          <input className={style.input} onChange={(e) => handleChange(e)} value={inputProducts.brand} type='text' name='brand' placeholder="brand"/>
+          <input className={style.input} onChange={(e) => handleChange(e)} value={inputProducts.category} type='text' name='category' placeholder="category"/>
+          <Button 
+        color='black' 
+        type="submit"
+        >
+          CrearProducto
+          </Button>
         </form>
         {/* <div className={style.options}>
           <Select
@@ -95,13 +102,7 @@ const handeleSubmit= (e:React.ChangeEvent<HTMLFormElement>) => {
             })}
           </Select>
         </div> */}
-        <Button 
-        color='black' 
-        type="submit"
-        // onClick={handeleSubmit}
-        >
-          CrearProducto
-          </Button>
+        
         
       </div>
     );

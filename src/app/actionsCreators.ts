@@ -1,7 +1,9 @@
+
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import * as ActionTypes from "../features/ActionTypes";
 import { RootState } from "./store";
 
+console.log('hola4');
 export const addToCart = (value: any) => {
   return {
     type: ActionTypes.ADD_TO_CART,
@@ -89,10 +91,27 @@ export const fetchProductsApi =
       })
       .catch((error) => dispatch(productsFailed(error.message)));
   };
+  
+export const algo= async (crearProd:any) => {
+  console.log('hola5', crearProd);
+  const products= await fetch("http://localhost:3001/products" , {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body:crearProd,
+      })
+      .then(res => res.json())
+      const results= await products.json()
+      return results
+  
+}
 
-     //Agregar Productos 
+   //Agregar Productos 
   export const createProducts = 
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+  console.log('hola3')
    const products= await fetch("http://localhost:3001/products" , {
       method: 'POST',
       headers: {
