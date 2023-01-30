@@ -46,7 +46,7 @@ export default function EditCategoryAdmin() {
         "id": categorySelected._id,
         "name": categorySelected.name,
         "description": categorySelected.description,
-        "father": categorySelected.father._id
+        "father": categorySelected.father ? categorySelected.father._id : null
       })
     }
   },[categorySelected])
