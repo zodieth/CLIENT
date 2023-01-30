@@ -19,7 +19,14 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 function Home() {
   const dispatch = useAppDispatch();
-  const { loginWithRedirect, getAccessTokenSilently, user, isAuthenticated, isLoading, error } = useAuth0();
+  const {
+    loginWithRedirect,
+    getAccessTokenSilently,
+    user,
+    isAuthenticated,
+    isLoading,
+    error,
+  } = useAuth0();
 
   useEffect(() => {
     console.log("My user: ", user);
@@ -29,26 +36,25 @@ function Home() {
   }, [user, isAuthenticated, isLoading, error]);
 
   useEffect(() => {
-    if(isAuthenticated) {
-      // loginWithRedirect();
+    if (isAuthenticated) {
       const getToken = async () => {
-      const accessToken = await getAccessTokenSilently();
-      console.log("Token: ", accessToken);
-      const response = await fetch("http://localhost:3001/claims", { //Ejemplo real...
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${accessToken}`
-        },
-      });
-      const allClaims = await response.json();
-      console.log("Claims: ", allClaims);
-      return allClaims;
-    };
-    getToken();
-    };
+        const accessToken = await getAccessTokenSilently();
+        console.log("Token: ", accessToken);
+        const response = await fetch("http://localhost:3001/claims", {
+          //Ejemplo real...
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const allClaims = await response.json();
+        console.log("Claims: ", allClaims);
+        return allClaims;
+      };
+      getToken();
+    }
   }, [getAccessTokenSilently, isAuthenticated]);
-
 
   useEffect(() => {
     dispatch(fetchProductsApi());
