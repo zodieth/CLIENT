@@ -2,6 +2,22 @@ import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import * as ActionTypes from "../features/ActionTypes";
 import { RootState } from "./store";
 
+export const createProduct = (value: any) => {
+  fetch("henry-PF-back.up.railway.app/products", {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(value),
+  });
+
+  return {
+    type: ActionTypes.CREATE_PRODUCT,
+    payload: value,
+  };
+};
+
 export const addToCart = (value: any) => {
   return {
     type: ActionTypes.ADD_TO_CART,
@@ -66,7 +82,7 @@ export const fetchProductsApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(productsLoading());
 
-    return await fetch("http://localhost:3001/products")
+    return await fetch("henry-PF-back.up.railway.app/products")
       .then(
         (response) => {
           if (response.ok) {
@@ -90,6 +106,13 @@ export const fetchProductsApi =
       .catch((error) => dispatch(productsFailed(error.message)));
   };
 
+export const categoryBrands = (categorySearch: String, brand: String) => {
+  return {
+    type: ActionTypes.PRODUCT_FILTER,
+    payload: { categorySearch, brand },
+  };
+};
+
 //Marcas
 export const addBrand = (value: any) => {
   return {
@@ -111,7 +134,7 @@ export const fetchBrandApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(brandLoading());
 
-    return await fetch("http://localhost:3001/brands")
+    return await fetch("henry-PF-back.up.railway.app/brands")
       .then(
         (response) => {
           if (response.ok) {
@@ -163,7 +186,7 @@ export const fetchCategoryApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(categoryLoading());
 
-    return await fetch("http://localhost:3001/category")
+    return await fetch("henry-PF-back.up.railway.app/category")
       .then(
         (response) => {
           if (response.ok) {
@@ -199,7 +222,7 @@ type Product = {
 export const payMercadoPagoApi = (products: Product[]) => {
   return async (dispatch: any) => {
     try {
-      const response = await fetch("http://localhost:3001/api/pay", {
+      const response = await fetch("henry-PF-back.up.railway.app/api/pay", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -221,46 +244,57 @@ export const payMercadoPagoApi = (products: Product[]) => {
     }
   };
 };
-        
+
 //Category admin
 
-export const postCateogry = (name:string, description:string, father:any=null): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
-  dispatch(categoryLoading());
-  
-  if(father === '') father = null;
+export const postCateogry =
+  (
+    name: string,
+    description: string,
+    father: any = null
+  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    dispatch(categoryLoading());
 
-  const newCategory = {
-    name: name,
-    description: description,
-    father: father,
-  }
+    if (father === "") father = null;
 
-  return fetch('http://localhost:3001/category', {
-    method: 'POST',
-    body: JSON.stringify(newCategory),
-    headers: {
-        'Content-Type': 'application/json'
-    }
-  })
-  .then(response => {
-      if (response.ok) {
-          return response;
-      } else {
-          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+    const newCategory = {
+      name: name,
+      description: description,
+      father: father,
+    };
+
+    return fetch("http://localhost:3001/category", {
+      method: "POST",
+      body: JSON.stringify(newCategory),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
           throw error;
-      }
-  }, error => {
-      throw error;
-  })
-  .then(response => response.json())
-  .then(response => {
-    dispatch(addCategory(response))
-  })
-  .catch(error => { 
-    console.log('Post activity', error.message); 
-    dispatch(categoryFailed(error.message))
-  });
-}
+        }
+      )
+      .then((response) => response.json())
+      .then((response) => {
+        dispatch(addCategory(response));
+      })
+      .catch((error) => {
+        console.log("Post activity", error.message);
+        dispatch(categoryFailed(error.message));
+      });
+  };
 
 export const deleteCategory = (value: any) => {
   return {
@@ -269,27 +303,34 @@ export const deleteCategory = (value: any) => {
   };
 };
 
-export const deleteCateogry = (id: string): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
-  dispatch(categoryLoading());
+export const deleteCateogry =
+  (id: string): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    dispatch(categoryLoading());
 
-  return fetch(`http://localhost:3001/category/${id}`, {
-    method: 'DELETE',
-    headers: {
-        'Content-Type': 'application/json'
-    }
-  })
-  .then(response => {
-    if (response.ok) {
-      dispatch(deleteCategory(id))
-    } else {
-      var error = new Error('Error ' + response.status + ': ' + response.statusText);
-      throw error;
-    }
-  }, error => {
-      throw error;
-  })
-  .catch(error => { 
-    console.log('Delete category', error.message); 
-    dispatch(categoryFailed(error.message))
-  });
-}
+    return fetch(`http://localhost:3001/category/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            dispatch(deleteCategory(id));
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .catch((error) => {
+        console.log("Delete category", error.message);
+        dispatch(categoryFailed(error.message));
+      });
+  };

@@ -6,9 +6,9 @@ export const Products = (
     isLoading: true,
     errMess: null,
     productsFilter: [],
-    allProducts: []
+    allProducts: [],
   },
-  action:any
+  action: any
 ) => {
   switch (action.type) {
     case ActionTypes.PRODUCT_ADD:
@@ -17,15 +17,15 @@ export const Products = (
         isLoading: false,
         errMess: null,
         productsFilter: action.payload,
-        allProducts: action.payload
+        allProducts: action.payload,
       };
 
     case ActionTypes.PRODUCT_LOADING:
-      return { 
-        ...state, 
-        isLoading: true, 
-        errMess: null, 
-        productsFilter: [] 
+      return {
+        ...state,
+        isLoading: true,
+        errMess: null,
+        productsFilter: [],
       };
 
     case ActionTypes.PRODUCT_FAILED:
@@ -39,7 +39,7 @@ export const Products = (
     case ActionTypes.PRODUCT_FILTER:
       const value = action.payload.value; //Name
       const categorySearch = action.payload.categorySearch; //Category
-      const type = action.payload.type;   //Ordenamiento ALF o PRICE
+      const type = action.payload.type; //Ordenamiento ALF o PRICE
       const brand = action.payload.brand;
       const order = action.payload.order;
       const costMin = action.payload.costMin;
@@ -47,38 +47,46 @@ export const Products = (
 
       let productsFilter;
 
-      if (categorySearch !== "") { //Arregla
-        productsFilter = state.allProducts.filter((product:interfaceProduct) =>
-          product.category.name.toUpperCase().includes(categorySearch.toUpperCase())
+      if (categorySearch !== "") {
+        //Arregla
+        productsFilter = state.allProducts.filter((product: interfaceProduct) =>
+          product.category.name
+            .toUpperCase()
+            .includes(categorySearch.toUpperCase())
         );
       } else {
         productsFilter = state.allProducts;
       }
 
-      const filterName = productsFilter.filter(
-        (product:interfaceProduct) =>
-          product.name.toUpperCase().includes(value.toUpperCase())
+      const filterName = productsFilter.filter((product: interfaceProduct) =>
+        product.name.toUpperCase().includes(value.toUpperCase())
       );
 
-      const filterBrand = filterName.filter(
-        (product:interfaceProduct) =>
-          product.brand.name.toUpperCase().includes(brand.toUpperCase())
+      const filterBrand = filterName.filter((product: interfaceProduct) =>
+        product.brand.name.toUpperCase().includes(brand.toUpperCase())
       );
 
       let filterCost;
-      if (costMin === '' && costMax != 0) {
-        filterCost = filterBrand.filter((product:interfaceProduct) => product.price <= costMax)
-      }else if(costMin != 0 && costMax != 0){
-        filterCost = filterBrand.filter((product:interfaceProduct) => costMin <= product.price  && product.price <= costMax)
-      }else if(costMin != 0 && costMax === ''){
-        filterCost = filterBrand.filter((product:interfaceProduct) => product.price >= costMin)
-      }else{
+      if (costMin === "" && costMax != 0) {
+        filterCost = filterBrand.filter(
+          (product: interfaceProduct) => product.price <= costMax
+        );
+      } else if (costMin != 0 && costMax != 0) {
+        filterCost = filterBrand.filter(
+          (product: interfaceProduct) =>
+            costMin <= product.price && product.price <= costMax
+        );
+      } else if (costMin != 0 && costMax === "") {
+        filterCost = filterBrand.filter(
+          (product: interfaceProduct) => product.price >= costMin
+        );
+      } else {
         filterCost = filterBrand;
       }
 
       if (type === "ALF") {
         if (order === "ASC") {
-          filterCost.sort(function (a:interfaceProduct, b:interfaceProduct) {
+          filterCost.sort(function (a: interfaceProduct, b: interfaceProduct) {
             if (a.name > b.name) {
               return 1;
             }
@@ -88,7 +96,7 @@ export const Products = (
             return 0;
           });
         } else {
-          filterCost.sort(function (a:interfaceProduct, b:interfaceProduct) {
+          filterCost.sort(function (a: interfaceProduct, b: interfaceProduct) {
             if (a.name < b.name) {
               return 1;
             }
@@ -100,11 +108,11 @@ export const Products = (
         }
       } else {
         if (order === "ASC") {
-          filterCost.sort(function (a:any, b:any) {
+          filterCost.sort(function (a: any, b: any) {
             return a.price - b.price;
           });
         } else {
-          filterCost.sort(function (a:any, b:any) {
+          filterCost.sort(function (a: any, b: any) {
             return b.price - a.price;
           });
         }
