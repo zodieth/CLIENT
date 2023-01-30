@@ -15,7 +15,6 @@ import {
 import CarouselDown from "../components/CarouselDown/CarouselDown";
 import Cards from "../components/ProductCards/Cards";
 import Filter from "../components/Filtro/filter";
-import Crear from "../components/CrearProducts/Crear";
 
 function Home() {
   const dispatch = useAppDispatch();
