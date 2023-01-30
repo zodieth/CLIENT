@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import {
   IconButton,
   Avatar,
@@ -34,16 +34,19 @@ import {
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
+import { useAppDispatch } from '../app/hooks'
+import { fetchProductsApi, fetchBrandApi, fetchCategoryApi } from '../app/actionsCreators'
 
 interface LinkItemProps {
   name: string;
   icon: IconType;
   url: string;
 }
+
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, url: "#"},
   { name: "Productos", icon: FiTrendingUp, url: "./products" },
-  { name: "Categorias", icon: FiCompass, url: "#" },
+  { name: "Categorias", icon: FiCompass, url: "http://localhost:3000/Admin/categories" },
   { name: "Marcas", icon: FiStar, url: "#" },
   { name: "Sucursales", icon: FiSettings, url: "#" },
   { name: "Usuarios", icon: FiSettings, url: "#" },
@@ -55,6 +58,13 @@ export default function SidebarWithHeader({
   children: ReactNode;
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const dispatch = useAppDispatch();
+  
+  useEffect(() => {
+    dispatch(fetchProductsApi());
+    dispatch(fetchBrandApi());
+    dispatch(fetchCategoryApi());
+  }, [])
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       <SidebarContent

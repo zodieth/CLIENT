@@ -2,6 +2,22 @@ import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import * as ActionTypes from "../features/ActionTypes";
 import { RootState } from "./store";
 
+export const createProduct = (value: any) => {
+  fetch("henry-PF-back.up.railway.app/products", {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(value),
+  });
+
+  return {
+    type: ActionTypes.CREATE_PRODUCT,
+    payload: value,
+  };
+};
+
 export const addToCart = (value: any) => {
   return {
     type: ActionTypes.ADD_TO_CART,
@@ -9,15 +25,15 @@ export const addToCart = (value: any) => {
   };
 };
 
-export const addCountCart = (productName:string) => {
+export const addCountCart = (productName: string) => {
   return {
     type: ActionTypes.ADD_COUNT,
     payload: { productName },
   };
 };
 
-export const removeCountCart = (productName:string, count: number) => {
-  console.log(count)
+export const removeCountCart = (productName: string, count: number) => {
+  console.log(count);
   return {
     type: ActionTypes.REMOVE_COUNT,
     payload: { productName, count },
@@ -66,7 +82,7 @@ export const fetchProductsApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(productsLoading());
 
-    return await fetch("http://localhost:3001/products")
+    return await fetch("henry-PF-back.up.railway.app/products")
       .then(
         (response) => {
           if (response.ok) {
@@ -90,6 +106,13 @@ export const fetchProductsApi =
       .catch((error) => dispatch(productsFailed(error.message)));
   };
 
+export const categoryBrands = (categorySearch: String, brand: String) => {
+  return {
+    type: ActionTypes.PRODUCT_FILTER,
+    payload: { categorySearch, brand },
+  };
+};
+
 //Marcas
 export const addBrand = (value: any) => {
   return {
@@ -111,7 +134,7 @@ export const fetchBrandApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(brandLoading());
 
-    return await fetch("http://localhost:3001/brands")
+    return await fetch("henry-PF-back.up.railway.app/brands")
       .then(
         (response) => {
           if (response.ok) {
@@ -136,6 +159,13 @@ export const fetchBrandApi =
   };
 
 //Categorias
+export const addCategories = (value: any) => {
+  return {
+    type: ActionTypes.CATEGORIES_ADD,
+    payload: value,
+  };
+};
+
 export const addCategory = (value: any) => {
   return {
     type: ActionTypes.CATEGORY_ADD,
@@ -156,7 +186,7 @@ export const fetchCategoryApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(categoryLoading());
 
-    return await fetch("http://localhost:3001/category")
+    return await fetch("henry-PF-back.up.railway.app/category")
       .then(
         (response) => {
           if (response.ok) {
@@ -175,44 +205,132 @@ export const fetchCategoryApi =
       )
       .then((response) => response.json())
       .then((categories) => {
-        dispatch(addCategory(categories));
+        dispatch(addCategories(categories));
       })
       .catch((error) => dispatch(categoryFailed(error.message)));
   };
 
-  //MercadoPago
+//MercadoPago
 
-  type Product = {
-    name: String;
-    price: Number;
-    images: [String];
-    count: number;
-  };
+type Product = {
+  name: String;
+  price: Number;
+  images: [String];
+  count: number;
+};
 
-  export const payMercadoPagoApi = (products:Product[]) => {
-    return async (dispatch: any) => {
-      try {
-        const response = await fetch('http://localhost:3001/api/pay', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(products)
-        });
-  
-        if (!response.ok) {
-          throw new Error('Error loading countries');
-        }
+export const payMercadoPagoApi = (products: Product[]) => {
+  return async (dispatch: any) => {
+    try {
+      const response = await fetch("henry-PF-back.up.railway.app/api/pay", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(products),
+      });
 
-        const data = await response.json();
-        return data;
-        // despacha una acción con la respuesta del servidor
-        //dispatch({ type: 'PAYMENT_SUCCESS', payload: data });
-      } catch (error) {
-        // despacha una acción con el error
-        //dispatch({ type: 'PAYMENT_ERROR', payload: error });
+      if (!response.ok) {
+        throw new Error("Error loading countries");
+      }
+
+      const data = await response.json();
+      return data;
+      // despacha una acción con la respuesta del servidor
+      //dispatch({ type: 'PAYMENT_SUCCESS', payload: data });
+    } catch (error) {
+      // despacha una acción con el error
+      //dispatch({ type: 'PAYMENT_ERROR', payload: error });
     }
   };
 };
-        
-        
+
+//Category admin
+
+export const postCateogry =
+  (
+    name: string,
+    description: string,
+    father: any = null
+  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    dispatch(categoryLoading());
+
+    if (father === "") father = null;
+
+    const newCategory = {
+      name: name,
+      description: description,
+      father: father,
+    };
+
+    return fetch("http://localhost:3001/category", {
+      method: "POST",
+      body: JSON.stringify(newCategory),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .then((response) => response.json())
+      .then((response) => {
+        dispatch(addCategory(response));
+      })
+      .catch((error) => {
+        console.log("Post activity", error.message);
+        dispatch(categoryFailed(error.message));
+      });
+  };
+
+export const deleteCategory = (value: any) => {
+  return {
+    type: ActionTypes.CATEGORY_DELETE,
+    payload: value,
+  };
+};
+
+export const deleteCateogry =
+  (id: string): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    dispatch(categoryLoading());
+
+    return fetch(`http://localhost:3001/category/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            dispatch(deleteCategory(id));
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .catch((error) => {
+        console.log("Delete category", error.message);
+        dispatch(categoryFailed(error.message));
+      });
+  };

@@ -17,21 +17,25 @@ function Cart() {
     return e.price;
   });
 
-  const [totalCompra, setTotalCompra] = useState(total.reduce((a: any, b: any) => a + b, 0));
-  
+  const [totalCompra, setTotalCompra] = useState(
+    total.reduce((a: any, b: any) => a + b, 0)
+  );
+
   const pay = async () => {
-    let productos = products.cart
-    const data:any = await dispatch(payMercadoPagoApi(productos))
+    let productos = products.cart;
+    const data: any = await dispatch(payMercadoPagoApi(productos));
 
     var script = document.createElement("script");
-    console.log(data)
-    script.src = "https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js";
+    script.src =
+      "https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js";
     script.type = "text/javascript";
     script.setAttribute("data-preference-id", data.body.id);
     const form = document.getElementById("pagar");
     form?.appendChild(script);
+  };
 
-  }
+  const [submitButton, setSubmitButton] = useState(false);
+  const [submitDisappear, setSubmitDisappear] = useState(true);
 
   return (
     <div>
@@ -39,7 +43,8 @@ function Cart() {
       <SubNav />
       <div className={style.cards}>
         {products.cart.length ? ( /// si tengo todos los productos
-          products.cart.map((e: any) => {  /// traerme lo que se selecciono
+          products.cart.map((e: any) => {
+            /// traerme lo que se selecciono
             return (
               <div key={e.name}>
                 <div>
@@ -55,8 +60,9 @@ function Cart() {
               </div>
             );
           })
-        ) : ( /// si no tengo los productos o ya compre, que me mande a seguir comprando
-          <div className={style.nothing}> 
+        ) : (
+          /// si no tengo los productos o ya compre, que me mande a seguir comprando
+          <div className={style.nothing}>
             <div className={style.withouth_elements}>
               No hay elementos en el carrito
             </div>
@@ -70,12 +76,29 @@ function Cart() {
             <div className={style.finish}>
               <div className={style.total}>
                 <div>TOTAL</div>
-
-                <div> ${totalCompra}</div>
+                <div>${totalCompra}</div>
               </div>
-              <Button className={style.btn_finish} onClick={pay}>Finalizar Compra</Button>
-              <form id="pagar" method="GET"></form>
-
+              {submitDisappear === true ? (
+                <div>
+                  {" "}
+                  <Button
+                    className={style.btn_finish}
+                    onClick={() => [
+                      pay(),
+                      setSubmitButton(true),
+                      setInterval(() => {
+                        setSubmitDisappear(false);
+                      }, 1000),
+                    ]}
+                    isLoading={submitButton}
+                  >
+                    Finalizar Compra
+                  </Button>
+                </div>
+              ) : (
+                ""
+              )}
+              <form className={style.mpPay} id="pagar" method="GET"></form>
             </div>
           </div>
         ) : (
