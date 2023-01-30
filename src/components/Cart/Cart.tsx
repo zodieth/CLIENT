@@ -38,9 +38,9 @@ function Cart() {
   const [submitDisappear, setSubmitDisappear] = useState(true);
 
   return (
-    <div>
+    <div className={style.cart}>
       <NavBar />
-      <SubNav />
+      {/* <SubNav /> */}
       <div className={style.cards}>
         {products.cart.length ? (
           products.cart.map((e: any) => {
