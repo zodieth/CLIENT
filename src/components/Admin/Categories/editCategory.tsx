@@ -1,10 +1,11 @@
 import style from "./products.module.css"
-import { Input, Select } from "@chakra-ui/react";
+import { Input, Select, Textarea } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import interfaceCategory from  "../../../features/categories/interfaceCategory";
-import { useState } from "react";
-import { postCateogry } from "../../../app/actionsCreators"
+import { useEffect, useState } from "react";
+import { putCateogry } from "../../../app/actionsCreators"
 import Swal from "sweetalert2";
+import { useParams } from "react-router-dom";
 
 export function validate(inputs: any) {
   let errors = {
@@ -21,12 +22,14 @@ export function validate(inputs: any) {
   return errors;
 }
 
-export default function EditCategoryAdmin(props:any) {
-  console.log(props)
+export default function EditCategoryAdmin() {
   const dispatch = useAppDispatch();
-  
+  const { id } = useParams();
   const categoriesStore = useAppSelector((state) => state.categories)
+  var categorySelected:any = categoriesStore.allCategories.find((categoria:any) => categoria._id === id)  
+  
   const [inputs, setInputs] = useState({
+    id: "",
     name: "",
     description: "",
     father: ""
@@ -35,7 +38,19 @@ export default function EditCategoryAdmin(props:any) {
     name: "",
     description: ""
   });
-
+  
+  useEffect(() => {
+    if(categorySelected){
+      setInputs({
+        ...inputs,
+        "id": categorySelected._id,
+        "name": categorySelected.name,
+        "description": categorySelected.description,
+        "father": categorySelected.father ? categorySelected.father._id : null
+      })
+    }
+  },[categorySelected])
+  
   function handleChange(e: any) {
     setErrors(
       validate({
@@ -57,7 +72,8 @@ export default function EditCategoryAdmin(props:any) {
       alert("You must correct the mistakes");
     } else {
       dispatch(
-        postCateogry(
+        putCateogry(
+          inputs.id,
           inputs.name,
           inputs.description,
           inputs.father,
@@ -81,7 +97,7 @@ export default function EditCategoryAdmin(props:any) {
         title: "Agregado Correctamente",
       });
 
-      setInputs({ name: "", description: "", father: ""});
+      setInputs({id: "", name: "", description: "", father: ""});
       setErrors({
         name: "",
         description: ""
@@ -100,19 +116,18 @@ export default function EditCategoryAdmin(props:any) {
             onChange={handleChange}
             name='name'
             placeholder="Nombre de la categoría"
-            width='auto' 
+            width='sm' 
             value={inputs.name}
           />
           <p >{errors.name}</p>
         </div>
         <div className={style.groupInputs}>
           <label>Descripción</label>
-          <Input 
-            type='text'
+          <Textarea 
             value={inputs.description}
             onChange={handleChange}
             name='description'
-            width='auto'/>
+            width='sm'/>
             <p >{errors.description}</p>
         </div>
         <div className={style.groupInputs}>
@@ -122,7 +137,7 @@ export default function EditCategoryAdmin(props:any) {
             onChange={handleChange}
             placeholder="Ninguna"
             value={inputs.father}
-            width='auto' >
+            width='sm' >
             { categoriesStore.allCategories.map((category:interfaceCategory) => {
                 return <option key={category._id} value={category._id}>{category.name}</option>
               })}
