@@ -97,29 +97,30 @@ export default function LargeWithNewsletter() {
             <Box>
               <Logo color={useColorModeValue("gray.700", "white")} />
             </Box>
-            <Text fontSize={"sm"}>© 2023 AllTech. All rights reserved</Text>
+            <Text fontSize={"sm"}>© 2023 AllTech. Todos los derechos reservados</Text>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>Company</ListHeader>
-            <Link href={"#"}>About us</Link>
-            <Link href={"#"}>Blog</Link>
-            <Link href={"#"}>Contact us</Link>
-            <Link href={"#"}>Pricing</Link>
-            <Link href={"#"}>Testimonials</Link>
+            <ListHeader>Nosotros</ListHeader>
+            <Link href={"#"}>Sobre nosotros</Link>
+            <Link href={"#"}>Envíos y entregas</Link>
+            <Link href={"#"}>Políticas de garantías</Link>
+            <Link href={"#"}>Cambios y devoluciones</Link>
+            <Link href={"#"}>Testimonios</Link>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>Support</ListHeader>
-            <Link href={"#"}>Help Center</Link>
-            <Link href={"#"}>Terms of Service</Link>
-            <Link href={"#"}>Legal</Link>
-            <Link href={"#"}>Privacy Policy</Link>
-            <Link href={"#"}>Satus</Link>
+            <ListHeader>Soporte</ListHeader>
+            <Link href={"#"}>Cómo comprar</Link>
+            <Link href={"#"}>Preguntas Frecuentes</Link>
+            <Link href={"#"}>Contáctenos</Link>
+            <Link href={"#"}>Términos y condiciones</Link>    
+            <Link href={"#"}>Políticas de privacidad</Link>
+            
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>¡Recibe Descuentos!</ListHeader>
             <Stack direction={"row"}>
               <Input
-                placeholder={"Your email address"}
+                placeholder={"Ingrese email"}
                 bg={useColorModeValue("white", "white")}
                 border={0}
                 _focus={{
