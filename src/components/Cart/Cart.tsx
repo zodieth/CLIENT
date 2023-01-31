@@ -39,7 +39,9 @@ function Cart() {
 
   return (
     <div className={style.cart}>
-      <NavBar />
+      <div className={style.nav}>
+        <NavBar />
+      </div>
       {/* <SubNav /> */}
       <div className={style.cards}>
         {products.cart.length ? (
