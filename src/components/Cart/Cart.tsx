@@ -8,6 +8,7 @@ import { useAppSelector } from "../../app/hooks";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/hooks";
 import { payMercadoPagoApi } from "../../app/actionsCreators";
+import Footer from "../Footer/Footer";
 
 function Cart() {
   const dispatch = useAppDispatch();
@@ -38,10 +39,12 @@ function Cart() {
   const [submitDisappear, setSubmitDisappear] = useState(true);
 
   return (
+    
     <div className={style.cart}>
       <div className={style.nav}>
         <NavBar />
       </div>
+      
       {/* <SubNav /> */}
       <div className={style.cards}>
         {products.cart.length ? (
@@ -76,7 +79,7 @@ function Cart() {
             <div className={style.finish}>
               <div className={style.total}>
                 <div>TOTAL</div>
-                <div>${totalCompra}</div>
+                <div>US${totalCompra}</div>
               </div>
               {submitDisappear === true ? (
                 <div>
@@ -104,6 +107,9 @@ function Cart() {
         ) : (
           ""
         )}
+      </div>
+      <div className={style.footer}>
+        <Footer />
       </div>
     </div>
   );

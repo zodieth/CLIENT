@@ -117,7 +117,7 @@ export default function LargeWithNewsletter() {
             
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>¡Recibe Descuentos!</ListHeader>
+            <ListHeader>¡Recibi descuentos y promociones!</ListHeader>
             <Stack direction={"row"}>
               <Input
                 placeholder={"Ingrese email"}

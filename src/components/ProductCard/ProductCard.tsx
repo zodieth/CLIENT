@@ -139,7 +139,7 @@ function ProductCard(props: any) {
           </div>
         </div>
         <div className={style.price_Discount}>
-          <div className={style.price}>${props.price}</div>
+          <div className={style.price}>US${props.price}</div>
           <img
             src="https://www.qloud.com.ar/img/a12.svg"
             alt=""
