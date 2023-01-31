@@ -1,0 +1,101 @@
+.armado {
+  height: 1920px;
+  background-color: aliceblue;
+}
+
+.componentsPhotos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: fit-content;
+  width: 330px;
+  background-color: #fff;
+  border-radius: 10px;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+.totalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100px;
+  width: 330px;
+  background-color: #fff;
+}
+
+.subContainerTotal {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem;
+}
+
+.total {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1rem;
+}
+
+.photoComponent {
+  height: 60px;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 1.5rem;
+  max-width: 100px;
+}
+
+.build {
+  margin-top: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  cursor: pointer;
+  height: 100px;
+  margin: 0.5rem;
+  width: 300px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cardsProducts {
+  margin-left: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  width: 750px;
+}
+
+.imgCard {
+  margin: 1rem;
+  height: 60px;
+}
+
+.titleImg {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.name {
+  font-size: 0.75rem;
+}
+
+.componentName {
+  margin: 0.25rem;
+  font-size: 0.5rem;
+}
