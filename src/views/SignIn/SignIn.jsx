@@ -21,7 +21,29 @@ export default function SimpleCard() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { loginWithRedirect } = useAuth0();
+  const { loginWithRedirect, getAccessTokenSilently } = useAuth0();
+  const handleLogin = async () => {
+    // const accessToken = await getAccessTokenSilently();
+    // const loginResponse = await fetch("https://dev-6d0rlv0acg7xdkxt.us.auth0.com/authorize?response_type=token&client_id=2EHZJm086BzkgwY5HXmPeK5UnbHegBXl&connection=google-oauth2&redirect_uri=http://localhost:3000", {
+    //   method: "GET",
+    //   // headers: {
+    //   //   Authorization: `Bearer ${accessToken}`
+    //   // },
+    //   redirect: "follow"
+    // });
+    // if(loginResponse.redirected) window.location.href = loginResponse.url;
+    // console.log("Login response: ", loginResponse);
+    // const userAuth0 = await loginResponse.json();
+    // console.log("userAuth0: ", userAuth0);
+    await loginWithRedirect({
+      appState: {
+        returnTo: "/"
+      },
+      authorizationParams: {
+        prompt: "login"
+      }
+    });
+  };
 
   return (
     <Flex
@@ -73,7 +95,7 @@ export default function SimpleCard() {
               </Stack>
               <Button w={"full"} variant={"outline"} leftIcon={<FcGoogle />}>
                 <Center>
-                  <Text onClick={() => loginWithRedirect()}>Sign in with Google</Text>
+                  <Text onClick={handleLogin}>Sign in with Google</Text>
                 </Center>
               </Button>
 

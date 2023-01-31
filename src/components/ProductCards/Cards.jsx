@@ -1,4 +1,3 @@
-import React from "react";
 import ProductCard from "../ProductCard/ProductCard";
 import style from "./cards.module.css";
 import { useAppSelector } from "../../app/hooks";

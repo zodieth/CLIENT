@@ -26,7 +26,6 @@ function Cart() {
     const data: any = await dispatch(payMercadoPagoApi(productos));
 
     var script = document.createElement("script");
-    console.log(data);
     script.src =
       "https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js";
     script.type = "text/javascript";
@@ -39,13 +38,14 @@ function Cart() {
   const [submitDisappear, setSubmitDisappear] = useState(true);
 
   return (
-    <div>
-      <NavBar />
-      <SubNav />
+    <div className={style.cart}>
+      <div className={style.nav}>
+        <NavBar />
+      </div>
+      {/* <SubNav /> */}
       <div className={style.cards}>
-        {products.cart.length ? ( /// si tengo todos los productos
+        {products.cart.length ? (
           products.cart.map((e: any) => {
-            /// traerme lo que se selecciono
             return (
               <div key={e.name}>
                 <div>
@@ -62,7 +62,6 @@ function Cart() {
             );
           })
         ) : (
-          /// si no tengo los productos o ya compre, que me mande a seguir comprando
           <div className={style.nothing}>
             <div className={style.withouth_elements}>
               No hay elementos en el carrito
@@ -72,7 +71,7 @@ function Cart() {
             </Link>
           </div>
         )}
-        {products.cart.length ? ( /// si tengo los productos en el carrito, y aprieto finalizar compra me da el boton de pagar
+        {products.cart.length ? (
           <div className={style.container_finish}>
             <div className={style.finish}>
               <div className={style.total}>
