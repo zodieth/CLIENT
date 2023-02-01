@@ -5,7 +5,7 @@ import { store } from "./app/store";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router/index";
 import { ChakraProvider } from "@chakra-ui/react";
-import { Auth0Provider } from "@auth0/auth0-react";
+// import { Auth0Provider } from "@auth0/auth0-react";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -19,7 +19,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ChakraProvider>
-        <Auth0Provider
+        {/* <Auth0Provider
           domain="dev-6d0rlv0acg7xdkxt.us.auth0.com"
           clientId="2EHZJm086BzkgwY5HXmPeK5UnbHegBXl"
           cacheLocation="localstorage"
@@ -28,8 +28,8 @@ root.render(
             audience: "https://all-tech.com",
           }}
         >
+        </Auth0Provider> */}
           <RouterProvider router={router} />
-        </Auth0Provider>
       </ChakraProvider>
     </Provider>
   </React.StrictMode>

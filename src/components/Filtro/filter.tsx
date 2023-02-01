@@ -42,10 +42,10 @@ function Filter() {
             onChange={handleSearch}
           >
             <option >Ordenamiento</option>
-            <option value="ALF|ASC">Alfabetico descendente</option>
-            <option value="AFL|DESC">Alfabetico ascendente</option>
-            <option value="PRICE|DESC">Precio ascendente</option>
-            <option value="PRICE|ASC">Precio descendente</option>
+            <option value="PRICE|ASC">Precio ascendente</option>
+            <option value="PRICE|DESC">Precio descendente</option>
+            <option value="AFL|ASC">Alfabetico ascendente</option>
+            <option value="ALF|DESC">Alfabetico descendente</option>
           </Select>
           </div>
         <div className={style.options}>
