@@ -16,21 +16,21 @@ const getAuth = () => {
 };
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
       <ChakraProvider>
-        <Auth0Provider
+        {/* <Auth0Provider
           domain="dev-6d0rlv0acg7xdkxt.us.auth0.com"
           clientId="2EHZJm086BzkgwY5HXmPeK5UnbHegBXl"
           cacheLocation="localstorage"
           authorizationParams={{
-            redirect_uri: "https://client-zodieth.vercel.app/",
+            redirect_uri: window.location.origin,
             audience: "https://all-tech.com",
           }}
-        >
+        > */}
           <RouterProvider router={router} />
-        </Auth0Provider>
+        {/* </Auth0Provider> */}
       </ChakraProvider>
     </Provider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

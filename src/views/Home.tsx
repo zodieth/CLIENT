@@ -15,46 +15,56 @@ import {
 import CarouselDown from "../components/CarouselDown/CarouselDown";
 import Cards from "../components/ProductCards/Cards";
 import Filter from "../components/Filtro/filter";
-import { useAuth0 } from "@auth0/auth0-react";
+// import { useAuth0 } from "@auth0/auth0-react";
+import { auth } from "../auth0.service";
 
 function Home() {
+  const handleSession = async () => {
+    const sessionState = await auth.isAuthenticated();
+    console.log(sessionState);
+  };
+
+  useEffect(() => {
+    handleSession();
+  }, [handleSession]);
+
   const dispatch = useAppDispatch();
-  const {
-    loginWithRedirect,
-    getAccessTokenSilently,
-    user,
-    isAuthenticated,
-    isLoading,
-    error,
-  } = useAuth0();
+  // const {
+  //   loginWithRedirect,
+  //   getAccessTokenSilently,
+  //   user,
+  //   isAuthenticated,
+  //   isLoading,
+  //   error,
+  // } = useAuth0();
 
-  useEffect(() => {
-    console.log("My user: ", user);
-    console.log("Authenticated: ", isAuthenticated);
-    console.log("Loading: ", isLoading);
-    console.log("Error: ", error);
-  }, [user, isAuthenticated, isLoading, error]);
+  // useEffect(() => {
+  //   console.log("My user: ", user);
+  //   console.log("Authenticated: ", isAuthenticated);
+  //   console.log("Loading: ", isLoading);
+  //   console.log("Error: ", error);
+  // }, [user, isAuthenticated, isLoading, error]);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      const getToken = async () => {
-        const accessToken = await getAccessTokenSilently();
-        console.log("Token: ", accessToken);
-        const response = await fetch("http://localhost:3001/claims", {
-          //Ejemplo real...
-          method: "GET",
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        const allClaims = await response.json();
-        console.log("Claims: ", allClaims);
-        return allClaims;
-      };
-      getToken();
-    }
-  }, [getAccessTokenSilently, isAuthenticated]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     const getToken = async () => {
+  //       const accessToken = await getAccessTokenSilently();
+  //       console.log("Token: ", accessToken);
+  //       const response = await fetch("http://localhost:3001/claims", {
+  //         //Ejemplo real...
+  //         method: "GET",
+  //         headers: {
+  //           "content-type": "application/json",
+  //           Authorization: `Bearer ${accessToken}`,
+  //         },
+  //       });
+  //       const allClaims = await response.json();
+  //       console.log("Claims: ", allClaims);
+  //       return allClaims;
+  //     };
+  //     getToken();
+  //   }
+  // }, [getAccessTokenSilently, isAuthenticated]);
 
   useEffect(() => {
     dispatch(fetchProductsApi());

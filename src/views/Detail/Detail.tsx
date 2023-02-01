@@ -40,8 +40,16 @@ function Detail() {
     }
   };
 
-  const addCart = (value: interfaceProduct) => {
-    dispatch(addToCart(value));
+  const addCart = (value: any) => {
+    let card = {
+      name: value.name,
+      price: value.price,
+      img: value.images[0],
+      reviews: value.reviews,
+      count: 1,
+    };
+
+    dispatch(addToCart(card));
   };
 
   const handleDeleteFromCart = (value: interfaceProduct) => {
@@ -72,16 +80,13 @@ function Detail() {
       <div className={style.navBar}>
         <NavBar />
       </div>
-      
+
       {!findDetail.length ? (
         <div>No se encontró el producto</div>
       ) : (
         findDetail.map((e: any) => {
-          console.log(e);
-
           return (
             <div className={style.detail} key={e}>
-              
               <div className={style.contenedor}>
                 <div>
                   <img
@@ -89,39 +94,40 @@ function Detail() {
                     alt="imgDetail"
                     className={style.imgDetail}
                   />
-                  
+                </div>
+                <div className={style.right}>
+                  <div className={style.name}>{e.name}</div>
+                  <div className={style.price_cart}>
+                    <div className={style.price}>US$ {e.price}</div>
+                    <Button
+                      colorScheme="blue"
+                      onClick={() =>
+                        onCart
+                          ? [handleDeleteFromCart(e), onCartFuncion()]
+                          : onCart === false
+                          ? [addCart(e), onCartFuncion(), addToCartAlert()]
+                          : ""
+                      }
+                    >
+                      {onCart ? (
+                        <HiShoppingCart />
+                      ) : (
+                        <HiOutlineShoppingCart height={8} color={"white"} />
+                      )}
+                    </Button>
                   </div>
-                  <div className={style.right}>
-                    <div className={style.name}>{e.name}</div>
-                        <div className={style.price_cart}>
-                          <div className={style.price}>US$ {e.price}</div>
-                          <Button
-                            colorScheme="blue"
-                            onClick={() =>
-                              onCart
-                                ? [handleDeleteFromCart(e), onCartFuncion()]
-                                : onCart === false
-                                ? [addCart(e), onCartFuncion(), addToCartAlert()]
-                                : ""
-                            }
-                          >
-                            {onCart ? (
-                              <HiShoppingCart />
-                            ) : (
-                              <HiOutlineShoppingCart height={8} color={"white"} />
-                            )}
-                          </Button>
-                        </div>
-                  </div>
-                  <div className={style.texto}><h4>* Las imágenes se exhiben con fines ilustrativos.</h4></div>
+                </div>
+                <div className={style.texto}>
+                  <h4>* Las imágenes se exhiben con fines ilustrativos.</h4>
+                </div>
               </div>
             </div>
           );
         })
       )}
       <div>
-      <NuevoCarrusel/>
-      <Footer />
+        <NuevoCarrusel />
+        <Footer />
       </div>
     </div>
   );

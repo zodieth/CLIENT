@@ -17,6 +17,7 @@ import {
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { auth } from "../../auth0.service";
 import style from "./SignUp.module.css"
 
 export default function SignupCard() {
@@ -34,63 +35,86 @@ export default function SignupCard() {
   const [postalCode, setPostalCode] = useState("");
   const [allowSignUp, setAllowSignUp] = useState(false);
 
-  const handleSignUp = async () => {
-    const Auth0Response = await fetch("https://dev-6d0rlv0acg7xdkxt.us.auth0.com/dbconnections/signup", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          cliend_id: "2EHZJm086BzkgwY5HXmPeK5UnbHegBXl",
-          email: email,
-          password: password,
-          connection: "Username-Password-Authentication",
-          username: userName,
-          given_name: firstName,
-          family_name: lastName,
-          // picture: "",
-          user_metadata: {
-            phone_number: phoneNumber,
-            province: province,
-            city: city,
-            address: address,
-            postal_code: postalCode
-          }
-        })
+  // const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
+
+  const handleSignUp = () => {
+    auth.signup({
+      username: userName,
+      email: email,
+      password: password,
+      connection: "Username-Password-Authentication"
+    }, (error : Auth0Error | null, user : any) => {
+      if(error) {
+        //Debería haber un modal que informe al usuario que el proceso de registro no fue exitoso...
+        console.log("Proceso de registro fallido, intente más tarde.");
+      } else {
+        console.log(user);
+      };
     });
-    const userAuth0 = await Auth0Response.json();
-    console.log("Auth0 user: ", userAuth0);
-    if(userAuth0) {
-      const locationResponse = await fetch("http://localhost:3001/location", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json"
-        },
-        body: JSON.stringify({
-          province,
-          city,
-          address,
-          zip: postalCode
-        })
-      });
-      const locationDB = await locationResponse.json();
-      const locationId = locationDB._id;
-      const userDB = await fetch("http://localhost:3001/user", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json"
-        },
-        body: JSON.stringify({
-          firstName: firstName,
-          lastName: lastName,
-          userName: userName,
-          email: email,
-          phoneNumber: phoneNumber,
-          location: locationId
-        })
-      })
-      console.log("DB user: ", userDB);
-    };
+    // const signInAccessToken = getAccessTokenSilently();
+    // const userAuth0Request = await fetch("https://dev-6d0rlv0acg7xdkxt.us.auth0.com/dbconnections/signup", {
+    //     method: "POST",
+    //     headers: {
+    //       "content-type": "application/json",
+    //       Authorization: `Bearer ${signInAccessToken}`
+    //     },
+    //     body: JSON.stringify({
+    //       cliend_id: "2EHZJm086BzkgwY5HXmPeK5UnbHegBXl",
+    //       email: email,
+    //       password: password,
+    //       connection: "Username-Password-Authentication",
+    //       username: userName,
+    //       given_name: firstName,
+    //       family_name: lastName,
+    //       // picture: "",
+    //       user_metadata: {
+    //         phone_number: phoneNumber,
+    //         province: province,
+    //         city: city,
+    //         address: address,
+    //         postal_code: postalCode
+    //       }
+    //     })
+    // });
+    // const userAuth0 = await userAuth0Request.json();
+    // console.log("Auth0 user: ", userAuth0);
+    //Será un alert hasta que tengamos un modal estándar para toda la aplicación...
+    // window.alert(`Usuario creado exitosamente, te hemos enviado un correo electrónico para verificar tu cuenta, debes completar este proceso antes de poder usarla.`);
+    // window.location.href = window.location.origin + "/signin";
+  //   const authorizationAccessToken = getAccessTokenSilently();
+  //   if(userAuth0) {
+  //     const locationResponse = await fetch("http://localhost:3001/location", {
+  //       method: "POST",
+  //       headers: {
+  //         "content-type": "application/json"
+  //       },
+  //       body: JSON.stringify({
+  //         province,
+  //         city,
+  //         address,
+  //         zip: postalCode
+  //       })
+  //     });
+  //     const locationDB = await locationResponse.json();
+  //     const locationId = locationDB._id;
+  //     const userDB = await fetch("http://localhost:3001/user", {
+  //       method: "POST",
+  //       headers: {
+  //         "content-type": "application/json",
+  //         Authorization: `Bearer ${authorizationAccessToken}`
+  //       },
+  //       body: JSON.stringify({
+  //         firstName: firstName,
+  //         lastName: lastName,
+  //         userName: userName,
+  //         phoneNumber: phoneNumber,
+  //         email: email,
+  //         location: locationId
+  //       })
+  //     })
+  //     console.log("DB user: ", userDB);
+  // //   window.location.href = window.location.origin;
+  //   };
   };
 
   useEffect(() => {

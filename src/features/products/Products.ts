@@ -48,11 +48,12 @@ export const Products = (
       let productsFilter;
 
       if (categorySearch !== "") {
-        //Arregla
-        productsFilter = state.allProducts.filter((product: interfaceProduct) =>
-          product.category.name
-            .toUpperCase()
-            .includes(categorySearch.toUpperCase())
+        productsFilter = state.allProducts.filter(
+          (product: interfaceProduct) =>
+            product.category &&
+            product.category.name
+              .toUpperCase()
+              .includes(categorySearch.toUpperCase())
         );
       } else {
         productsFilter = state.allProducts;

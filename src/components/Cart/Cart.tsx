@@ -13,6 +13,7 @@ import Footer from "../Footer/Footer";
 function Cart() {
   const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.cart);
+  console.log(products);
 
   let total = products.cart.map((e: any) => {
     return e.price;
@@ -39,12 +40,11 @@ function Cart() {
   const [submitDisappear, setSubmitDisappear] = useState(true);
 
   return (
-    
     <div className={style.cart}>
       <div className={style.nav}>
         <NavBar />
       </div>
-      
+
       {/* <SubNav /> */}
       <div className={style.cards}>
         {products.cart.length ? (

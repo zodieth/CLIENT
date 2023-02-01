@@ -15,36 +15,60 @@ import {
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { useAuth0 } from "@auth0/auth0-react";
+import { auth } from "../../auth0.service";
 import style from "./SignIn.module.css"
 
 export default function SimpleCard() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const { loginWithRedirect, getAccessTokenSilently } = useAuth0();
-  const handleLogin = async () => {
+  const handleLogin = () => {
+    auth.login({
+      username: email, //OJO, debe ser el usuario, NO el correo electrónico...
+      password: password,
+      realm: "Username-Password-Authentication",
+      redirectUri: "http://localhost:3000/postlogin",
+      responseType: "token"
+    }, (error, user) => {
+      if(error) {
+        //Debería haber un modal que informe al usuario que el proceso de autenticación no fue exitoso...
+        return console.log("Proceso de autenticación fallido, intente más tarde.");
+      } else {
+        console.log(user);
+      };
+    });
+  };
+  // const { loginWithRedirect, loginWithPopup, getAccessTokenSilently } = useAuth0();
+  // const handleLogin = async () => {
+  //   loginWithPopup({
+  //     appState: {
+  //       returnTo: "/"
+  //     },
+  //     authorizationParams: {
+  //       prompt: "login"
+  //     }
+  //   });
     // const accessToken = await getAccessTokenSilently();
-    // const loginResponse = await fetch("https://dev-6d0rlv0acg7xdkxt.us.auth0.com/authorize?response_type=token&client_id=2EHZJm086BzkgwY5HXmPeK5UnbHegBXl&connection=google-oauth2&redirect_uri=http://localhost:3000", {
+    
+    // const loginResponse = await fetch("https://dev-6d0rlv0acg7xdkxt.us.auth0.com/authorize?response_type=token&client_id=2EHZJm086BzkgwY5HXmPeK5UnbHegBXl&connection=UsernamePasswordAuthentication&redirect_uri=http://localhost:3000", {
     //   method: "GET",
     //   // headers: {
     //   //   Authorization: `Bearer ${accessToken}`
     //   // },
     //   redirect: "follow"
     // });
-    // if(loginResponse.redirected) window.location.href = loginResponse.url;
     // console.log("Login response: ", loginResponse);
     // const userAuth0 = await loginResponse.json();
     // console.log("userAuth0: ", userAuth0);
-    await loginWithRedirect({
-      appState: {
-        returnTo: "/"
-      },
-      authorizationParams: {
-        prompt: "login"
-      }
-    });
-  };
+    // if(loginResponse.redirected) window.location.href = loginResponse.url;
+    // await loginWithRedirect({
+    //   appState: {
+    //     returnTo: "/"
+    //   },
+    //   authorizationParams: {
+    //     prompt: "login"
+    //   }
+    // });
+  // };
 
   return (
     <Flex
@@ -96,7 +120,7 @@ export default function SimpleCard() {
               </Stack>
               <Button w={"full"} variant={"outline"} leftIcon={<FcGoogle />}>
                 <Center>
-                  <Text onClick={handleLogin}>Inicia sesión con Google</Text>
+                  <Text>Inicia sesión con Google</Text>
                 </Center>
               </Button>
 
@@ -117,6 +141,7 @@ export default function SimpleCard() {
                   _hover={{
                     bg: "blue.500",
                   }}
+                  onClick={handleLogin}
                 >
                   Iniciar sesión
                 </Button>

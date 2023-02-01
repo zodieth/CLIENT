@@ -1,6 +1,9 @@
 .armado {
-  height: 1920px;
   background-color: aliceblue;
+}
+
+.footer {
+  margin-top: 15rem;
 }
 
 .componentsPhotos {
