@@ -76,7 +76,7 @@ export const fetchProductsApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(productsLoading());
 
-    await axios
+    return await axios
       .get("https://henry-pf-back.up.railway.app/products")
       .then(
         function (response) {
@@ -124,30 +124,26 @@ export const fetchBrandApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(brandLoading());
 
-    return await fetch("http://localhost:3001/brands")
+    return await axios
+      .get("https://henry-pf-back.up.railway.app/brands")
       .then(
-        (response) => {
-          if (response.ok) {
-            return response;
-          } else {
+        function (response) {
+          if (response.data.length) return response;
+          else {
             var error = new Error(
               "Error " + response.status + ": " + response.statusText
             );
             throw error;
           }
         },
-        (error) => {
+        function (error) {
           var errMess = new Error(error.message);
           throw errMess;
         }
       )
-      .then((response) => response.json())
-      .then((brands) => {
-        dispatch(addBrand(brands));
-      })
+      .then((data) => dispatch(addBrand(data.data)))
       .catch((error) => dispatch(brandFailed(error.message)));
   };
-
 //Categorias
 export const addCategories = (value: any) => {
   return {
@@ -176,10 +172,11 @@ export const fetchCategoryApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(categoryLoading());
 
-    return await fetch("http://localhost:3001/category")
+    return await axios
+      .get("https://henry-pf-back.up.railway.app/category")
       .then(
-        (response) => {
-          if (response.ok) {
+        function (response) {
+          if (response.data.length) {
             return response;
           } else {
             var error = new Error(
@@ -188,15 +185,12 @@ export const fetchCategoryApi =
             throw error;
           }
         },
-        (error) => {
+        function (error) {
           var errMess = new Error(error.message);
           throw errMess;
         }
       )
-      .then((response) => response.json())
-      .then((categories) => {
-        dispatch(addCategories(categories));
-      })
+      .then((categories) => dispatch(addCategories(categories.data)))
       .catch((error) => dispatch(categoryFailed(error.message)));
   };
 
