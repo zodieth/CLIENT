@@ -118,7 +118,14 @@ function ArmaPC() {
   );
 
   const addToCartPC = (value: any) => {
-    dispatch(addToCart(value));
+    let card = {
+      name: value.name,
+      price: value.price,
+      img: value.images[0],
+      reviews: value.reviews,
+      count: 1,
+    };
+    dispatch(addToCart(card));
   };
 
   const addToCartAlert = () => {
