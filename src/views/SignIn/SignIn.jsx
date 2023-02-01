@@ -37,11 +37,11 @@ export default function SimpleCard() {
     // console.log("userAuth0: ", userAuth0);
     await loginWithRedirect({
       appState: {
-        returnTo: "/"
+        returnTo: "/",
       },
       authorizationParams: {
-        prompt: "login"
-      }
+        prompt: "login",
+      },
     });
   };
 
