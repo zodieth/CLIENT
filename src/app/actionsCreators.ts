@@ -1,16 +1,10 @@
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import * as ActionTypes from "../features/ActionTypes";
 import { RootState } from "./store";
+import axios from "axios";
 
 export const createProduct = (value: any) => {
-  fetch("http://localhost:3001/products", {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify(value),
-  });
+  axios.post("https://henry-pf-back.up.railway.app/products", value);
 
   return {
     type: ActionTypes.CREATE_PRODUCT,
@@ -82,28 +76,24 @@ export const fetchProductsApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(productsLoading());
 
-    return await fetch("http://localhost:3001/products")
+    await axios
+      .get("https://henry-pf-back.up.railway.app/products")
       .then(
-        (response) => {
-          if (response.ok) {
-            return response;
-          } else {
+        function (response) {
+          if (response.data.length) return response;
+          else {
             var error = new Error(
               "Error " + response.status + ": " + response.statusText
             );
             throw error;
           }
         },
-        (error) => {
+        function (error) {
           var errMess = new Error(error.message);
           throw errMess;
         }
       )
-      .then((response) => response.json())
-      .then((products) => {
-        dispatch(addProducts(products));
-      })
-      .catch((error) => dispatch(productsFailed(error.message)));
+      .then((data) => dispatch(addProducts(data.data)));
   };
 
 export const categoryBrands = (categorySearch: String, brand: String) => {
@@ -308,58 +298,75 @@ export const deleteCateogry =
   (dispatch) => {
     dispatch(categoryLoading());
 
-  return fetch(`http://localhost:3001/category/${id}`, {
-    method: 'DELETE',
-    headers: {
-        'Content-Type': 'application/json'
-    }
-  })
-  .then(response => {
-    if (response.ok) {
-      dispatch(deleteCategory(id))
-    } else {
-      var error = new Error('Error ' + response.status + ': ' + response.statusText);
-      throw error;
-    }
-  }, error => {
-      throw error;
-  })
-  .catch(error => { 
-    console.log('Delete category', error.message); 
-    dispatch(categoryFailed(error.message))
-  });
-}
-
-export const putCateogry = (id:string, name:string, description:string, father:any=null): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
-  dispatch(categoryLoading());
-  
-  if(father === '') father = null;
-
-  const myCategory = {
-    name: name,
-    description: description,
-    father: father,
-  }
-
-  return fetch('http://localhost:3001/category/'+id, {
-    method: 'PUT',
-    body: JSON.stringify(myCategory),
-    headers: {
-        'Content-Type': 'application/json'
-    }
-  })
-  .then(response => {
-      if (response.ok) {
-          return response;
-      } else {
-          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+    return fetch(`http://localhost:3001/category/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            dispatch(deleteCategory(id));
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
           throw error;
-      }
-  }, error => {
-      throw error;
-  })
-  .catch(error => { 
-    console.log('Post activity', error.message); 
-    dispatch(categoryFailed(error.message))
-  });
-}
+        }
+      )
+      .catch((error) => {
+        console.log("Delete category", error.message);
+        dispatch(categoryFailed(error.message));
+      });
+  };
+
+export const putCateogry =
+  (
+    id: string,
+    name: string,
+    description: string,
+    father: any = null
+  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    dispatch(categoryLoading());
+
+    if (father === "") father = null;
+
+    const myCategory = {
+      name: name,
+      description: description,
+      father: father,
+    };
+
+    return fetch("http://localhost:3001/category/" + id, {
+      method: "PUT",
+      body: JSON.stringify(myCategory),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .catch((error) => {
+        console.log("Post activity", error.message);
+        dispatch(categoryFailed(error.message));
+      });
+  };
