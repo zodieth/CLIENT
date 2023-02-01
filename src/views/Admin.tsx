@@ -41,6 +41,7 @@ import {
   fetchCategoryApi,
 } from "../app/actionsCreators";
 import { useAuth0 } from "@auth0/auth0-react";
+import { ManagementClient } from "auth0";
 
 interface LinkItemProps {
   name: string;
@@ -66,35 +67,36 @@ export default function SidebarWithHeader({
 }: {
   children: ReactNode;
 }) {
-  const { getAccessTokenSilently, user, isAuthenticated, isLoading, error } =
-    useAuth0();
-
+  const { getAccessTokenSilently, getIdTokenClaims, user, isAuthenticated, isLoading, error } = useAuth0();
+  const userClaims = getIdTokenClaims();
   useEffect(() => {
     console.log("My user: ", user);
     console.log("Authenticated: ", isAuthenticated);
     console.log("Loading: ", isLoading);
     console.log("Error: ", error);
+    console.log("User claims: ", userClaims);
+    // console.log("Roles: ", roles);
   }, [user, isAuthenticated, isLoading, error]);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      const getToken = async () => {
-        const accessToken = await getAccessTokenSilently();
-        console.log("Token: ", accessToken);
-        const response = await fetch("http://localhost:3001/claims", {
-          method: "GET",
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        const allClaims = await response.json();
-        console.log("Claims: ", allClaims);
-        return allClaims;
-      };
-      getToken();
-    }
-  }, [getAccessTokenSilently, isAuthenticated]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     const getToken = async () => {
+  //       const accessToken = await getAccessTokenSilently();
+  //       console.log("Token: ", accessToken);
+  //       const response = await fetch("http://localhost:3001/claims", {
+  //         method: "GET",
+  //         headers: {
+  //           "content-type": "application/json",
+  //           Authorization: `Bearer ${accessToken}`,
+  //         },
+  //       });
+  //       const allClaims = await response.json();
+  //       console.log("Claims: ", allClaims);
+  //       return allClaims;
+  //     };
+  //     getToken();
+  //   }
+  // }, [getAccessTokenSilently, isAuthenticated]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();

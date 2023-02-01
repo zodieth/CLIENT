@@ -10,6 +10,7 @@ import EditCategoryAdmin from "../components/Admin/Categories/editCategory";
 import ArmaPC from "../views/ArmaPC/ArmaPC";
 import ProductAdmin from "../components/Admin/Products/products";
 import Detail from "../views/Detail/Detail";
+import { PostLogin } from "../views/Authentication/PostLogin";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +36,11 @@ export const router = createBrowserRouter([
   {
     path: "/signin",
     element: <SignIn />,
+    exact: true,
+  },
+  {
+    path: "/postlogin",
+    element: <PostLogin />,
     exact: true,
   },
   {
@@ -64,5 +70,5 @@ export const router = createBrowserRouter([
   {
     path: "/productos/:name",
     element: <Detail />,
-  },
+  }
 ]);
