@@ -79,7 +79,7 @@ function Cart() {
             <div className={style.finish}>
               <div className={style.total}>
                 <div>TOTAL</div>
-                <div>US${totalCompra}</div>
+                <div>US$ {totalCompra}</div>
               </div>
               {submitDisappear === true ? (
                 <div>

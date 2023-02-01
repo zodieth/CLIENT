@@ -54,7 +54,7 @@ function CartCard(props: any) {
                 <HiOutlinePlusSm />
               </Button>
               <div className={style.price_Delete}>
-                <div className={style.price}> US${total}</div>
+                <div className={style.price}> US$ {total}</div>
                 <Button
                   colorScheme="red"
                   height={8}
