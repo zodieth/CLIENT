@@ -65,7 +65,7 @@ export default function ProductAdmin() {
   return (
     <form className={style.container} onSubmit={handeleSubmit}>
       <div className={style.groupInputs}>
-        <label>Name</label>
+        <label>Nombre</label>
         <Input
           onChange={(e) => handleChange(e)}
           value={inputProducts.name}
@@ -76,18 +76,18 @@ export default function ProductAdmin() {
         />
       </div>
       <div className={style.groupInputs}>
-        <label>Description</label>
+        <label>Descripción</label>
         <Input
           width="200"
           type="text"
-          placeholder="Descripcción del producto"
+          placeholder="Descripción del producto"
           onChange={(e) => handleChange(e)}
           value={inputProducts.description}
           name="description"
         />
       </div>
       <div className={style.groupInputs}>
-        <label>Price</label>
+        <label>Precio (US$)</label>
         <Input
           width="200"
           type="number"
@@ -98,7 +98,7 @@ export default function ProductAdmin() {
         />
       </div>
       <div className={style.groupInputs}>
-        <label>Images</label>
+        <label>Imagen</label>
         <Input
           width="200"
           type="text"
@@ -109,7 +109,7 @@ export default function ProductAdmin() {
         />
       </div>
       <div className={style.groupInputs}>
-        <label>Brand</label>
+        <label>Marca</label>
         <Input
           width="200"
           type="text"
@@ -120,7 +120,7 @@ export default function ProductAdmin() {
         />
       </div>
       <div className={style.groupInputs}>
-        <label>Category</label>
+        <label>Categoría</label>
         <Input
           width="200"
           type="text"
@@ -133,7 +133,7 @@ export default function ProductAdmin() {
       <hr className={style.hrLineDashed} />
       <div className={style.groupButtons}>
         <button className={style.btnWhite}>Cancelar</button>
-        <button className={style.btnPrimary}>Guardar</button>
+        <button className={style.btnPrimary}>Crear</button>
       </div>
     </form>
   );
