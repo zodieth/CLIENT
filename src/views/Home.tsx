@@ -39,7 +39,7 @@ function Home() {
     if (isAuthenticated) {
       const getToken = async () => {
         const accessToken = await getAccessTokenSilently();
-        console.log("Token: ", accessToken);
+        // console.log("Token: ", accessToken);
         const response = await fetch("http://localhost:3001/claims", {
           //Ejemplo real...
           method: "GET",
@@ -49,7 +49,7 @@ function Home() {
           },
         });
         const allClaims = await response.json();
-        console.log("Claims: ", allClaims);
+        // console.log("Claims: ", allClaims);
         return allClaims;
       };
       getToken();

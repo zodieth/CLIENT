@@ -14,19 +14,17 @@ function Filter() {
 
   const handleSearch = () => {
     const inputSearch = document.querySelector("#search") as HTMLInputElement;
-    const type = document.querySelector("#type") as HTMLInputElement;
+    //const type = document.querySelector("#type") as HTMLInputElement;
     const order = document.querySelector("#order") as HTMLInputElement;
     const category = document.querySelector("#category") as HTMLInputElement;
     const brand = document.querySelector("#brand") as HTMLInputElement;
     const min = document.querySelector("#min") as HTMLInputElement;
     const max = document.querySelector("#max") as HTMLInputElement;
-
-    dispatch(productsFilter(inputSearch.value, type.value, order.value, min.value, max.value, category.value, brand.value));
+    dispatch(productsFilter(inputSearch.value, order.value, min.value, max.value, category.value, brand.value));
   }
 
   return (
     <div className={style.subNav}>
-      <div className={style.selects}>
         <div className={style.options}>
           <Input
             id="search"
@@ -35,30 +33,21 @@ function Filter() {
             onChange={handleSearch}
           />
         </div>
-        <div className={style.options}>
+        <div>
           <Select
             className={style.select}
-            id="type"
+            id= "order"
             color="Gray"
             borderColor="Gray"
             onChange={handleSearch}
           >
-            <option value="ALF">Alfabetico</option>
-            <option value="COST">Precio</option>
+            <option >Ordenamiento</option>
+            <option value="ALF|ASC">Alfabetico descendente</option>
+            <option value="AFL|DESC">Alfabetico ascendente</option>
+            <option value="PRICE|DESC">Precio ascendente</option>
+            <option value="PRICE|ASC">Precio descendente</option>
           </Select>
-        </div>
-        <div className={style.options}>
-          <Select
-            className={style.select}
-            id="order"
-            color="Gray"
-            borderColor="Gray"
-            onChange={handleSearch}
-          >
-            <option value="ASC">Ascendente</option>
-            <option value="DESC">Descendente</option>
-          </Select>
-        </div>
+          </div>
         <div className={style.options}>
           <Input className={styleSearchBar.input} style={{ width: "auto" }} type="number" id="min" placeholder="Mínimo" pattern="^[0-9]+([,.][0-9]+)?$" onChange={handleSearch}/> - <Input className={styleSearchBar.input} style={{ width: "auto" }} type="number" id="max" placeholder="Máximo" pattern="^[0-9]+([,.][0-9]+)?$" onChange={handleSearch}/>
         </div>
@@ -91,7 +80,6 @@ function Filter() {
           </Select>
         </div>
       </div>
-    </div>
   );
 }
 
