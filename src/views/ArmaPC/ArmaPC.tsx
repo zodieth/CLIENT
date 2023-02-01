@@ -19,6 +19,7 @@ import { addToCart } from "../../app/actionsCreators";
 import Card from "./Card";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import Footer from "../../components/Footer/Footer";
 
 function ArmaPC() {
   const [procesadorImg, setProcesadorImg] = useState(cpu);
@@ -118,7 +119,14 @@ function ArmaPC() {
   );
 
   const addToCartPC = (value: any) => {
-    dispatch(addToCart(value));
+    let card = {
+      name: value.name,
+      price: value.price,
+      img: value.images[0],
+      reviews: value.reviews,
+      count: 1,
+    };
+    dispatch(addToCart(card));
   };
 
   const addToCartAlert = () => {
@@ -595,6 +603,9 @@ function ArmaPC() {
         ) : (
           ""
         )}
+      </div>
+      <div className={style.footer}>
+        <Footer />
       </div>
     </div>
   );
