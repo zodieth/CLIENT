@@ -19,6 +19,7 @@ import { addToCart } from "../../app/actionsCreators";
 import Card from "./Card";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import Footer from "../../components/Footer/Footer";
 
 function ArmaPC() {
   const [procesadorImg, setProcesadorImg] = useState(cpu);
@@ -602,6 +603,9 @@ function ArmaPC() {
         ) : (
           ""
         )}
+      </div>
+      <div className={style.footer}>
+        <Footer />
       </div>
     </div>
   );

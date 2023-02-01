@@ -10,7 +10,7 @@ import EditCategoryAdmin from "../components/Admin/Categories/editCategory";
 import ArmaPC from "../views/ArmaPC/ArmaPC";
 import ProductAdmin from "../components/Admin/Products/products";
 import Detail from "../views/Detail/Detail";
-import { PostLogin } from "../views/Authentication/PostLogin";
+import { PostLogin } from "../views/PostLogin/PostLogin";
 
 export const router = createBrowserRouter([
   {
