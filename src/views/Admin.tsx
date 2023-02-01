@@ -49,7 +49,7 @@ interface LinkItemProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome, url: "#" },
+  { name: "Home", icon: FiHome, url: "/admin" },
   { name: "Productos", icon: FiTrendingUp, url: "/admin/products" },
   {
     name: "Categorias",
@@ -273,7 +273,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Username</Text>
+                  <Text fontSize="sm">Nombre de usuario</Text>
                   <Text fontSize="xs" color="gray.600">
                     Admin
                   </Text>
@@ -287,10 +287,10 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
+              <MenuItem>Perfil</MenuItem>
+              <MenuItem>Ajustes</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem>Cerrar sesión</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

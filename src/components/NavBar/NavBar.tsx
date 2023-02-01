@@ -47,7 +47,7 @@ function NavBar() {
             {cartItems.cart.length}
           </Button>
         </Link>
-        <Link to="armatupc">
+        <Link to="/armatupc">
           <Button
             rightIcon={<MdComputer />}
             className={style.button}

@@ -19,31 +19,38 @@ export default function ProductAdmin() {
     name: "",
     description: "",
     price: 0.0,
-    images: "",
+    images: [],
     category: "",
     brand: "",
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    setInputValues({
-      ...inputProducts,
-      [e.target.name]: e.target.value,
-    });
-    
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    if((document.getElementById('images') as HTMLInputElement).value !== ""){
+      let img = (document.getElementById('images') as HTMLInputElement).value;
+      (document.getElementById('images') as HTMLInputElement).value = "";
+      if(!inputProducts.images.find((image) => image === img)){
+        setInputValues({
+          ...inputProducts,
+          'images': inputProducts.images.concat(img),
+        });
+      }
+    }else{
+      setInputValues({
+        ...inputProducts,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   const handeleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(test)
     createProduct(inputProducts);
     createdAlert();
     setInputValues({
       name: "",
       description: "",
       price: 0.0,
-      images: "",
+      images: [],
       category: "",
       brand: "",
     });
@@ -70,7 +77,7 @@ export default function ProductAdmin() {
   return (
     <form className={style.container} onSubmit={handeleSubmit}>
       <div className={style.groupInputs}>
-        <label>Name</label>
+        <label>Nombre</label>
         <Input
           onChange={(e) => handleChange(e)}
           value={inputProducts.name}
@@ -81,18 +88,18 @@ export default function ProductAdmin() {
         />
       </div>
       <div className={style.groupInputs}>
-        <label>Description</label>
+        <label>Descripción</label>
         <Input
           width='sm'
           type="text"
-          placeholder="Descripcción del producto"
+          placeholder="Descripción del producto"
           onChange={(e) => handleChange(e)}
           value={inputProducts.description}
           name="description"
         />
       </div>
       <div className={style.groupInputs}>
-        <label>Price</label>
+        <label>Precio (US$)</label>
         <Input
           width='sm'
           type="number"
@@ -103,20 +110,18 @@ export default function ProductAdmin() {
         />
       </div>
       <div className={style.groupInputs}>
-        <label>Images</label>
-        <CloudinaryUploadWidget />
+        <label>Imagen</label>
+        <CloudinaryUploadWidget  />
         <Input
           id="images"
           width='sm'
-          type="text"
+          type="hidden"
           placeholder="Imagen del producto"
-          onChange={(e) => handleChange(e)}
-          value={inputProducts.images}
           name="images"
         />
       </div>
       <div className={style.groupInputs}>
-        <label>Brand</label>
+        <label>Marca</label>
         <Select
             name='brand'
             onChange={(e) => handleChange(e)}
@@ -129,23 +134,23 @@ export default function ProductAdmin() {
           </Select>
       </div>
       <div className={style.groupInputs}>
-        <label>Category</label>
+        <label>Categoria</label>
         <Select
-            name='category'
-            onChange={(e) => handleChange(e)}
-            placeholder="Categoría del producto"
-            value={inputProducts.category}
-            width='sm' >
-            { Store.categories.allCategories.map((category:interfaceCategory) => {
-                return <option key={category._id} value={category._id}>{category.name}</option>
-              })}
-          </Select>
+          name='category'
+          onChange={(e) => handleChange(e)}
+          placeholder="Categoría del producto"
+          value={inputProducts.category}
+          width='sm' >
+          { Store.categories.allCategories.map((category:interfaceCategory) => {
+              return <option key={category._id} value={category._id}>{category.name}</option>
+            })}
+        </Select>
       </div>
       <img id="uploadedimage" src=""></img>
       <hr className={style.hrLineDashed} />
       <div className={style.groupButtons}>
         <button className={style.btnWhite}>Cancelar</button>
-        <button className={style.btnPrimary}>Guardar</button>
+        <button className={style.btnPrimary}>Crear</button>
       </div>
     </form>
   );

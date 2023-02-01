@@ -94,7 +94,7 @@ function Detail() {
                   <div className={style.right}>
                     <div className={style.name}>{e.name}</div>
                         <div className={style.price_cart}>
-                          <div className={style.price}>${e.price}</div>
+                          <div className={style.price}>US$ {e.price}</div>
                           <Button
                             colorScheme="blue"
                             onClick={() =>
