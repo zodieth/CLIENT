@@ -130,7 +130,7 @@ export default function CategoryAdmin() {
         
         <div className={style.groupButtons}>
           <a href="./" className={style.btnWhite}>Cancelar</a>
-          <button type="submit" className={style.btnPrimary}>Guardar</button>
+          <button type="submit" className={style.btnPrimary}>Crear</button>
         </div>
       </form>
     </div>

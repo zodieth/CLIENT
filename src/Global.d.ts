@@ -2,6 +2,7 @@ declare module "*.module.css";
 declare module "*.module.scss";
 declare module "*.css";
 declare module "*.jpg";
+declare module "*.png";
 declare module "*.webp";
 declare module "auth0"; //Probablemente NO lo necesitemos más...
 declare module "auth0-js"

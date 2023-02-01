@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { auth } from "../../auth0.service";
-// import { useAuth0 } from "@auth0/auth0-react";
+import style from "./SignIn.module.css"
 
 export default function SimpleCard() {
   const [email, setEmail] = useState("");
@@ -79,9 +79,9 @@ export default function SimpleCard() {
     >
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>Sign in to your account</Heading>
+          <Heading fontSize={"3xl"}>Inicie sesión con una cuenta</Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool products ✌️
+          Disfrute de todos nuestros productos ✌️
           </Text>
         </Stack>
         <Box
@@ -92,7 +92,7 @@ export default function SimpleCard() {
         >
           <Stack spacing={4}>
             <FormControl id="email">
-              <FormLabel>Email address</FormLabel>
+              <FormLabel className={style.direccion}>Dirección de correo electrónico</FormLabel>
               <Input
                 type="email"
                 onChange={(e) => {
@@ -101,7 +101,7 @@ export default function SimpleCard() {
               />
             </FormControl>
             <FormControl id="password">
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Contraseña</FormLabel>
               <Input
                 type="password"
                 onChange={(e) => {
@@ -115,12 +115,12 @@ export default function SimpleCard() {
                 align={"start"}
                 justify={"space-between"}
               >
-                <Checkbox>Remember me</Checkbox>
-                <Link color={"blue.400"}>Forgot password?</Link>
+                <Checkbox>Recuérdame</Checkbox>
+                
               </Stack>
               <Button w={"full"} variant={"outline"} leftIcon={<FcGoogle />}>
                 <Center>
-                  <Text>Sign in with Google</Text>
+                  <Text>Inicia sesión con Google</Text>
                 </Center>
               </Button>
 
@@ -134,6 +134,7 @@ export default function SimpleCard() {
                 }
               >
                 <Button
+                className={style.iniciosesion}
                   width={"full"}
                   bg={"blue.400"}
                   color={"white"}
@@ -142,18 +143,23 @@ export default function SimpleCard() {
                   }}
                   onClick={handleLogin}
                 >
-                  Sign in
+                  Iniciar sesión
                 </Button>
               </Link>
+
+              <Stack classname={style.olvido}>
+                <Link  color={"blue.400"}>¿Olvidaste tu contraseña?</Link>
+              </Stack>
+
               <Stack pt={6}>
                 <Text align={"center"}>
-                  Don't you have a user?{" "}
+                ¿No tienes un usuario?{" "}
                   <Link
                     style={{ color: "blue" }}
                     to="/signup"
                     color={"blue.400"}
                   >
-                    Sign Up
+                    Crear usuario
                   </Link>
                 </Text>
               </Stack>
