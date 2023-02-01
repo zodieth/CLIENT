@@ -46,3 +46,10 @@
 .nav {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
+
+.footer{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+
+}

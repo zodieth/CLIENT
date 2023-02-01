@@ -17,6 +17,7 @@ import {
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import style from "./SignUp.module.css"
 
 export default function SignupCard() {
   const [userName, setUserName] = useState("");
@@ -109,10 +110,10 @@ export default function SignupCard() {
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} textAlign={"center"}>
-            Sign up
+            Crear cuenta
           </Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool products ✌️
+          Disfrute de todos nuestros productos ✌️
           </Text>
         </Stack>
         <Box
@@ -123,14 +124,14 @@ export default function SignupCard() {
         >
           <Stack spacing={4}>
           <FormControl id="email" isRequired>
-              <FormLabel>Username</FormLabel>
+              <FormLabel className={style.largo}>Nombre de usuario</FormLabel>
               <Input type="text" value={userName}
                                   onChange={e => setUserName(e.target.value)}/>
             </FormControl>
             <HStack>
               <Box>
                 <FormControl id="password" isRequired>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className={style.largo}>Contraseña</FormLabel>
                     <InputGroup>
                       <Input type={showPassword ? "text" : "password"}
                               value={password}
@@ -142,7 +143,7 @@ export default function SignupCard() {
               </Box>
               <Box>
                 <FormControl id="password" isRequired>
-                  <FormLabel>Confirm password</FormLabel>
+                  <FormLabel className={style.largo}>Confirmar contraseña</FormLabel>
                     <InputGroup>
                       <Input type={showPassword ? "text" : "password"}
                               value={confirmPassword}
@@ -163,7 +164,7 @@ export default function SignupCard() {
             <HStack>
               <Box>
                 <FormControl id="firstName" isRequired>
-                  <FormLabel>First Name</FormLabel>
+                  <FormLabel>Nombre</FormLabel>
                   <Input type="text"
                           value={firstName}
                           onChange={e => setFirstName(e.target.value)}/>
@@ -171,7 +172,7 @@ export default function SignupCard() {
               </Box>
               <Box>
                 <FormControl id="lastName" isRequired>
-                  <FormLabel>Last Name</FormLabel>
+                  <FormLabel>Apellido</FormLabel>
                   <Input type="text"
                           value={lastName}
                           onChange={e => setLastName(e.target.value)}/>
@@ -189,7 +190,7 @@ export default function SignupCard() {
               </Box>
               <Box>
                 <FormControl id="email" isRequired>
-                  <FormLabel>Phone number</FormLabel>
+                  <FormLabel className={style.largo}>Número telefónico</FormLabel>
                   <Input type="tel"
                           value={phoneNumber}
                           onChange={e => setPhoneNumber(e.target.value)}/>
@@ -199,29 +200,40 @@ export default function SignupCard() {
             <HStack>
               <Box>
                 <FormControl id="email" isRequired>
-                  <FormLabel>Province/Territory</FormLabel>
-                  <Select placeholder="Province/Territory"
+                  <FormLabel>Provincia</FormLabel>
+                  <Select  placeholder="Provincia"
                           value={province}
                           onChange={e => setProvince(e.target.value)}>
-                    <option value="Alberta">Alberta</option>
-                    <option value="British Columbia">British Columbia</option>
-                    <option value="Manitoba">Manitoba</option>
-                    <option value="New Brunswick">New Brunswick</option>
-                    <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
-                    <option value="Northwest Territories">Northwest Territories</option>
-                    <option value="Nova Scotia">Nova Scotia</option>
-                    <option value="Nunavut">Nunavut</option>
-                    <option value="Ontario">Ontario</option>
-                    <option value="Prince Edward Island">Prince Edward Island</option>
-                    <option value="Quebec">Quebec</option>
-                    <option value="Saskatchewan">Saskatchewan</option>
-                    <option value="Yukon">Yukon</option>
+                    <option value="Buenos Aires">Buenos Aires</option>
+                    <option value="Ciudad Autónoma de Buenos Aires">Ciudad Autónoma de Buenos Aires</option>
+                    <option value="Catamarca">Catamarca</option>
+                    <option value="Chaco">Chaco</option>
+                    <option value="Chubut">Chubut</option>
+                    <option value="Córdoba">Córdoba</option>
+                    <option value="Corrientes">Corrientes</option>
+                    <option value="Entre Ríos">Entre Ríos</option>
+                    <option value="Formosa">Formosa</option>
+                    <option value="Jujuy">Jujuy</option>
+                    <option value="La Pampa">La Pampa</option>
+                    <option value="La Rioja">La Rioja</option>
+                    <option value="Mendoza">Mendoza</option>
+                    <option value="Misiones">Misiones</option>
+                    <option value="Neuquén">Neuquén</option>
+                    <option value="Río Negro">Río Negro</option>
+                    <option value="Salta">Salta</option>
+                    <option value="San Juan">San Juan</option>
+                    <option value="San Luis">San Luis</option>
+                    <option value="Santa Cruz">Santa Cruz</option>
+                    <option value="Santa Fe">Santa Fe</option>
+                    <option value="Santiago del Estero">Santiago del Estero</option>
+                    <option value="Tierra del Fuego">Tierra del Fuego</option>
+                    <option value="Tucumán">Tucumán</option>
                   </Select>
                 </FormControl>
               </Box>
               <Box>
                 <FormControl id="email" isRequired>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel>Ciudad</FormLabel>
                   <Input type="text"
                           value={city}
                           onChange={e => setCity(e.target.value)}/>
@@ -231,7 +243,7 @@ export default function SignupCard() {
             <HStack>
               <Box>
                 <FormControl id="email" isRequired>
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel>Dirección</FormLabel>
                   <Input type="text"
                           value={address}
                           onChange={e => setAddress(e.target.value)}/>
@@ -239,7 +251,7 @@ export default function SignupCard() {
               </Box>
               <Box>
                 <FormControl id="email" isRequired>
-                  <FormLabel>Postal code</FormLabel>
+                  <FormLabel className={style.largo}>Código Postal</FormLabel>
                   <Input type="text"
                           value={postalCode}
                           onChange={e => setPostalCode(e.target.value)}/>
@@ -258,14 +270,14 @@ export default function SignupCard() {
                 disabled={!allowSignUp}
                 onClick={handleSignUp}
               >
-                Sign up
+                Crear cuenta
               </Button>
             </Stack>
             <Stack pt={6}>
               <Text align={"center"}>
-                Already a user?{" "}
+                ¿Ya eres usuario?{" "}
                 <Link style={{ color: "blue" }} to="/signin" color={"blue.400"}>
-                  Login
+                  Inicie sesión
                 </Link>
               </Text>
             </Stack>
