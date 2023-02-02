@@ -65,8 +65,8 @@ export const productsFailed = (value: String) => ({
 
 export const productsFilter = (
   value: String,
-  type: String,
-  order: String,
+  // type: String,
+  order:String,
   costMin: String,
   costMax: String,
   categorySearch: String,
@@ -74,7 +74,7 @@ export const productsFilter = (
 ) => {
   return {
     type: ActionTypes.PRODUCT_FILTER,
-    payload: { value, type, order, costMin, costMax, categorySearch, brand },
+    payload: { value, order, costMin, costMax, categorySearch, brand },
   };
 };
 
@@ -112,51 +112,6 @@ export const categoryBrands = (categorySearch: String, brand: String) => {
     payload: { categorySearch, brand },
   };
 };
-
-//Marcas
-export const addBrand = (value: any) => {
-  return {
-    type: ActionTypes.BRAND_ADD,
-    payload: value,
-  };
-};
-
-export const brandLoading = () => ({
-  type: ActionTypes.BRAND_LOADING,
-});
-
-export const brandFailed = (value: String) => ({
-  type: ActionTypes.BRAND_FAILED,
-  payload: value,
-});
-
-export const fetchBrandApi =
-  (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
-    dispatch(brandLoading());
-
-    return await fetch("http://localhost:3001/brands")
-      .then(
-        (response) => {
-          if (response.ok) {
-            return response;
-          } else {
-            var error = new Error(
-              "Error " + response.status + ": " + response.statusText
-            );
-            throw error;
-          }
-        },
-        (error) => {
-          var errMess = new Error(error.message);
-          throw errMess;
-        }
-      )
-      .then((response) => response.json())
-      .then((brands) => {
-        dispatch(addBrand(brands));
-      })
-      .catch((error) => dispatch(brandFailed(error.message)));
-  };
 
 //Categorias
 export const addCategories = (value: any) => {
@@ -330,27 +285,26 @@ export const deleteCateogry =
   });
 }
 
-export const putCateogry = (id:string, name:string, description:string, father:any=null): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
+export const updateCategory = (value: any) => {
+  return {
+    type: ActionTypes.CATEGORY_UPDATE,
+    payload: value,
+  };
+};
+
+export const putCateogry = (id:string, category:any): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
   dispatch(categoryLoading());
   
-  if(father === '') father = null;
-
-  const myCategory = {
-    name: name,
-    description: description,
-    father: father,
-  }
-
   return fetch('http://localhost:3001/category/'+id, {
     method: 'PUT',
-    body: JSON.stringify(myCategory),
+    body: JSON.stringify(category),
     headers: {
         'Content-Type': 'application/json'
     }
   })
   .then(response => {
       if (response.ok) {
-          return response;
+        return response;
       } else {
           var error = new Error('Error ' + response.status + ': ' + response.statusText);
           throw error;
@@ -358,8 +312,172 @@ export const putCateogry = (id:string, name:string, description:string, father:a
   }, error => {
       throw error;
   })
+  .then((response) => response.json())
+  .then((response) => {
+    dispatch(updateCategory(response));
+  })
   .catch(error => { 
     console.log('Post activity', error.message); 
     dispatch(categoryFailed(error.message))
+  });
+}
+
+//Brands
+
+export const addBrand = (value: any) => {
+  return {
+    type: ActionTypes.BRAND_ADD,
+    payload: value,
+  };
+};
+
+export const brandLoading = () => ({
+  type: ActionTypes.BRAND_LOADING,
+});
+
+export const brandFailed = (value: String) => ({
+  type: ActionTypes.BRAND_FAILED,
+  payload: value,
+});
+
+export const fetchBrandApi =
+  (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+    dispatch(brandLoading());
+
+    return await fetch("http://localhost:3001/brands")
+      .then(
+        (response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
+          var errMess = new Error(error.message);
+          throw errMess;
+        }
+      )
+      .then((response) => response.json())
+      .then((brands) => {
+        dispatch(addBrand(brands));
+      })
+      .catch((error) => dispatch(brandFailed(error.message)));
+  };
+
+export const postBrand =
+  (
+    name: string
+  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    dispatch(brandLoading());
+
+    const newBrand = {
+      name: name,
+    };
+
+    return fetch("http://localhost:3001/brands", {
+      method: "POST",
+      body: JSON.stringify(newBrand),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .then((response) => response.json())
+      .then((response) => {
+        dispatch(addBrand(response));
+      })
+      .catch((error) => {
+        console.log("Post brand", error.message);
+        dispatch(brandFailed(error.message));
+      });
+  };
+
+export const deleteBrand = (value: any) => {
+  return {
+    type: ActionTypes.BRAND_DELETE,
+    payload: value,
+  };
+};
+
+export const deleteBrandApi =
+  (id: string): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    dispatch(brandLoading());
+
+  return fetch(`http://localhost:3001/brands/${id}`, {
+    method: 'DELETE',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+    if (response.ok) {
+      dispatch(deleteBrand(id))
+    } else {
+      var error = new Error('Error ' + response.status + ': ' + response.statusText);
+      throw error;
+    }
+  }, error => {
+      throw error;
+  })
+  .catch(error => { 
+    console.log('Delete brand', error.message); 
+    dispatch(brandFailed(error.message))
+  });
+}
+
+export const updateBrand = (value: any) => {
+  return {
+    type: ActionTypes.BRAND_UPDATE,
+    payload: value,
+  };
+};
+
+export const putBrand = (id:string, brand:any): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
+  dispatch(categoryLoading());
+  
+  return fetch('http://localhost:3001/brands/'+id, {
+    method: 'PUT',
+    body: JSON.stringify(brand),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+      if (response.ok) {
+        return response;
+      } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          throw error;
+      }
+  }, error => {
+      throw error;
+  })
+  .then((response) => response.json())
+  .then((response) => {
+    dispatch(updateBrand(response));
+  })
+  .catch(error => { 
+    console.log('Post brand', error.message); 
+    dispatch(brandFailed(error.message))
   });
 }

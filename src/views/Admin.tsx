@@ -57,7 +57,7 @@ const LinkItems: Array<LinkItemProps> = [
     icon: FiCompass,
     url: "/admin/categories",
   },
-  { name: "Marcas", icon: FiStar, url: "#" },
+  { name: "Marcas", icon: FiStar, url: "/admin/brands" },
   { name: "Sucursales", icon: FiSettings, url: "#" },
   { name: "Usuarios", icon: FiSettings, url: "#" },
 ];
