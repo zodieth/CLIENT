@@ -65,8 +65,8 @@ export const productsFailed = (value: String) => ({
 
 export const productsFilter = (
   value: String,
-  type: String,
-  order: String,
+  // type: String,
+  order:String,
   costMin: String,
   costMax: String,
   categorySearch: String,
@@ -74,7 +74,7 @@ export const productsFilter = (
 ) => {
   return {
     type: ActionTypes.PRODUCT_FILTER,
-    payload: { value, type, order, costMin, costMax, categorySearch, brand },
+    payload: { value, order, costMin, costMax, categorySearch, brand },
   };
 };
 

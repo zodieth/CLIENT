@@ -5,7 +5,7 @@ import { store } from "./app/store";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router/index";
 import { ChakraProvider } from "@chakra-ui/react";
-import { Auth0Provider } from "@auth0/auth0-react";
+// import { Auth0Provider } from "@auth0/auth0-react";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);

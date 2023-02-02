@@ -46,6 +46,7 @@ function Detail() {
       price: value.price,
       img: value.images[0],
       reviews: value.reviews,
+      description: value.description,
       count: 1,
     };
 
@@ -95,8 +96,11 @@ function Detail() {
                     className={style.imgDetail}
                   />
                 </div>
-                <div className={style.right}>
-                  <div className={style.name}>{e.name}</div>
+                <div >
+                  <h2 className={style.name}>{e.name}</h2>
+                  <div className={style.text}> 
+                    <p >{e.description}</p>
+                  </div>
                   <div className={style.price_cart}>
                     <div className={style.price}>US$ {e.price}</div>
                     <Button
@@ -116,6 +120,7 @@ function Detail() {
                       )}
                     </Button>
                   </div>
+                  
                 </div>
                 <div className={style.texto}>
                   <h4>* Las imágenes se exhiben con fines ilustrativos.</h4>
