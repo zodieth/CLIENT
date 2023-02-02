@@ -39,7 +39,7 @@ export const Products = (
     case ActionTypes.PRODUCT_FILTER:
       const value = action.payload.value; //Name
       const categorySearch = action.payload.categorySearch; //Category
-      const type = action.payload.type; //Ordenamiento ALF o PRICE
+      //const type = action.payload.type; //Ordenamiento ALF o PRICE
       const brand = action.payload.brand;
       const order = action.payload.order;
       const costMin = action.payload.costMin;
@@ -85,8 +85,10 @@ export const Products = (
         filterCost = filterBrand;
       }
 
-      if (type === "ALF") {
-        if (order === "ASC") {
+      let totalOrder= order.split("|")
+      
+      if (totalOrder[0] === "ALF") {
+        if (totalOrder[1] === "ASC") {
           filterCost.sort(function (a: interfaceProduct, b: interfaceProduct) {
             if (a.name > b.name) {
               return 1;
@@ -96,7 +98,7 @@ export const Products = (
             }
             return 0;
           });
-        } else {
+        } else if (totalOrder[1] === "DESC"){
           filterCost.sort(function (a: interfaceProduct, b: interfaceProduct) {
             if (a.name < b.name) {
               return 1;
@@ -107,12 +109,12 @@ export const Products = (
             return 0;
           });
         }
-      } else {
-        if (order === "ASC") {
+      } else if (totalOrder[0] === "PRICE") {
+        if (totalOrder[1] === "ASC") {
           filterCost.sort(function (a: any, b: any) {
             return a.price - b.price;
           });
-        } else {
+        } else if (totalOrder[1] === "DESC") {
           filterCost.sort(function (a: any, b: any) {
             return b.price - a.price;
           });

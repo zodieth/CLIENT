@@ -1,4 +1,5 @@
 import * as ActionTypes from "../ActionTypes";
+import interfaceBrand from  "../brands/interfaceBrand";
 
 export const Brands = (
   state = {
@@ -19,7 +20,7 @@ export const Brands = (
         allBrands: action.payload
       };
 
-    case ActionTypes.PRODUCT_LOADING:
+    case ActionTypes.BRAND_LOADING:
       return { 
         ...state, 
         isLoading: true, 
@@ -27,7 +28,7 @@ export const Brands = (
         brandsFilter: [] 
       };
 
-    case ActionTypes.PRODUCT_FAILED:
+    case ActionTypes.BRAND_FAILED:
       return {
         ...state,
         isLoading: false,
@@ -35,6 +36,18 @@ export const Brands = (
         brandsFilter: [],
       };
 
+    case ActionTypes.BRAND_UPDATE:
+      return {
+        ...state,
+        isLoading: false,
+        errMess: null,
+        allBrands: state.allBrands.map((brand:interfaceBrand) => {
+          if(brand._id === action.payload._id)
+            return action.payload;
+          return brand;
+        }),
+      };
+      
     default:
       return state;
   }

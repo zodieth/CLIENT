@@ -46,6 +46,7 @@ function Detail(props: any) {
       price: value.price,
       img: value.images[0],
       reviews: value.reviews,
+      description: value.description,
       count: 1,
     };
 

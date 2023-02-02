@@ -57,7 +57,7 @@ const LinkItems: Array<LinkItemProps> = [
     icon: FiCompass,
     url: "/admin/categories",
   },
-  { name: "Marcas", icon: FiStar, url: "#" },
+  { name: "Marcas", icon: FiStar, url: "/admin/brands" },
   { name: "Sucursales", icon: FiSettings, url: "#" },
   { name: "Usuarios", icon: FiSettings, url: "#" },
 ];
@@ -67,7 +67,7 @@ export default function SidebarWithHeader({
 }: {
   children: ReactNode;
 }) {
-  const { getAccessTokenSilently, getIdTokenClaims, user, isAuthenticated, isLoading, error } = useAuth0();
+  /* const { getAccessTokenSilently, getIdTokenClaims, user, isAuthenticated, isLoading, error } = useAuth0();
   const userClaims = getIdTokenClaims();
   useEffect(() => {
     console.log("My user: ", user);
@@ -76,7 +76,7 @@ export default function SidebarWithHeader({
     console.log("Error: ", error);
     console.log("User claims: ", userClaims);
     // console.log("Roles: ", roles);
-  }, [user, isAuthenticated, isLoading, error]);
+  }, [user, isAuthenticated, isLoading, error]); */
 
   // useEffect(() => {
   //   if (isAuthenticated) {

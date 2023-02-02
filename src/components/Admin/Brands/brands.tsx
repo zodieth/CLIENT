@@ -1,4 +1,4 @@
-import style from "./products.module.css"
+import style from "./brand.module.css"
 import {
   Table,
   Thead,
@@ -13,19 +13,19 @@ import {
   Switch,
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import interfaceCategory from  "../../../features/categories/interfaceCategory";
+import interfaceBrand from  "../../../features/brands/interfaceBrand";
 import { HiTrash, HiOutlinePencilAlt } from "react-icons/hi";
-import { deleteCateogry, putCateogry } from '../../../app/actionsCreators'
+import { deleteBrandApi, putBrand } from '../../../app/actionsCreators'
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 
-export default function CategoriesAdmin() {
-  const categoriesStore = useAppSelector((state) => state.categories)
+export default function BrandsAdmin() {
+  const brandsStore = useAppSelector((state) => state.brands)
   const dispatch = useAppDispatch();
 
-  const deleteCategory = (id:string) => {
+  const deleteBrand = (id:string) => {
     try{
-      dispatch(deleteCateogry(id))
+      dispatch(deleteBrandApi(id))
       
       const Toast = Swal.mixin({
         toast: true,
@@ -49,7 +49,7 @@ export default function CategoriesAdmin() {
   }
   
   const setActive = (id:string, active:Boolean) => {
-    dispatch(putCateogry(id, {active: !active}))
+    dispatch(putBrand(id, {active: !active}))
   }
 
   return (
@@ -59,31 +59,27 @@ export default function CategoriesAdmin() {
       </div>
       <TableContainer>
         <Table variant='simple'>
-          <TableCaption>Listado de categorías</TableCaption>
+          <TableCaption>Listado de marcas</TableCaption>
           <Thead>
             <Tr>
               <Th>Nombre</Th>
-              <Th>Descripcion</Th>
-              <Th>Categoría padre</Th>
               <Th>Activo</Th>
               <Th>Acciones</Th>
             </Tr>
           </Thead>
           <Tbody>
-            { categoriesStore.allCategories.map((category:interfaceCategory) => {
+            { brandsStore.allBrands.map((brand:interfaceBrand) => {
               return( 
                 <>
-                  <Tr key={category.name}>
-                    <Td>{category.name}</Td>
-                    <Td>{category.description.substring(0,50)+"..."}</Td>
-                    <Td>{category.father?.name}</Td>
-                    <Td><Switch id='email-alerts' isChecked={category.active ? true : false} onChange={() => setActive(category._id, category.active)} /></Td>
+                  <Tr key={brand.name}>
+                    <Td>{brand.name}</Td>
+                    <Td><Switch id='email-alerts' isChecked={brand.active ? true : false} onChange={() => setActive(brand._id, brand.active)} /></Td>
                     <Td style={{ display: "flex" }}>
-                      <Button onClick={() => deleteCategory(category._id)}>
+                      <Button onClick={() => deleteBrand(brand._id)}>
                         <HiTrash size={20}/>
                       </Button>
                       <Button>
-                        <Link to={`/Admin/categories/edit/${category._id}`}>
+                        <Link to={`/Admin/brands/edit/${brand._id}`}>
                           <HiOutlinePencilAlt size={20}/>
                         </Link>
                       </Button>
@@ -95,8 +91,6 @@ export default function CategoriesAdmin() {
           <Tfoot>
             <Tr>
               <Th>Nombre</Th>
-              <Th>Descripcion</Th>
-              <Th>Categoría padre</Th>
               <Th>Activo</Th>
               <Th>Acciones</Th>
             </Tr>
