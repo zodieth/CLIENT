@@ -25,22 +25,23 @@ function Cards() {
 
   return (
     <div>
-      <div className={style.title}>Últimos ingresos</div>
       <div className={style.container}>
-        {products
-          ? productsPagination.map((e) => {
-              return (
-                <ProductCard
-                  name={e.name}
-                  key={e.name}
-                  price={e.price}
-                  img={e.images[0]}
-                  reviews={e.reviews}
-                  count={1}
-                />
-              );
-            })
-          : ""}
+        {productsPagination.length ? (
+          productsPagination.map((e) => {
+            return (
+              <ProductCard
+                name={e.name}
+                key={e.name}
+                price={e.price}
+                img={e.images[0]}
+                reviews={e.reviews}
+                count={1}
+              />
+            );
+          })
+        ) : (
+          <div className={style.loading}>aaaaaaaaaaaaa</div>
+        )}
       </div>
       <Pagination
         page={actualPage}
