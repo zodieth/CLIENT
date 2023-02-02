@@ -1,15 +1,14 @@
-import style from "./products.module.css"
-import { Input, Select } from "@chakra-ui/react";
+import style from "./brand.module.css"
+import { Input } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import interfaceCategory from  "../../../features/categories/interfaceCategory";
-import { useState } from "react";
-import { postCateogry } from "../../../app/actionsCreators"
+import { useEffect, useState } from "react";
+import { putBrand } from "../../../app/actionsCreators"
 import Swal from "sweetalert2";
+import { useParams } from "react-router-dom";
 
 export function validate(inputs: any) {
   let errors = {
     name: "",
-    description: "",
   };
   let regularExpresion = /^[A-Z]+$/i;
 
@@ -21,19 +20,30 @@ export function validate(inputs: any) {
   return errors;
 }
 
-export default function CreateCategoryAdmin() {
+export default function EditBrandAdmin() {
   const dispatch = useAppDispatch();
-  const categoriesStore = useAppSelector((state) => state.categories)
+  const { id } = useParams();
+  const brandsStore = useAppSelector((state) => state.brands)
+  var brandSelected:any = brandsStore.allBrands.find((brand:any) => brand._id === id)  
+  
   const [inputs, setInputs] = useState({
+    id: "",
     name: "",
-    description: "",
-    father: ""
   });
   const [errors, setErrors] = useState({
     name: "",
-    description: ""
   });
-
+  
+  useEffect(() => {
+    if(brandSelected){
+      setInputs({
+        ...inputs,
+        "id": brandSelected._id,
+        "name": brandSelected.name,
+      })
+    }
+  },[brandSelected])
+  
   function handleChange(e: any) {
     setErrors(
       validate({
@@ -51,14 +61,15 @@ export default function CreateCategoryAdmin() {
 
   function handleSubmit(e:any) {
     e.preventDefault();
-    if (errors.name !== "" && errors.description !== "") {
+    if (errors.name !== "") {
       alert("You must correct the mistakes");
     } else {
       dispatch(
-        postCateogry(
-          inputs.name,
-          inputs.description,
-          inputs.father,
+        putBrand(
+          inputs.id,
+          {
+            name: inputs.name
+          }
         )
       );
 
@@ -79,10 +90,9 @@ export default function CreateCategoryAdmin() {
         title: "Agregado Correctamente",
       });
 
-      setInputs({ name: "", description: "", father: ""});
+      setInputs({id: "", name: ""});
       setErrors({
-        name: "",
-        description: ""
+        name: ""
       });
 
       window.history.back();
@@ -91,7 +101,8 @@ export default function CreateCategoryAdmin() {
 
   return (
     <div className={style.container}>
-      <form id="createActivity" onSubmit={handleSubmit}>
+      <form id="createBrand" onSubmit={handleSubmit}>
+        <input type="hidden" value="{categorySelected?.id}" />
         <div className={style.groupInputs}>
           <label>Nombre</label>
           <Input 
@@ -99,40 +110,17 @@ export default function CreateCategoryAdmin() {
             onChange={handleChange}
             name='name'
             placeholder="Nombre de la categoría"
-            width='auto' 
+            width='sm' 
             value={inputs.name}
           />
           <p >{errors.name}</p>
-        </div>
-        <div className={style.groupInputs}>
-          <label>Descripción</label>
-          <Input 
-            type='text'
-            value={inputs.description}
-            onChange={handleChange}
-            name='description'
-            width='auto'/>
-            <p >{errors.description}</p>
-        </div>
-        <div className={style.groupInputs}>
-          <label>Cat. padre</label>
-          <Select
-            name='father'
-            onChange={handleChange}
-            placeholder="Ninguna"
-            value={inputs.father}
-            width='auto' >
-            { categoriesStore.allCategories.map((category:interfaceCategory) => {
-                return <option key={category._id} value={category._id}>{category.name}</option>
-              })}
-          </Select>
         </div>
 
         <hr className={style.hrLineDashed}/>
         
         <div className={style.groupButtons}>
           <a href="#" onClick={() => window.history.back()} className={style.btnWhite}>Cancelar</a>
-          <button type="submit" className={style.btnPrimary}>Crear</button>
+          <button type="submit" className={style.btnPrimary}>Guardar</button>
         </div>
       </form>
     </div>

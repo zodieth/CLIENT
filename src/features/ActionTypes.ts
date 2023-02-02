@@ -14,6 +14,8 @@ export const REMOVE_COUNT = "REMOVE_COUNT";
 export const BRAND_ADD = "BRAND_ADD";
 export const BRAND_LOADING = "BRAND_LOADING";
 export const BRAND_FAILED = "BRAND_FAILED";
+export const BRAND_UPDATE = "BRAND_UPDATE";
+export const BRAND_DELETE = "BRAND_DELETE";
 
 export const CATEGORIES_ADD = "CATEGORIES_ADD";
 export const CATEGORY_ADD = "CATEGORY_ADD";

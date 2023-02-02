@@ -51,7 +51,6 @@ export const Categories = (
       };
 
     case ActionTypes.CATEGORY_UPDATE:
-      console.log(action.payload)
       return {
         ...state,
         isLoading: false,
@@ -62,6 +61,7 @@ export const Categories = (
           return category;
         }),
       };
+      
     default:
       return state;
   }
