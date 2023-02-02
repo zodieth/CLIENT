@@ -16,6 +16,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: row;
+  width: 900px;
   height: 400px;
   margin: 10rem;
   border-radius: 20px;
@@ -23,7 +24,9 @@
 
 .imgDetail {
   height: 300px;
+  width: 200px;
   margin: 10rem;
+  margin-left: 1rem;
   position: relative;
 }
 .texto{
@@ -34,15 +37,25 @@
   align-items: center;
   justify-content:right;
   flex-direction: row;
+  margin-top: 20px;
+}
+.text {
+  /* justify-content:center; */
+  margin-right: 5rem;
+  margin-left: 1rem;
 }
 
 .name {
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .price {
   margin: 1rem;
   font-size: 1.5rem;
+  /* margin-left: 5rem; */
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
 }
 
 .right {
@@ -57,4 +70,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 6+rem;
 }
+
+
+

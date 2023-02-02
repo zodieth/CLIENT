@@ -44,10 +44,11 @@ function Filter() {
             <option >Ordenamiento</option>
             <option value="PRICE|ASC">Precio ascendente</option>
             <option value="PRICE|DESC">Precio descendente</option>
-            <option value="AFL|ASC">Alfabético ascendente</option>
+            <option value="ALF|ASC">Alfabético ascendente</option>
             <option value="ALF|DESC">Alfabético descendente</option>
           </Select>
           </div>
+          
         <div className={style.options}>
           <Input className={styleSearchBar.input} style={{ width: "auto" }} type="number" id="min" placeholder="Mínimo" pattern="^[0-9]+([,.][0-9]+)?$" onChange={handleSearch}/> - <Input className={styleSearchBar.input} style={{ width: "auto" }} type="number" id="max" placeholder="Máximo" pattern="^[0-9]+([,.][0-9]+)?$" onChange={handleSearch}/>
         </div>

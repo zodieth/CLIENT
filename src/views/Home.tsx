@@ -19,6 +19,7 @@ import Filter from "../components/Filtro/filter";
 import { auth } from "../auth0.service";
 
 function Home() {
+
   const handleSession = async () => {
     const sessionState = await auth.isAuthenticated();
     console.log(sessionState);
