@@ -20,13 +20,19 @@ import { auth } from "../auth0.service";
 
 function Home() {
   const handleSession = async () => {
-    const sessionState = await auth.isAuthenticated();
-    console.log(sessionState);
+  
+  };
+
+  const session = () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const tokenExpiracy = localStorage.getItem("expiresIn");
+    const userScope = localStorage.getItem("scope");
+    const sessionState = localStorage.getItem("state");
   };
 
   useEffect(() => {
-    handleSession();
-  }, [handleSession]);
+    session();
+  }, [session]);
 
   const dispatch = useAppDispatch();
   // const {

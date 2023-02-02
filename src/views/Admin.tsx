@@ -67,17 +67,8 @@ export default function SidebarWithHeader({
 }: {
   children: ReactNode;
 }) {
-  const { getAccessTokenSilently, getIdTokenClaims, user, isAuthenticated, isLoading, error } = useAuth0();
-  const userClaims = getIdTokenClaims();
-  useEffect(() => {
-    console.log("My user: ", user);
-    console.log("Authenticated: ", isAuthenticated);
-    console.log("Loading: ", isLoading);
-    console.log("Error: ", error);
-    console.log("User claims: ", userClaims);
-    // console.log("Roles: ", roles);
-  }, [user, isAuthenticated, isLoading, error]);
 
+  
   // useEffect(() => {
   //   if (isAuthenticated) {
   //     const getToken = async () => {

@@ -32,89 +32,94 @@ export default function SignupCard() {
   const [province, setProvince] = useState("");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
-  const [postalCode, setPostalCode] = useState("");
+  const [zip, setZip] = useState("");
   const [allowSignUp, setAllowSignUp] = useState(false);
 
-  // const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
+  const handleUserCreation = async (
+    province : String,
+    city : String,
+    address : String,
+    zip : String,
+    firstName : String,
+    lastName : String,
+    userName : String,
+    phoneNumber : String,
+    email : String,
+    // accessToken : String
+    ) => {
+    const locationResponse = await fetch(`http://localhost:3001/location`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          // Authorization: `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({
+          province,
+          city,
+          address,
+          zip
+        })
+      });
+      const locationDB = await locationResponse.json();
+      console.log(locationDB);
+      const locationId = locationDB._id;
+      const userResponse = await fetch(`http://localhost:3001/user`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          // Authorization: `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          userName,
+          phoneNumber,
+          email,
+          location: locationId
+        })
+      })
+      const userDB = await userResponse.json();
+      console.log("DB user: ", userDB);
+  };
 
   const handleSignUp = () => {
     auth.signup({
       username: userName,
       email: email,
       password: password,
-      connection: "Username-Password-Authentication"
-    }, (error : Auth0Error | null, user : any) => {
+      connection: "Username-Password-Authentication",
+      user_metadata: {
+        userName,
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        province,
+        city,
+        address,
+        zip
+      }
+    }, async (error : Auth0Error | null, user : any) => {
       if(error) {
         //Debería haber un modal que informe al usuario que el proceso de registro no fue exitoso...
-        console.log("Proceso de registro fallido, intente más tarde.");
+        console.log("Error: ", error);
       } else {
         console.log(user);
+        const userCreation = await handleUserCreation(
+          user.userMetadata.province,
+          user.userMetadata.city,
+          user.userMetadata.address,
+          user.userMetadata.zip,
+          user.userMetadata.firstName,
+          user.userMetadata.lastName,
+          user.userMetadata.userName,
+          user.userMetadata.phoneNumber,
+          user.userMetadata.email
+          // accessToken
+        );
+        console.log("User creation: ", userCreation);
       };
     });
-    // const signInAccessToken = getAccessTokenSilently();
-    // const userAuth0Request = await fetch("https://dev-6d0rlv0acg7xdkxt.us.auth0.com/dbconnections/signup", {
-    //     method: "POST",
-    //     headers: {
-    //       "content-type": "application/json",
-    //       Authorization: `Bearer ${signInAccessToken}`
-    //     },
-    //     body: JSON.stringify({
-    //       cliend_id: "2EHZJm086BzkgwY5HXmPeK5UnbHegBXl",
-    //       email: email,
-    //       password: password,
-    //       connection: "Username-Password-Authentication",
-    //       username: userName,
-    //       given_name: firstName,
-    //       family_name: lastName,
-    //       // picture: "",
-    //       user_metadata: {
-    //         phone_number: phoneNumber,
-    //         province: province,
-    //         city: city,
-    //         address: address,
-    //         postal_code: postalCode
-    //       }
-    //     })
-    // });
-    // const userAuth0 = await userAuth0Request.json();
-    // console.log("Auth0 user: ", userAuth0);
-    //Será un alert hasta que tengamos un modal estándar para toda la aplicación...
-    // window.alert(`Usuario creado exitosamente, te hemos enviado un correo electrónico para verificar tu cuenta, debes completar este proceso antes de poder usarla.`);
-    // window.location.href = window.location.origin + "/signin";
-  //   const authorizationAccessToken = getAccessTokenSilently();
-  //   if(userAuth0) {
-  //     const locationResponse = await fetch("http://localhost:3001/location", {
-  //       method: "POST",
-  //       headers: {
-  //         "content-type": "application/json"
-  //       },
-  //       body: JSON.stringify({
-  //         province,
-  //         city,
-  //         address,
-  //         zip: postalCode
-  //       })
-  //     });
-  //     const locationDB = await locationResponse.json();
-  //     const locationId = locationDB._id;
-  //     const userDB = await fetch("http://localhost:3001/user", {
-  //       method: "POST",
-  //       headers: {
-  //         "content-type": "application/json",
-  //         Authorization: `Bearer ${authorizationAccessToken}`
-  //       },
-  //       body: JSON.stringify({
-  //         firstName: firstName,
-  //         lastName: lastName,
-  //         userName: userName,
-  //         phoneNumber: phoneNumber,
-  //         email: email,
-  //         location: locationId
-  //       })
-  //     })
-  //     console.log("DB user: ", userDB);
-  // //   window.location.href = window.location.origin;
-  //   };
   };
 
   useEffect(() => {
@@ -277,8 +282,8 @@ export default function SignupCard() {
                 <FormControl id="email" isRequired>
                   <FormLabel className={style.largo}>Código Postal</FormLabel>
                   <Input type="text"
-                          value={postalCode}
-                          onChange={e => setPostalCode(e.target.value)}/>
+                          value={zip}
+                          onChange={e => setZip(e.target.value)}/>
                   </FormControl>
               </Box>
             </HStack>
