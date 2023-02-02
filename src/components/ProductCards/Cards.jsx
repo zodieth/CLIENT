@@ -40,7 +40,7 @@ function Cards() {
             );
           })
         ) : (
-          <div className={style.loading}>aaaaaaaaaaaaa</div>
+          <div className={style.loading}></div>
         )}
       </div>
       <Pagination
