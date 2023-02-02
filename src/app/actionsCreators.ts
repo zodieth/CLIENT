@@ -206,13 +206,16 @@ type Product = {
 export const payMercadoPagoApi = (products: Product[]) => {
   return async (dispatch: any) => {
     try {
-      const response = await fetch("http://localhost:3001/api/pay", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(products),
-      });
+      const response = await fetch(
+        "https://henry-pf-back.up.railway.app/api/pay",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(products),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Error loading countries");
@@ -220,6 +223,7 @@ export const payMercadoPagoApi = (products: Product[]) => {
 
       const data = await response.json();
       return data;
+
       // despacha una acción con la respuesta del servidor
       //dispatch({ type: 'PAYMENT_SUCCESS', payload: data });
     } catch (error) {
@@ -248,31 +252,10 @@ export const postCateogry =
       father: father,
     };
 
-    return fetch("http://localhost:3001/category", {
-      method: "POST",
-      body: JSON.stringify(newCategory),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(
-        (response) => {
-          if (response.ok) {
-            return response;
-          } else {
-            var error = new Error(
-              "Error " + response.status + ": " + response.statusText
-            );
-            throw error;
-          }
-        },
-        (error) => {
-          throw error;
-        }
-      )
-      .then((response) => response.json())
+    return axios
+      .post("https://henry-pf-back.up.railway.app/category", newCategory)
       .then((response) => {
-        dispatch(addCategory(response));
+        dispatch(addCategory(response.data));
       })
       .catch((error) => {
         console.log("Post activity", error.message);
@@ -292,15 +275,11 @@ export const deleteCateogry =
   (dispatch) => {
     dispatch(categoryLoading());
 
-    return fetch(`http://localhost:3001/category/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    return axios
+      .delete(`https://henry-pf-back.up.railway.app/${id}`, {})
       .then(
         (response) => {
-          if (response.ok) {
+          if (response.data) {
             dispatch(deleteCategory(id));
           } else {
             var error = new Error(
@@ -337,16 +316,11 @@ export const putCateogry =
       father: father,
     };
 
-    return fetch("http://localhost:3001/category/" + id, {
-      method: "PUT",
-      body: JSON.stringify(myCategory),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    return axios
+      .put("https://henry-pf-back.up.railway.app/category/" + id, myCategory)
       .then(
         (response) => {
-          if (response.ok) {
+          if (response.data.length) {
             return response;
           } else {
             var error = new Error(
