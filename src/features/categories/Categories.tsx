@@ -50,6 +50,18 @@ export const Categories = (
         allCategories: state.allCategories.filter((category:interfaceCategory) => category._id !== action.payload),
       };
 
+    case ActionTypes.CATEGORY_UPDATE:
+      return {
+        ...state,
+        isLoading: false,
+        errMess: null,
+        allCategories: state.allCategories.map((category:interfaceCategory) => {
+          if(category._id === action.payload._id)
+            return action.payload;
+          return category;
+        }),
+      };
+      
     default:
       return state;
   }

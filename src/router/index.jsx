@@ -4,13 +4,16 @@ import Cart from "../components/Cart/Cart";
 import Admin from "../views/Admin";
 import SignUp from "../views/SignUp/SignUp";
 import SignIn from "../views/SignIn/SignIn";
-import CategoryAdmin from "../components/Admin/Categories/createCategory";
+import CreateCategoryAdmin from "../components/Admin/Categories/createCategory";
 import CategoriesAdmin from "../components/Admin/Categories/categories";
 import EditCategoryAdmin from "../components/Admin/Categories/editCategory";
 import ArmaPC from "../views/ArmaPC/ArmaPC";
 import ProductAdmin from "../components/Admin/Products/products";
 import Detail from "../views/Detail/Detail";
 import { PostLogin } from "../views/PostLogin/PostLogin";
+import CreateBrandAdmin from "../components/Admin/Brands/createBrand";
+import BrandsAdmin from "../components/Admin/Brands/brands";
+import EditBrandAdmin from "../components/Admin/Brands/editBrand";
 
 export const router = createBrowserRouter([
   {
@@ -59,7 +62,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/Admin/categories/create",
-    element: <Admin children={<CategoryAdmin />} />,
+    element: <Admin children={<CreateCategoryAdmin />} />,
     exact: true,
   },
   {
@@ -70,5 +73,20 @@ export const router = createBrowserRouter([
   {
     path: "/productos/:name",
     element: <Detail />,
-  }
+  },
+  {
+    path: "/Admin/brands",
+    element: <Admin children={<BrandsAdmin />} />,
+    exact: true,
+  },
+  {
+    path: "/Admin/brands/create",
+    element: <Admin children={<CreateBrandAdmin />} />,
+    exact: true,
+  },
+  {
+    path: "/Admin/brands/edit/:id",
+    element: <Admin children={<EditBrandAdmin />} />,
+    exact: true,
+  },
 ]);
