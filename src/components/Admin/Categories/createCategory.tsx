@@ -129,7 +129,7 @@ export default function CategoryAdmin() {
         <hr className={style.hrLineDashed}/>
         
         <div className={style.groupButtons}>
-          <a href="./" className={style.btnWhite}>Cancelar</a>
+          <a href="#" onClick={() => window.history.back()} className={style.btnWhite}>Cancelar</a>
           <button type="submit" className={style.btnPrimary}>Crear</button>
         </div>
       </form>

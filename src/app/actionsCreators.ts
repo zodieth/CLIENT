@@ -330,33 +330,36 @@ export const deleteCateogry =
   });
 }
 
-export const putCateogry = (id:string, name:string, description:string, father:any=null): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
+export const updateCategory = (value: any) => {
+  return {
+    type: ActionTypes.CATEGORY_UPDATE,
+    payload: value,
+  };
+};
+
+export const putCateogry = (id:string, category:any): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
   dispatch(categoryLoading());
   
-  if(father === '') father = null;
-
-  const myCategory = {
-    name: name,
-    description: description,
-    father: father,
-  }
-
   return fetch('http://localhost:3001/category/'+id, {
     method: 'PUT',
-    body: JSON.stringify(myCategory),
+    body: JSON.stringify(category),
     headers: {
         'Content-Type': 'application/json'
     }
   })
   .then(response => {
       if (response.ok) {
-          return response;
+        return response;
       } else {
           var error = new Error('Error ' + response.status + ': ' + response.statusText);
           throw error;
       }
   }, error => {
       throw error;
+  })
+  .then((response) => response.json())
+  .then((response) => {
+    dispatch(updateCategory(response));
   })
   .catch(error => { 
     console.log('Post activity', error.message); 

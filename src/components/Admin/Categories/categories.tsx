@@ -9,15 +9,15 @@ import {
   Td,
   TableCaption,
   TableContainer,
-  Button,
+  Button, 
+  Switch,
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import interfaceCategory from  "../../../features/categories/interfaceCategory";
 import { HiTrash, HiOutlinePencilAlt } from "react-icons/hi";
-import { deleteCateogry } from '../../../app/actionsCreators'
+import { deleteCateogry, putCateogry } from '../../../app/actionsCreators'
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
-import EditCategoryAdmin from "./editCategory"
 
 export default function CategoriesAdmin() {
   const categoriesStore = useAppSelector((state) => state.categories)
@@ -48,6 +48,10 @@ export default function CategoriesAdmin() {
     }
   }
   
+  const setActive = (id:string, active:Boolean) => {
+    dispatch(putCateogry(id, {active: !active}))
+  }
+
   return (
     <div className={style.container}>
       <div className={style.header}>
@@ -61,6 +65,7 @@ export default function CategoriesAdmin() {
               <Th>Nombre</Th>
               <Th>Descripcion</Th>
               <Th>Categoría padre</Th>
+              <Th>Activo</Th>
               <Th>Acciones</Th>
             </Tr>
           </Thead>
@@ -72,6 +77,7 @@ export default function CategoriesAdmin() {
                     <Td>{category.name}</Td>
                     <Td>{category.description.substring(0,50)+"..."}</Td>
                     <Td>{category.father?.name}</Td>
+                    <Td><Switch id='email-alerts' isChecked={category.active ? true : false} onChange={() => setActive(category._id, category.active)} /></Td>
                     <Td style={{ display: "flex" }}>
                       <Button onClick={() => deleteCategory(category._id)}>
                         <HiTrash size={20}/>
