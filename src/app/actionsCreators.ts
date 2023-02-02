@@ -1,16 +1,10 @@
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import * as ActionTypes from "../features/ActionTypes";
 import { RootState } from "./store";
+import axios from "axios";
 
 export const createProduct = (value: any) => {
-  fetch("http://localhost:3001/products", {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify(value),
-  });
+  axios.post("https://henry-pf-back.up.railway.app/products", value);
 
   return {
     type: ActionTypes.CREATE_PRODUCT,
@@ -66,7 +60,7 @@ export const productsFailed = (value: String) => ({
 export const productsFilter = (
   value: String,
   // type: String,
-  order:String,
+  order: String,
   costMin: String,
   costMax: String,
   categorySearch: String,
@@ -82,28 +76,24 @@ export const fetchProductsApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(productsLoading());
 
-    return await fetch("http://localhost:3001/products")
+    return await axios
+      .get("https://henry-pf-back.up.railway.app/products")
       .then(
-        (response) => {
-          if (response.ok) {
-            return response;
-          } else {
+        function (response) {
+          if (response.data.length) return response;
+          else {
             var error = new Error(
               "Error " + response.status + ": " + response.statusText
             );
             throw error;
           }
         },
-        (error) => {
+        function (error) {
           var errMess = new Error(error.message);
           throw errMess;
         }
       )
-      .then((response) => response.json())
-      .then((products) => {
-        dispatch(addProducts(products));
-      })
-      .catch((error) => dispatch(productsFailed(error.message)));
+      .then((data) => dispatch(addProducts(data.data)));
   };
 
 export const categoryBrands = (categorySearch: String, brand: String) => {
@@ -141,10 +131,11 @@ export const fetchCategoryApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(categoryLoading());
 
-    return await fetch("http://localhost:3001/category")
+    return await axios
+      .get("https://henry-pf-back.up.railway.app/category")
       .then(
-        (response) => {
-          if (response.ok) {
+        function (response) {
+          if (response.data.length) {
             return response;
           } else {
             var error = new Error(
@@ -153,15 +144,12 @@ export const fetchCategoryApi =
             throw error;
           }
         },
-        (error) => {
+        function (error) {
           var errMess = new Error(error.message);
           throw errMess;
         }
       )
-      .then((response) => response.json())
-      .then((categories) => {
-        dispatch(addCategories(categories));
-      })
+      .then((categories) => dispatch(addCategories(categories.data)))
       .catch((error) => dispatch(categoryFailed(error.message)));
   };
 
@@ -177,13 +165,16 @@ type Product = {
 export const payMercadoPagoApi = (products: Product[]) => {
   return async (dispatch: any) => {
     try {
-      const response = await fetch("http://localhost:3001/api/pay", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(products),
-      });
+      const response = await fetch(
+        "https://henry-pf-back.up.railway.app/api/pay",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(products),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Error loading countries");
@@ -191,6 +182,7 @@ export const payMercadoPagoApi = (products: Product[]) => {
 
       const data = await response.json();
       return data;
+
       // despacha una acción con la respuesta del servidor
       //dispatch({ type: 'PAYMENT_SUCCESS', payload: data });
     } catch (error) {
@@ -219,31 +211,10 @@ export const postCateogry =
       father: father,
     };
 
-    return fetch("http://localhost:3001/category", {
-      method: "POST",
-      body: JSON.stringify(newCategory),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(
-        (response) => {
-          if (response.ok) {
-            return response;
-          } else {
-            var error = new Error(
-              "Error " + response.status + ": " + response.statusText
-            );
-            throw error;
-          }
-        },
-        (error) => {
-          throw error;
-        }
-      )
-      .then((response) => response.json())
+    return axios
+      .post("https://henry-pf-back.up.railway.app/category", newCategory)
       .then((response) => {
-        dispatch(addCategory(response));
+        dispatch(addCategory(response.data));
       })
       .catch((error) => {
         console.log("Post activity", error.message);
@@ -263,27 +234,28 @@ export const deleteCateogry =
   (dispatch) => {
     dispatch(categoryLoading());
 
-  return fetch(`http://localhost:3001/category/${id}`, {
-    method: 'DELETE',
-    headers: {
-        'Content-Type': 'application/json'
-    }
-  })
-  .then(response => {
-    if (response.ok) {
-      dispatch(deleteCategory(id))
-    } else {
-      var error = new Error('Error ' + response.status + ': ' + response.statusText);
-      throw error;
-    }
-  }, error => {
-      throw error;
-  })
-  .catch(error => { 
-    console.log('Delete category', error.message); 
-    dispatch(categoryFailed(error.message))
-  });
-}
+    return axios
+      .delete(`https://henry-pf-back.up.railway.app/${id}`, {})
+      .then(
+        (response) => {
+          if (response.data) {
+            dispatch(deleteCategory(id));
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .catch((error) => {
+        console.log("Delete category", error.message);
+        dispatch(categoryFailed(error.message));
+      });
+  };
 
 export const updateCategory = (value: any) => {
   return {
@@ -292,35 +264,36 @@ export const updateCategory = (value: any) => {
   };
 };
 
-export const putCateogry = (id:string, category:any): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
-  dispatch(categoryLoading());
-  
-  return fetch('http://localhost:3001/category/'+id, {
-    method: 'PUT',
-    body: JSON.stringify(category),
-    headers: {
-        'Content-Type': 'application/json'
-    }
-  })
-  .then(response => {
-      if (response.ok) {
-        return response;
-      } else {
-          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+export const putCateogry =
+  (
+    id: string,
+    category: any
+  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    dispatch(categoryLoading());
+
+    return axios
+      .put("https://henry-pf-back.up.railway.app/category/" + id, category)
+      .then(
+        (response) => {
+          if (response.data.length) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
           throw error;
-      }
-  }, error => {
-      throw error;
-  })
-  .then((response) => response.json())
-  .then((response) => {
-    dispatch(updateCategory(response));
-  })
-  .catch(error => { 
-    console.log('Post activity', error.message); 
-    dispatch(categoryFailed(error.message))
-  });
-}
+        }
+      )
+      .catch((error) => {
+        console.log("Post activity", error.message);
+        dispatch(categoryFailed(error.message));
+      });
+  };
 
 //Brands
 
@@ -344,34 +317,29 @@ export const fetchBrandApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(brandLoading());
 
-    return await fetch("http://localhost:3001/brands")
+    return await axios
+      .get("https://henry-pf-back.up.railway.app/brands")
       .then(
-        (response) => {
-          if (response.ok) {
-            return response;
-          } else {
+        function (response) {
+          if (response.data.length) return response;
+          else {
             var error = new Error(
               "Error " + response.status + ": " + response.statusText
             );
             throw error;
           }
         },
-        (error) => {
+        function (error) {
           var errMess = new Error(error.message);
           throw errMess;
         }
       )
-      .then((response) => response.json())
-      .then((brands) => {
-        dispatch(addBrand(brands));
-      })
+      .then((data) => dispatch(addBrand(data.data)))
       .catch((error) => dispatch(brandFailed(error.message)));
   };
 
 export const postBrand =
-  (
-    name: string
-  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (name: string): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     dispatch(brandLoading());
 
@@ -379,7 +347,7 @@ export const postBrand =
       name: name,
     };
 
-    return fetch("http://localhost:3001/brands", {
+    return fetch("https://henry-pf-back.up.railway.app/brands", {
       method: "POST",
       body: JSON.stringify(newBrand),
       headers: {
@@ -423,27 +391,32 @@ export const deleteBrandApi =
   (dispatch) => {
     dispatch(brandLoading());
 
-  return fetch(`http://localhost:3001/brands/${id}`, {
-    method: 'DELETE',
-    headers: {
-        'Content-Type': 'application/json'
-    }
-  })
-  .then(response => {
-    if (response.ok) {
-      dispatch(deleteBrand(id))
-    } else {
-      var error = new Error('Error ' + response.status + ': ' + response.statusText);
-      throw error;
-    }
-  }, error => {
-      throw error;
-  })
-  .catch(error => { 
-    console.log('Delete brand', error.message); 
-    dispatch(brandFailed(error.message))
-  });
-}
+    return fetch(`https://henry-pf-back.up.railway.app/brands/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            dispatch(deleteBrand(id));
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .catch((error) => {
+        console.log("Delete brand", error.message);
+        dispatch(brandFailed(error.message));
+      });
+  };
 
 export const updateBrand = (value: any) => {
   return {
@@ -452,32 +425,39 @@ export const updateBrand = (value: any) => {
   };
 };
 
-export const putBrand = (id:string, brand:any): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
-  dispatch(categoryLoading());
-  
-  return fetch('http://localhost:3001/brands/'+id, {
-    method: 'PUT',
-    body: JSON.stringify(brand),
-    headers: {
-        'Content-Type': 'application/json'
-    }
-  })
-  .then(response => {
-      if (response.ok) {
-        return response;
-      } else {
-          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+export const putBrand =
+  (id: string, brand: any): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    dispatch(categoryLoading());
+
+    return fetch("https://henry-pf-back.up.railway.app/brands/" + id, {
+      method: "PUT",
+      body: JSON.stringify(brand),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
           throw error;
-      }
-  }, error => {
-      throw error;
-  })
-  .then((response) => response.json())
-  .then((response) => {
-    dispatch(updateBrand(response));
-  })
-  .catch(error => { 
-    console.log('Post brand', error.message); 
-    dispatch(brandFailed(error.message))
-  });
-}
+        }
+      )
+      .then((response) => response.json())
+      .then((response) => {
+        dispatch(updateBrand(response));
+      })
+      .catch((error) => {
+        console.log("Post brand", error.message);
+        dispatch(brandFailed(error.message));
+      });
+  };
