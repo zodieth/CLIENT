@@ -40,7 +40,7 @@ import {
   fetchBrandApi,
   fetchCategoryApi,
 } from "../app/actionsCreators";
-import { useAuth0 } from "@auth0/auth0-react";
+/* import { useAuth0 } from "@auth0/auth0-react"; */
 import { ManagementClient } from "auth0";
 
 interface LinkItemProps {
@@ -67,7 +67,7 @@ export default function SidebarWithHeader({
 }: {
   children: ReactNode;
 }) {
-  const { getAccessTokenSilently, getIdTokenClaims, user, isAuthenticated, isLoading, error } = useAuth0();
+  /* const { getAccessTokenSilently, getIdTokenClaims, user, isAuthenticated, isLoading, error } = useAuth0();
   const userClaims = getIdTokenClaims();
   useEffect(() => {
     console.log("My user: ", user);
@@ -76,7 +76,7 @@ export default function SidebarWithHeader({
     console.log("Error: ", error);
     console.log("User claims: ", userClaims);
     // console.log("Roles: ", roles);
-  }, [user, isAuthenticated, isLoading, error]);
+  }, [user, isAuthenticated, isLoading, error]); */
 
   // useEffect(() => {
   //   if (isAuthenticated) {
