@@ -7,4 +7,4 @@ export const AUTH0_LOGIN_RESPONSE_TYPE = "token";
 export const AUTH0_CALLBACK_URL = "http://localhost:3000";
 export const API_SERVER_URL = "http://localhost:3001";
 export const AUTH0_AUDIENCE = "https://all-tech.com"
-//Este archivo es temporal, la idea es que estas variables se guarden en .env.
+//Este archivo es temporal, la idea es que estas variables se guarden en .env, pero se necesita una librería específica para eso (dotenv NO sirve).

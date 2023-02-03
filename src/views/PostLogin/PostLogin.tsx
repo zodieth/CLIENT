@@ -2,26 +2,26 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../../auth0.service";
 
-export const PostLogin = () => {
+export default function PostLogin() {
   const location = useLocation();
   const navigate = useNavigate();
-  const handleHash = (hash: String) => {
+  
+  const handleHash = async (hash: String) => {
     auth.parseHash({
       hash
-    }, (error : Auth0ParseHashError | null, token : Auth0DecodedHash | null) => {
+    }, (error : Auth0ParseHashError | null, result : Auth0DecodedHash | null) => {
       if(error) {
-        console.log("Ups, algo salió, mal.");
-        console.log(error);
+        console.log("Error: ", error);
       } else {
-        const { accessToken } = token;
-        console.log(token);
-        //Este token hay que guardarlo en LocalStorage y usarlo para proteger las rutas del frontend...
+        const { accessToken, scope, state } = result;
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("scope", scope);
+        localStorage.setItem("state", state);
         if(accessToken) {
-          auth.client.userInfo(accessToken, (error : Auth0Error | null, user : Auth0UserProfile) => {
+          auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
             if(error) {
-              console.log("No fue posible acceder a la información del usuario.");
+              console.log("Error: ", error);
             } else {
-              console.log(user);
               navigate("/");
             };
           });
@@ -33,10 +33,10 @@ export const PostLogin = () => {
   useEffect(() => {
     if(location.hash) {
       handleHash(location.hash);
-      // navigate(window.location.origin); // ¿Dónde debería ir esta línea?
     } else {
-      console.log("El proceso de autenticación no puede continuar");
+      window.alert("El proceso de autenticación no puede continuar");
+      navigate("/");
     };
   }, [location, navigate]);
-  return <>Loading...</>; //Este componente será más bonito...
+  return <></>; //En esta vista, el usuario no estará más de cinco segundos, por eso está en blanco...
 };
