@@ -15,22 +15,16 @@ import {
 import CarouselDown from "../components/CarouselDown/CarouselDown";
 import Cards from "../components/ProductCards/Cards";
 import Filter from "../components/Filtro/filter";
-// import { useAuth0 } from "@auth0/auth0-react";
 import { auth } from "../auth0.service";
 
 function Home() {
 
-  const handleSession = async () => {
-  
-  };
-
   const session = () => {
     const accessToken = localStorage.getItem("accessToken");
-    const tokenExpiracy = localStorage.getItem("expiresIn");
     const userScope = localStorage.getItem("scope");
     const sessionState = localStorage.getItem("state");
   };
-
+  
   useEffect(() => {
     session();
   }, [session]);

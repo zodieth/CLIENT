@@ -21,54 +21,38 @@ import style from "./SignIn.module.css"
 export default function SimpleCard() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  //Necesitamos un estado global de Redux para guardar los datos del usuario activo. Cuando el usuario se loguee, se llenará ese estado haciendo una request al back...
   const handleLogin = () => {
     auth.login({
-      username: email, //OJO, debe ser el usuario, NO el correo electrónico...
+      email: email,
       password: password,
       realm: "Username-Password-Authentication",
-      redirectUri: "http://localhost:3000/postlogin",
+      redirectUri: `${window.location.origin}/postlogin`,
       responseType: "token"
-    }, (error, user) => {
+    }, (error, result) => {
       if(error) {
         //Debería haber un modal que informe al usuario que el proceso de autenticación no fue exitoso...
-        return console.log("Proceso de autenticación fallido, intente más tarde.");
+        console.log("Error: ", error);
+        window.alert("El proceso de autenticación NO ha sido exitoso. Por favor, intenta más tarde.");
       } else {
-        console.log(user);
+        console.log("Result: ", result);
       };
     });
   };
-  // const { loginWithRedirect, loginWithPopup, getAccessTokenSilently } = useAuth0();
-  // const handleLogin = async () => {
-  //   loginWithPopup({
-  //     appState: {
-  //       returnTo: "/"
-  //     },
-  //     authorizationParams: {
-  //       prompt: "login"
-  //     }
-  //   });
-    // const accessToken = await getAccessTokenSilently();
-    
-    // const loginResponse = await fetch("https://dev-6d0rlv0acg7xdkxt.us.auth0.com/authorize?response_type=token&client_id=2EHZJm086BzkgwY5HXmPeK5UnbHegBXl&connection=UsernamePasswordAuthentication&redirect_uri=http://localhost:3000", {
-    //   method: "GET",
-    //   // headers: {
-    //   //   Authorization: `Bearer ${accessToken}`
-    //   // },
-    //   redirect: "follow"
-    // });
-    // console.log("Login response: ", loginResponse);
-    // const userAuth0 = await loginResponse.json();
-    // console.log("userAuth0: ", userAuth0);
-    // if(loginResponse.redirected) window.location.href = loginResponse.url;
-    // await loginWithRedirect({
-    //   appState: {
-    //     returnTo: "/"
-    //   },
-    //   authorizationParams: {
-    //     prompt: "login"
-    //   }
-    // });
-  // };
+  const handleGoogleLogin = () => {
+    auth.authorize({
+      connection: "google-oauth2",
+      redirectUri: `${window.location.origin}/postsignup`,
+      responseType: "token"
+    }, (error, result) => {
+      if(error) {
+        console.log("Error: ", error);
+        window.alert("El proceso de autenticación NO ha sido exitoso. Por favor, intenta más tarde.");
+      } else {
+        console.log("Result: ", result);
+      };
+    });
+  };
 
   return (
     <Flex
@@ -118,7 +102,11 @@ export default function SimpleCard() {
                 <Checkbox>Recuérdame</Checkbox>
                 
               </Stack>
-              <Button w={"full"} variant={"outline"} leftIcon={<FcGoogle />}>
+              <Button
+                w={"full"}
+                variant={"outline"}
+                leftIcon={<FcGoogle />}
+                onClick={handleGoogleLogin}>
                 <Center>
                   <Text>Inicia sesión con Google</Text>
                 </Center>

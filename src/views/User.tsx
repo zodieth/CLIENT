@@ -41,6 +41,7 @@ import {
   fetchBrandApi,
   fetchCategoryApi,
 } from "../app/actionsCreators";
+import { useAuth0 } from "@auth0/auth0-react";
 import { ManagementClient } from "auth0";
 import { auth } from "../auth0.service";
 
@@ -51,16 +52,9 @@ interface LinkItemProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome, url: "/admin" },
-  { name: "Productos", icon: FiTrendingUp, url: "/admin/products" },
-  {
-    name: "Categorias",
-    icon: FiCompass,
-    url: "/admin/categories",
-  },
-  { name: "Marcas", icon: FiStar, url: "/admin/brands" },
-  { name: "Sucursales", icon: FiSettings, url: "#" },
-  { name: "Usuarios", icon: FiSettings, url: "#" },
+  { name: "Home", icon: FiHome, url: "/user" },
+  { name: "Mis compras", icon: FiSettings, url: "/user/purchases" },
+  { name: "Mis reclamos", icon: FiSettings, url: "/user/claims" },
 ];
 
 export default function SidebarWithHeader({
@@ -70,13 +64,13 @@ export default function SidebarWithHeader({
 }) {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(fetchProductsApi());
-    dispatch(fetchBrandApi());
-    dispatch(fetchCategoryApi());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(fetchProductsApi());
+  //   dispatch(fetchBrandApi());
+  //   dispatch(fetchCategoryApi());
+  // }, []);
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       <SidebarContent
@@ -190,6 +184,7 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const [userName, setUserName] = useState("");
   const [picture, setPicture] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
 
@@ -278,7 +273,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 >
                   <Text fontSize="sm">{userName}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Administrador
+                    Usuario
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
@@ -291,7 +286,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
               <MenuItem onClick={() => navigate("/cart")}>Mi carrito de compras</MenuItem>
-              <MenuItem onClick={() => navigate("/user")}>Mi cuenta de usuario</MenuItem>
+              {isAdmin ? <MenuItem onClick={() => navigate("/admin")}>Mi cuenta de administrador</MenuItem> : null}
               <MenuDivider />
               <MenuItem onClick={() => navigate("/")}>Volver a la tienda</MenuItem>
               <MenuItem onClick={handleLogout}>Salir</MenuItem>

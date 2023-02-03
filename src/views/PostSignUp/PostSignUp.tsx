@@ -14,17 +14,15 @@ import {
   useColorModeValue,
   Select
 } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { auth } from "../../auth0.service";
-import style from "./SignUp.module.css"
+import auth0 from "auth0-js";
+import style from "./PostSignUp.module.css"
 
 export default function SignupCard() {
   const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -35,7 +33,34 @@ export default function SignupCard() {
   const [zip, setZip] = useState("");
   const [allowSignUp, setAllowSignUp] = useState(false);
 
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const handleHash = async (hash: String) => {
+    auth.parseHash({
+      hash
+    }, (error : Auth0ParseHashError | null, result : Auth0DecodedHash | null) => {
+      if(error) {
+        console.log("Error: ", error);
+      } else {
+        const { accessToken, scope, state } = result;
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("scope", scope);
+        localStorage.setItem("state", state);
+        if(accessToken) {
+          auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
+            if(error) {
+              console.log("Error: ", error);
+            } else {
+              setFirstName(user.given_name);
+              setLastName(user.family_name);
+              setEmail(user.email);
+            };
+          });
+        };
+      };
+    });
+  };
 
   const handleUserCreation = async (
     province : String,
@@ -46,8 +71,7 @@ export default function SignupCard() {
     lastName : String,
     userName : String,
     phoneNumber : String,
-    email : String,
-    // accessToken : String
+    email : String
     ) => {
     const locationResponse = await fetch(`http://localhost:3001/location`, {
         method: "POST",
@@ -84,54 +108,81 @@ export default function SignupCard() {
       console.log("DB user: ", userDB);
   };
 
-  const handleSignUp = () => {
-    auth.signup({
-      email: email,
-      password: password,
-      connection: "Username-Password-Authentication",
-      user_metadata: {
-        userName,
-        firstName,
-        lastName,
-        email,
-        phoneNumber,
-        province,
-        city,
-        address,
-        zip
-      }
-    }, async (error : Auth0Error | null, result : any) => {
-      if(error) {
-        //Debería haber un modal que informe al usuario que el proceso de registro no fue exitoso...
-        console.log("Error: ", error);
-        window.alert("El proceso de registro no ha sido exitoso. Por favor, intenta más tarde.");
-      } else {
-        console.log("Result: ", result);
-        await handleUserCreation(
-          province,
-          city,
-          address,
-          zip,
-          firstName,
-          lastName,
-          userName,
-          phoneNumber,
-          email
-          // accessToken
-        );
-        window.alert("Bienvenido a AllTech. Revisa tu correo electrónico, recuerda que debes verificar tu cuenta antes de ingresar.");
-        navigate("/signin");
-      };
-    });
+  const handleSignUp = async () => {
+    await handleUserCreation(
+      province,
+      city,
+      address,
+      zip,
+      firstName,
+      lastName,
+      userName,
+      phoneNumber,
+      email
+      // accessToken
+    );
+    window.alert("Bienvenido a AllTech. Serás redirigido a nuestra tienda.");
+    navigate("/");
+    // auth.checkSession({
+    //   audience: "https://dev-6d0rlv0acg7xdkxt.us.auth0.com/api/v2/",
+    //   scope: "read:current_user update:current_user_metadata",
+    //   redirectUri: window.location.origin,
+    //   responseType: "token"
+    // }, (error : Auth0Error, result : any) => {
+    //   if(error) {
+    //     console.log("Error: ", error);
+    //     window.alert("El proceso de registro no ha sido exitoso. Por favor, intenta más tarde.");
+    //   } else {
+    //     console.log("Result: ", result);
+    //     const authManage = new auth0.Management({
+    //       domain: "dev-6d0rlv0acg7xdkxt.us.auth0.com",
+    //       token: result.accessToken
+    //     });
+    //     authManage.patchUserMetadata(result.userId, {
+    //       userName,
+    //       firstName,
+    //       lastName,
+    //       email,
+    //       phoneNumber,
+    //       province,
+    //       city,
+    //       address,
+    //       zip
+    //     }, async (error : Auth0Error | null, result : any) => {
+    //       if(error) {
+    //         //Debería haber un modal que informe al usuario que el proceso de registro no fue exitoso...
+    //         console.log("Error: ", error);
+    //         window.alert("El proceso de registro no ha sido exitoso. Por favor, intenta más tarde.");
+    //       } else {
+    //         console.log("Result: ", result);
+    //         await handleUserCreation(
+    //           result.userMetadata.province,
+    //           result.userMetadata.city,
+    //           result.userMetadata.address,
+    //           result.userMetadata.zip,
+    //           result.userMetadata.firstName,
+    //           result.userMetadata.lastName,
+    //           result.userMetadata.userName,
+    //           result.userMetadata.phoneNumber,
+    //           result.userMetadata.email
+    //           // accessToken
+    //         );
+    //         window.alert("Bienvenido a AllTech. Serás redirigido a nuestra tienda.");
+    //         navigate("/");
+    //       };
+    //     });
+    //   };
+    // });
   };
 
   useEffect(() => {
-    if(password === confirmPassword && password.length > 9) {
-      setAllowSignUp(true);
+    if(location.hash) {
+      handleHash(location.hash);
     } else {
-      setAllowSignUp(false);
+      window.alert("El proceso de autenticación no puede continuar");
+      navigate("/");
     };
-  }, [password, confirmPassword]);
+  }, [location, navigate]);
   return (
     <Flex
       minH={"100vh"}
@@ -142,10 +193,10 @@ export default function SignupCard() {
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} textAlign={"center"}>
-            Crear cuenta
+            Bienvenido a AllTech... casi...
           </Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
-            Disfrute de todos nuestros productos ✌️
+            Completa los siguientes datos para completar el proceso de registro ✅
           </Text>
         </Stack>
         <Box
@@ -161,65 +212,6 @@ export default function SignupCard() {
                                   onChange={e => setUserName(e.target.value)}/>
             </FormControl>
             <HStack>
-              <Box>
-                <FormControl id="password" isRequired>
-                  <FormLabel className={style.largo}>Contraseña</FormLabel>
-                    <InputGroup>
-                      <Input type={showPassword ? "text" : "password"}
-                              value={password}
-                              onChange={e => setPassword(e.target.value)}/>
-                      <InputRightElement h={"full"}>
-                        </InputRightElement>
-                    </InputGroup>
-                </FormControl>
-              </Box>
-              <Box>
-                <FormControl id="password" isRequired>
-                  <FormLabel className={style.largo}>Confirmar contraseña</FormLabel>
-                    <InputGroup>
-                      <Input type={showPassword ? "text" : "password"}
-                              value={confirmPassword}
-                              onChange={e => setConfirmPassword(e.target.value)}/>
-                      <InputRightElement h={"full"}>
-                        <Button
-                          variant={"ghost"}
-                          onClick={() =>
-                            setShowPassword((showPassword) => !showPassword)
-                          }>
-                          {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                        </Button>
-                        </InputRightElement>
-                    </InputGroup>
-                </FormControl>
-              </Box>
-            </HStack>
-            <HStack>
-              <Box>
-                <FormControl id="firstName" isRequired>
-                  <FormLabel>Nombre</FormLabel>
-                  <Input type="text"
-                          value={firstName}
-                          onChange={e => setFirstName(e.target.value)}/>
-                </FormControl>
-              </Box>
-              <Box>
-                <FormControl id="lastName" isRequired>
-                  <FormLabel>Apellido</FormLabel>
-                  <Input type="text"
-                          value={lastName}
-                          onChange={e => setLastName(e.target.value)}/>
-                </FormControl>
-              </Box>
-            </HStack>
-            <HStack>
-              <Box>
-                <FormControl id="email" isRequired>
-                  <FormLabel>Email</FormLabel>
-                  <Input type="email"
-                          value={email}
-                          onChange={e => setEmail(e.target.value)}/>
-                </FormControl>
-              </Box>
               <Box>
                 <FormControl id="email" isRequired>
                   <FormLabel className={style.largo}>Número telefónico</FormLabel>
@@ -304,14 +296,6 @@ export default function SignupCard() {
               >
                 Crear cuenta
               </Button>
-            </Stack>
-            <Stack pt={6}>
-              <Text align={"center"}>
-                ¿Ya eres usuario?{" "}
-                <Link style={{ color: "blue" }} to="/signin" color={"blue.400"}>
-                  Inicie sesión
-                </Link>
-              </Text>
             </Stack>
           </Stack>
         </Box>

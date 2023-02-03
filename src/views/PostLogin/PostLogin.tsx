@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../../auth0.service";
 
-export const PostLogin = () => {
+export default function PostLogin() {
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -13,9 +13,8 @@ export const PostLogin = () => {
       if(error) {
         console.log("Error: ", error);
       } else {
-        const { accessToken, expiresIn, scope, state } = result;
+        const { accessToken, scope, state } = result;
         localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("expiresIn", expiresIn);
         localStorage.setItem("scope", scope);
         localStorage.setItem("state", state);
         if(accessToken) {
@@ -35,8 +34,9 @@ export const PostLogin = () => {
     if(location.hash) {
       handleHash(location.hash);
     } else {
-      console.log("El proceso de autenticación no puede continuar");
+      window.alert("El proceso de autenticación no puede continuar");
+      navigate("/");
     };
   }, [location, navigate]);
-  return <></>; //Este componente será más bonito...
+  return <></>; //En esta vista, el usuario no estará más de cinco segundos, por eso está en blanco...
 };
