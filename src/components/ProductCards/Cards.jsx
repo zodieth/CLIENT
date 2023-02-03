@@ -26,7 +26,11 @@ function Cards() {
   return (
     <div>
       <div className={style.container}>
-        {productsPagination.length ? (
+        {products.isLoading ? (
+          <div className={style.loading}></div>
+        ) : products.errMess ? (
+          <div className={style.error}></div>
+        ) : products ? (
           productsPagination.map((e) => {
             return (
               <ProductCard
@@ -40,7 +44,7 @@ function Cards() {
             );
           })
         ) : (
-          <div className={style.loading}></div>
+          ""
         )}
       </div>
       <Pagination
