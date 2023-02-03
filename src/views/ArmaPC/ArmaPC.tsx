@@ -1,4 +1,6 @@
 import style from "./armado.module.css";
+import { HiShoppingCart } from "react-icons/hi";
+
 import NavBar from "../../components/NavBar/NavBar";
 import { useState } from "react";
 import cpu from "./armapcImages/cpu2.png";
@@ -77,16 +79,16 @@ function ArmaPC() {
     (product: interfaceProduct) => product.category?.name === "Procesadores"
   );
 
-  const procesadorDescription = procesador.map((e: any) => e.description);
-
   const [motherCards, setMotherCards] = useState(false);
   const mothers = products.allProducts.filter(
     (product: interfaceProduct) => product.category?.name === "Motherboards"
   );
 
-  const socket = mothers.filter(
-    (m: interfaceProduct) => m.description === "Socket LGA1700"
-  );
+  // const procesadorDescription = procesador.map((e: any) => e.description);
+
+  // const socket = mothers.filter(
+  //   (m: interfaceProduct) => m.description === "Socket LGA1700"
+  // );
 
   const [coolerCards, setCoolerCards] = useState(false);
   const coolers = products.allProducts.filter(
@@ -232,15 +234,14 @@ function ArmaPC() {
           {/* ---------------------------------------------------------- */}
           <div className={style.totalContainer}>
             <div className={style.subContainerTotal}>
+              <div>
+                <div className={style.total}>TOTAL: US$ {total}</div>
+              </div>
               <Link to="/cart">
                 <Button onClick={() => [addToCartAlert()]}>
-                  Agregar al Carrito
+                  <HiShoppingCart />
                 </Button>
               </Link>
-
-              <div>
-                <div className={style.total}>TOTAL: ${total}</div>
-              </div>
             </div>
           </div>
           {/* -------------------------------------------- */}
@@ -293,7 +294,7 @@ function ArmaPC() {
         {/* ------------------------------MOTHERBOARD-------------------------------- */}
         {motherCards === true ? (
           <div className={style.cardsProducts}>
-            {socket.map((e: any, index: any) => {
+            {mothers.map((e: any, index: any) => {
               return (
                 <div
                   key={index}

@@ -8,7 +8,7 @@ function Card(props: any) {
           <img className={style.imgCard} src={props.img} alt="" />
           <div>
             <div className={style.name}>{props.name}</div>
-            <div>${props.price}</div>
+            <div>US$ {props.price}</div>
           </div>
         </div>
         <div className={style.compatible}></div>
