@@ -12,6 +12,7 @@ import NavBar from "../../components/NavBar/NavBar";
 import interfaceProduct from "../../features/brands/interfaceBrand";
 import style from "./detail.module.css";
 import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
+import { TbSend } from "react-icons/tb";
 import { Button } from "@chakra-ui/react";
 import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import Swal from "sweetalert2";
@@ -103,7 +104,7 @@ function Detail(props: any) {
       {!findDetail.length ? (
         <div>No se encontró el producto</div>
       ) : (
-        findDetail.map((e: any) => {
+        findDetail.map((e: any) => {          
           return (
             <div className={style.detail} key={e}>
               <div className={style.contenedor}>
@@ -154,17 +155,32 @@ function Detail(props: any) {
                 </div> */}
               </div>
 
-              <div className={style.contenedor}>
+              <div className={style.preguntas}>
                 <div>
-                  <div className={style.description}>Preguntas de nuestros clientes</div>
-                  {e.questions.map((q:any)=>{
-                    console.log(q)
-                  })}
+                  <div className={style.tituloPreguntas}>Preguntas de nuestros clientes</div>
+                  {!e.questions.length? (                  <div className={style.question}>
+                    Aún no hay preguntas sobre este producto, sé el primero
+                  </div>): 
+                  e.questions.map((q:any)=>{
+                    return(
+                      <div className={style.question}>
+                        <dl>
+                          <dt>{q.question}</dt>
+                          <dd>└─ {q.answer}</dd>
+                        </dl>
+                      </div>
+                    )
+                })}
                 </div>
-              </div>
-              <div className={style.contenedor}>
-                <div>
-                  <div className={style.description}>Haznos una pregunta:</div>
+                <div className={style.rigth}>
+                  <div className={style.tituloPreguntas}>Dejanos tu consulta:</div>
+                  <div className={style.newQuestion}> 
+                    <textarea name="Pregunta" id="pregunta">Escribe tu pregunta aquí</textarea>
+                    <Button colorScheme="blue">
+                      <h5>Enviar</h5>
+                      <TbSend height={8} color={"white"}/>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
