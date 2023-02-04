@@ -1,5 +1,5 @@
 import NavBar from "../components/NavBar/NavBar";
-/* import style from "../app.module.css"; */
+import style from "../app.module.css";
 import SubNav from "../components/NavBar/SubNav";
 import Footer from "../components/Footer/Footer";
 import Carousel from "../components/Carousel/Carousel";
@@ -72,21 +72,23 @@ function Home() {
     dispatch(fetchProductsApi());
     dispatch(fetchBrandApi());
     dispatch(fetchCategoryApi());
-    loadScript();
+    //loadScript();
   }, []);
 
-  function loadScript() {
+/*   function loadScript() {
     var ldk = document.createElement('script'); ldk.type = 'text/javascript'; ldk.async = true; ldk.src = 'https://s.cliengo.com/weboptimizer/63d9c2f6c9293c0029564cc9/63d9c2fac9293c0029564ccc.js?platform=view_installation_code'; var s = document.getElementsByTagName('script')[0]; s.parentNode!.insertBefore(ldk, s);
-  }
+  } */
   return (
-    <div /* className={style.app} */> 
-      <ToggleColorMode />
-      <NavBar />
-      <Carousel />
-      <Filter />
-      <Cards />
-      <CarouselDown />
-      <LightMode><Footer /></LightMode>
+    <div>
+        <div /* className={style.app} */>  {/* sacamos el estilo para que funcione el dark mode junto al archivo theme.js */}
+          <ToggleColorMode />
+          <NavBar />
+          <Carousel />
+          <Filter />
+          <Cards />
+          <CarouselDown />
+          <LightMode><Footer /></LightMode>
+        </div>
     </div>
     
   );
