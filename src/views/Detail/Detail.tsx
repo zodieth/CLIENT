@@ -104,7 +104,7 @@ function Detail(props: any) {
       {!findDetail.length ? (
         <div>No se encontró el producto</div>
       ) : (
-        findDetail.map((e: any) => {          
+        findDetail.map((e: any) => {
           return (
             <div className={style.detail} key={e}>
               <div className={style.contenedor}>
@@ -150,18 +150,13 @@ function Detail(props: any) {
 
                   
                 </div>
-                {/* <div className={style.texto}>
-                  <h4>* Las imágenes se exhiben con fines ilustrativos.</h4>
-                </div> */}
               </div>
 
               <div className={style.preguntas}>
                 <div>
                   <div className={style.tituloPreguntas}>Preguntas de nuestros clientes</div>
-                  {!e.questions.length? (                  <div className={style.question}>
-                    Aún no hay preguntas sobre este producto, sé el primero
-                  </div>): 
-                  e.questions.map((q:any)=>{
+                  {e.questions.length>0?  
+                  (e.questions.map((q:any)=>{
                     return(
                       <div className={style.question}>
                         <dl>
@@ -170,7 +165,11 @@ function Detail(props: any) {
                         </dl>
                       </div>
                     )
-                })}
+                })): (
+                  <div className={style.question}>
+                    Aún no hay preguntas sobre este producto, sé el primero
+                  </div>)
+                }
                 </div>
                 <div className={style.rigth}>
                   <div className={style.tituloPreguntas}>Dejanos tu consulta:</div>
