@@ -13,7 +13,7 @@ import interfaceProduct from "../../features/brands/interfaceBrand";
 import style from "./detail.module.css";
 import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
 import { TbSend } from "react-icons/tb";
-import { Button } from "@chakra-ui/react";
+import { Button, LightMode } from "@chakra-ui/react";
 import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import Swal from "sweetalert2";
 import NuevoCarrusel from "./NuevoCarrusel";
@@ -188,7 +188,7 @@ function Detail(props: any) {
       )}
       <div>
         <NuevoCarrusel />
-        <Footer />
+        <LightMode><Footer /></LightMode>
       </div>
     </div>
   );
