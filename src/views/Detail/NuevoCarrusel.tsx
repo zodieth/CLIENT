@@ -7,27 +7,29 @@ import foto3 from "./imagenes/aeroIcon.webp"
 import foto4 from "./imagenes/intelIcon.webp"
 import foto5 from "./imagenes/razerIcon.webp"
 import foto6 from "./imagenes/corsairIcon.webp"
+import { LightMode } from "@chakra-ui/react";
 
 export default function NuevoCarrusel() {
 return (
-    <body>
-        <div className={style.carrusel}>
-                <div className={style.carruselitems}>
-                    <div className={style.carruselitem}>
-                        <img src={foto1} />
-                    </div>
-                    <div className={style.carruselitem}>
-                        <img src={foto2} />
-                    </div>
-                    <div className={style.carruselitem}>
-                        <img src={foto4} />
-                    </div>
-                    <div className={style.carruselitem}>
-                        <img src={foto5} />
-                    </div>
+<body>
+    <div className={style.carrusel}>
+            <div className={style.carruselitems}>
+                <div className={style.carruselitem}>
+                    <img src={foto1} />
                 </div>
-        </div>
-    </body>
+                <div className={style.carruselitem}>
+                    <img src={foto2} />
+                </div>
+                <div className={style.carruselitem}>
+                    <img src={foto4} />
+                </div>
+                <div className={style.carruselitem}>
+                    <img src={foto5} />
+                </div>
+            </div>
+    </div>
+</body>
+    
     );
 };
 

@@ -3,7 +3,7 @@ import CartCard from "../CartCard/CartCard";
 import NavBar from "../NavBar/NavBar";
 import SubNav from "../NavBar/SubNav";
 import style from "./cart.module.css";
-import { Button } from "@chakra-ui/react";
+import { Button, LightMode } from "@chakra-ui/react";
 import { useAppSelector } from "../../app/hooks";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/hooks";
@@ -109,7 +109,7 @@ function Cart() {
         )}
       </div>
       <div className={style.footer}>
-        <Footer />
+      <LightMode><Footer /></LightMode>
       </div>
     </div>
   );

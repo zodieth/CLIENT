@@ -1,8 +1,9 @@
-import { Box, Button, useToast, useColorModeValue, IconButton } from "@chakra-ui/react"
+import { Box, Button, useToast, useColorModeValue, IconButton, LightMode } from "@chakra-ui/react"
 import { BiMailSend } from "react-icons/bi";
 
 export default function MensajeMail() {
     const toast = useToast()
+
     return (
         <IconButton
                 bg={useColorModeValue("green.400", "green.800")}
