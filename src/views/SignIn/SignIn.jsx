@@ -31,9 +31,10 @@ export default function SimpleCard() {
       responseType: "token"
     }, (error, result) => {
       if(error) {
-        //Debería haber un modal que informe al usuario que el proceso de autenticación no fue exitoso...
         console.log("Error: ", error);
-        window.alert("El proceso de autenticación NO ha sido exitoso. Por favor, intenta más tarde.");
+        if(error.code === "access_denied") {
+          window.alert("El correo electrónico o la contraseña ingresados son incorrectos.");
+        };
       } else {
         console.log("Result: ", result);
       };
@@ -47,13 +48,14 @@ export default function SimpleCard() {
     }, (error, result) => {
       if(error) {
         console.log("Error: ", error);
-        window.alert("El proceso de autenticación NO ha sido exitoso. Por favor, intenta más tarde.");
+        if(error.code === "access_denied") {
+          window.alert("El correo electrónico o la contraseña ingresados son incorrectos.");
+        };
       } else {
         console.log("Result: ", result);
       };
     });
   };
-
   return (
     <Flex
       minH={"100vh"}

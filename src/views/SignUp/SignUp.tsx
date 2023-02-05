@@ -63,7 +63,6 @@ export default function SignupCard() {
         })
       });
       const locationDB = await locationResponse.json();
-      console.log(locationDB);
       const locationId = locationDB._id;
       const userResponse = await fetch(`http://localhost:3001/user`, {
         method: "POST",
@@ -81,48 +80,57 @@ export default function SignupCard() {
         })
       })
       const userDB = await userResponse.json();
-      console.log("DB user: ", userDB);
-  };
-
-  const handleSignUp = () => {
-    auth.signup({
-      email: email,
-      password: password,
-      connection: "Username-Password-Authentication",
-      user_metadata: {
-        userName,
-        firstName,
-        lastName,
-        email,
-        phoneNumber,
-        province,
-        city,
-        address,
-        zip
-      }
-    }, async (error : Auth0Error | null, result : any) => {
-      if(error) {
-        //Debería haber un modal que informe al usuario que el proceso de registro no fue exitoso...
-        console.log("Error: ", error);
-        window.alert("El proceso de registro no ha sido exitoso. Por favor, intenta más tarde.");
+      if(userDB.hasOwnProperty("errors")) {
+        const userNameExists = userDB.errors.some((error : { value : String, msg : String, param : String, location: String }) => {
+          return error.param === "userName";
+        });
+        const emailExists = userDB.errors.some((error : { value : String, msg : String, param : String, location: String }) => {
+          return error.param === "email";
+        });
+        const phoneNumberExists = userDB.errors.some((error : { value : String, msg : String, param : String, location: String }) => {
+          return error.param === "phoneNumber";
+        });
+        if(userNameExists) {
+          window.alert("Ya existe una cuenta con el nombre de usuario ingresado.");
+        } else if(emailExists) {
+          window.alert("Ya existe una cuenta con el correo electrónico ingresado.");
+        } else if(phoneNumberExists) {
+          window.alert("Ya existe una cuenta con el número telefónico ingresado.");
+        };
+        return false;
       } else {
-        console.log("Result: ", result);
-        await handleUserCreation(
-          province,
-          city,
-          address,
-          zip,
-          firstName,
-          lastName,
-          userName,
-          phoneNumber,
-          email
-          // accessToken
-        );
-        window.alert("Bienvenido a AllTech. Revisa tu correo electrónico, recuerda que debes verificar tu cuenta antes de ingresar.");
-        navigate("/signin");
+        return true;
       };
-    });
+  };
+  const handleSignUp = async () => {
+    const successfulUserCreation = await handleUserCreation(
+      province,
+      city,
+      address,
+      zip,
+      firstName,
+      lastName,
+      userName,
+      phoneNumber,
+      email
+      // accessToken
+    );
+    if(successfulUserCreation) {
+      auth.signup({
+        email: email,
+        password: password,
+        connection: "Username-Password-Authentication"
+      }, async (error : Auth0Error | null, result : any) => {
+        if(error) {
+          //OJO, debe haber validación de datos en tiempo real en concordancia con los modelos y la configuración de Auth0. La validación en las rutas del servidor sólo se usará para efectos de determinar si ya existe un documento con el mismo valor en cierto campo.
+          window.alert("El proceso de registro no ha sido exitoso. Por favor, intenta más tarde.");
+        } else {
+          window.alert("Bienvenido a AllTech. Revisa tu correo electrónico, recuerda que debes verificar tu cuenta antes de ingresar.");
+          //Esta alerta podría recordar al usuario los datos de la cuenta recién creada...
+          navigate("/signin");
+        };
+      });
+    };
   };
 
   useEffect(() => {
