@@ -12,10 +12,10 @@ import Footer from "../../components/Footer/Footer";
 
 export default function PreguntasFrecuentes() {
   return (
-    <div>
+    <div className={style.preguntasView}>
       <NavBar />
       <div className={style.container}>
-        <h1 className={style.title}>Preguntas Frecuentes</h1>
+        <h1 className={style.title}>PREGUNTAS FRECUENTES</h1>
         <Accordion className={style.preguntas} allowToggle display={"flex"}>
           <AccordionItem className={style.accordionItem}>
             <h2>
