@@ -5,6 +5,8 @@ import { store } from "./app/store";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router/index";
 import { ChakraProvider } from "@chakra-ui/react";
+import { ColorModeScript } from "@chakra-ui/color-mode";
+import theme from "./theme"  /// dark mode
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -12,7 +14,8 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ChakraProvider>
+      <ChakraProvider theme ={theme}>
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <RouterProvider router={router} />
       </ChakraProvider>
     </Provider>

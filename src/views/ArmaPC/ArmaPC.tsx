@@ -12,7 +12,7 @@ import gabinete from "./armapcImages/gabo1.png";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { fetchProductsApi } from "../../app/actionsCreators";
 import { useEffect } from "react";
-import { Divider } from "@chakra-ui/react";
+import { Divider, LightMode } from "@chakra-ui/react";
 import interfaceProduct from "../../features/products/interfaceProduct";
 import { Button } from "@chakra-ui/react";
 import { addToCart } from "../../app/actionsCreators";
@@ -605,7 +605,7 @@ function ArmaPC() {
         )}
       </div>
       <div className={style.footer}>
-        <Footer />
+      <LightMode><Footer /></LightMode>
       </div>
     </div>
   );
