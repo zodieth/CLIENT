@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import style from "./navBar.module.css";
 import { Button } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
@@ -15,13 +17,44 @@ import {
   Stack,
   Center,
 } from "@chakra-ui/react";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useAppSelector } from "../../hooks/hooks";
+import { auth } from "../../auth0.service";
 
 function NavBar() {
-  const cartItems = useAppSelector((state) => state.cart);
+  const [userName, setUserName] = useState("");
+  const [picture, setPicture] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  const { isAuthenticated, logout } = useAuth0();
+  const cartItems = useAppSelector((state) => state.cart);
+  const navigate = useNavigate();
+
+  const accessToken = localStorage.getItem("accessToken");
+  const activeSession = accessToken ? true : false;
+  const handleUser = async () => {
+    await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
+      if(error) {
+        console.log("Error: ", error);
+      } else {
+        console.log("Usuario: ", user)
+        setUserName(user.nickname);
+        setPicture(user.picture);
+        //Aquí se accede al rol del usuario
+      };
+    })
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("scope");
+    localStorage.removeItem("state");
+    auth.logout({
+      returnTo: window.location.origin,
+      clientID: "2EHZJm086BzkgwY5HXmPeK5UnbHegBXl"
+    });
+  };
+
+  useEffect(() => {
+    handleUser();
+  }, [userName, picture, handleUser]);
 
   return (
     <div className={style.navBar}>
@@ -58,16 +91,16 @@ function NavBar() {
           </Button>
         </Link>
 
-        {isAuthenticated ? (
+        {activeSession ? (
           <div className={style.avatar_login}>
             <Button
               rightIcon={<FiLogIn />}
               className={style.button}
               colorScheme="teal"
               variant="solid"
-              onClick={() => logout()}
+              onClick={handleLogout}
             >
-              Logout
+              Salir
             </Button>
             <Stack direction={"row"} spacing={7}>
               <Menu>
@@ -79,22 +112,23 @@ function NavBar() {
                   cursor={"pointer"}
                   minW={0}
                 >
-                  <Avatar size={"sm"} src={""} />
+                  <Avatar size={"sm"} src={picture} />
                 </MenuButton>
                 <MenuList alignItems={"center"} style={{ color: "#495057" }}>
                   <br />
                   <Center>
-                    <Avatar size={"2xl"} src={""} />
+                    <Avatar size={"2xl"} src={picture} />
                   </Center>
                   <br />
                   <Center>
-                    <p>Username</p>
+                    <p>{userName}</p>
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem>Cart</MenuItem>
-                  <MenuItem>Account Settings</MenuItem>
-                  <MenuItem onClick={() => logout()}>Logout</MenuItem>
+                  <MenuItem onClick={() => navigate("/cart")}>Mi carrito de compras</MenuItem>
+                  <MenuItem onClick={() => navigate("/user")}>Mi cuenta de usuario</MenuItem>
+                  {isAdmin ? <MenuItem onClick={() => navigate("/admin")}>Mi cuenta de administrador</MenuItem> : null}
+                  <MenuItem onClick={handleLogout}>Salir</MenuItem>
                 </MenuList>
               </Menu>
             </Stack>
