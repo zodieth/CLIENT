@@ -1,15 +1,13 @@
-import style from "./products.module.css"
-import { Input, Select } from "@chakra-ui/react";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import interfaceCategory from  "../../../features/categories/interfaceCategory";
+import style from "./brand.module.css"
+import { Input } from "@chakra-ui/react";
+import { useAppDispatch } from "../../../app/hooks";
 import { useState } from "react";
-import { postCateogry } from "../../../app/actionsCreators"
+import { postBrand } from "../../../app/actionsCreators"
 import Swal from "sweetalert2";
 
 export function validate(inputs: any) {
   let errors = {
     name: "",
-    description: "",
   };
   let regularExpresion = /^[A-Z]+$/i;
 
@@ -21,17 +19,13 @@ export function validate(inputs: any) {
   return errors;
 }
 
-export default function CreateCategoryAdmin() {
+export default function CreateBrandAdmin() {
   const dispatch = useAppDispatch();
-  const categoriesStore = useAppSelector((state) => state.categories)
   const [inputs, setInputs] = useState({
     name: "",
-    description: "",
-    father: ""
   });
   const [errors, setErrors] = useState({
     name: "",
-    description: ""
   });
 
   function handleChange(e: any) {
@@ -51,14 +45,12 @@ export default function CreateCategoryAdmin() {
 
   function handleSubmit(e:any) {
     e.preventDefault();
-    if (errors.name !== "" && errors.description !== "") {
+    if (errors.name !== "") {
       alert("You must correct the mistakes");
     } else {
       dispatch(
-        postCateogry(
+        postBrand(
           inputs.name,
-          inputs.description,
-          inputs.father,
         )
       );
 
@@ -79,10 +71,9 @@ export default function CreateCategoryAdmin() {
         title: "Agregado Correctamente",
       });
 
-      setInputs({ name: "", description: "", father: ""});
+      setInputs({ name: ""});
       setErrors({
         name: "",
-        description: ""
       });
 
       window.history.back();
@@ -104,30 +95,7 @@ export default function CreateCategoryAdmin() {
           />
           <p >{errors.name}</p>
         </div>
-        <div className={style.groupInputs}>
-          <label>Descripción</label>
-          <Input 
-            type='text'
-            value={inputs.description}
-            onChange={handleChange}
-            name='description'
-            width='auto'/>
-            <p >{errors.description}</p>
-        </div>
-        <div className={style.groupInputs}>
-          <label>Cat. padre</label>
-          <Select
-            name='father'
-            onChange={handleChange}
-            placeholder="Ninguna"
-            value={inputs.father}
-            width='auto' >
-            { categoriesStore.allCategories.map((category:interfaceCategory) => {
-                return <option key={category._id} value={category._id}>{category.name}</option>
-              })}
-          </Select>
-        </div>
-
+        
         <hr className={style.hrLineDashed}/>
         
         <div className={style.groupButtons}>

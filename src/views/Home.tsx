@@ -15,20 +15,21 @@ import {
 import CarouselDown from "../components/CarouselDown/CarouselDown";
 import Cards from "../components/ProductCards/Cards";
 import Filter from "../components/Filtro/filter";
-// import { useAuth0 } from "@auth0/auth0-react";
 import { auth } from "../auth0.service";
 import ToggleColorMode from "../components/DarkMode/ToggleColorMode"; // dark mode
 import { LightMode } from "@chakra-ui/react";
 
 function Home() {
-  const handleSession = async () => {
-    const sessionState = await auth.isAuthenticated();
-    console.log(sessionState);
-  };
 
+  const session = () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const userScope = localStorage.getItem("scope");
+    const sessionState = localStorage.getItem("state");
+  };
+  
   useEffect(() => {
-    handleSession();
-  }, [handleSession]);
+    session();
+  }, [session]);
 
   const dispatch = useAppDispatch();
   // const {

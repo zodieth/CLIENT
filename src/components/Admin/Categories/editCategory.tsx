@@ -5,7 +5,7 @@ import interfaceCategory from  "../../../features/categories/interfaceCategory";
 import { useEffect, useState } from "react";
 import { putCateogry } from "../../../app/actionsCreators"
 import Swal from "sweetalert2";
-import { useParams } from "react-router-dom";
+import { redirect, useParams } from "react-router-dom";
 
 export function validate(inputs: any) {
   let errors = {
@@ -74,9 +74,11 @@ export default function EditCategoryAdmin() {
       dispatch(
         putCateogry(
           inputs.id,
-          inputs.name,
-          inputs.description,
-          inputs.father,
+          {
+            name: inputs.name,
+            description: inputs.description,
+            father: inputs.father,
+          }
         )
       );
 
@@ -102,6 +104,8 @@ export default function EditCategoryAdmin() {
         name: "",
         description: ""
       });
+
+      window.history.back();
     }
   }
 
@@ -147,7 +151,7 @@ export default function EditCategoryAdmin() {
         <hr className={style.hrLineDashed}/>
         
         <div className={style.groupButtons}>
-          <a href="./" className={style.btnWhite}>Cancelar</a>
+          <a href="#" onClick={() => window.history.back()} className={style.btnWhite}>Cancelar</a>
           <button type="submit" className={style.btnPrimary}>Guardar</button>
         </div>
       </form>

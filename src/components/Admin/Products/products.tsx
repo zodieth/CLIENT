@@ -1,36 +1,48 @@
 import style from "./products.module.css";
-import { Input } from "@chakra-ui/input";
+import { Input, Select } from "@chakra-ui/react";
 import { useState } from "react";
 import { formData } from "./types";
 import { createProduct } from "../../../app/actionsCreators";
 import Swal from "sweetalert2";
+import { useAppSelector } from "../../../app/hooks";
+import interfaceCategory from  "../../../features/categories/interfaceCategory";
+import interfaceBrand from  "../../../features/brands/interfaceBrand";
+import CloudinaryUploadWidget from "../../Cloudinary/CloudinaryUploadWidget";
 
 interface FormState {
   inputValues: formData;
 }
 
 export default function ProductAdmin() {
+  const Store = useAppSelector((state) => state)
   const [inputProducts, setInputValues] = useState<FormState["inputValues"]>({
     name: "",
     description: "",
     price: 0.0,
-    images: "",
+    images: [],
     category: "",
     brand: "",
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setInputValues({
-      ...inputProducts,
-      [e.target.name]: e.target.value,
-    });
-    console.log(inputProducts);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    if((document.getElementById('images') as HTMLInputElement).value !== ""){
+      let img = (document.getElementById('images') as HTMLInputElement).value;
+      (document.getElementById('images') as HTMLInputElement).value = "";
+      if(!inputProducts.images.find((image) => image === img)){
+        setInputValues({
+          ...inputProducts,
+          'images': inputProducts.images.concat(img),
+        });
+      }
+    }else{
+      setInputValues({
+        ...inputProducts,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   const handeleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    console.log("hola2", inputProducts);
     e.preventDefault();
     createProduct(inputProducts);
     createdAlert();
@@ -38,7 +50,7 @@ export default function ProductAdmin() {
       name: "",
       description: "",
       price: 0.0,
-      images: "",
+      images: [],
       category: "",
       brand: "",
     });
@@ -72,13 +84,13 @@ export default function ProductAdmin() {
           type="text"
           name="name"
           placeholder="Nombre del producto"
-          width="200"
+          width='sm'
         />
       </div>
       <div className={style.groupInputs}>
         <label>Descripción</label>
         <Input
-          width="200"
+          width='sm'
           type="text"
           placeholder="Descripción del producto"
           onChange={(e) => handleChange(e)}
@@ -89,7 +101,7 @@ export default function ProductAdmin() {
       <div className={style.groupInputs}>
         <label>Precio (US$)</label>
         <Input
-          width="200"
+          width='sm'
           type="number"
           placeholder="Precio del producto"
           onChange={(e) => handleChange(e)}
@@ -99,37 +111,42 @@ export default function ProductAdmin() {
       </div>
       <div className={style.groupInputs}>
         <label>Imagen</label>
+        <CloudinaryUploadWidget  />
         <Input
-          width="200"
-          type="text"
+          id="images"
+          width='sm'
+          type="hidden"
           placeholder="Imagen del producto"
-          onChange={(e) => handleChange(e)}
-          value={inputProducts.images}
           name="images"
         />
       </div>
       <div className={style.groupInputs}>
         <label>Marca</label>
-        <Input
-          width="200"
-          type="text"
-          placeholder="Marca del producto"
-          onChange={(e) => handleChange(e)}
-          name="brand"
-          value={inputProducts.brand}
-        />
+        <Select
+            name='brand'
+            onChange={(e) => handleChange(e)}
+            placeholder="Marca del producto"
+            value={inputProducts.brand}
+            width='sm' >
+            { Store.brands.allBrands.map((brand:interfaceBrand) => {
+                return <option key={brand._id} value={brand._id}>{brand.name}</option>
+              })}
+          </Select>
       </div>
       <div className={style.groupInputs}>
-        <label>Categoría</label>
-        <Input
-          width="200"
-          type="text"
-          placeholder="Categoría del producto"
+        <label>Categoria</label>
+        <Select
+          name='category'
           onChange={(e) => handleChange(e)}
-          name="category"
+          placeholder="Categoría del producto"
           value={inputProducts.category}
-        />
+          width='sm' >
+          { Store.categories.allCategories.map((category:interfaceCategory) => {
+              return <option key={category._id} value={category._id}>{category.name}</option>
+            })}
+        </Select>
       </div>
+      <img id="uploadedimage" src=""></img>
       <hr className={style.hrLineDashed} />
       <div className={style.groupButtons}>
         <button className={style.btnWhite}>Cancelar</button>
