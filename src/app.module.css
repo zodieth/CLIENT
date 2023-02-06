@@ -23,3 +23,22 @@ top: 10px;
 transform: translateY(10px);
 background-color: #fff;
 }
+
+.slick-slider {
+  margin: 20px auto;
+}
+
+.slick-slide {
+  text-align: center;
+}
+
+.slick-slide img {
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: black;
+}
