@@ -79,7 +79,7 @@ function NavBar(props: any) {
 
   useEffect(() => {
     handleUser();
-  }, [handleUser]);
+  }, []);
   return (
     <div className={style.navBar}>
       <div className={style.logo}>

@@ -18,9 +18,11 @@ function Cart() {
   const user = useAppSelector((state) => state.user);
 
   const compra = {
-    user,
+    user: "parralucas",
     products: products.cart,
   };
+
+  console.log(compra);
 
   let total = products.cart.map((e: any) => {
     return e.price;
@@ -112,7 +114,7 @@ function Cart() {
                 ""
               )}
               <form
-                onClick={() => sendToBack(compra)}
+                onClick={() => [sendToBack(compra), console.log(compra)]}
                 className={style.mpPay}
                 id="pagar"
                 method="GET"
