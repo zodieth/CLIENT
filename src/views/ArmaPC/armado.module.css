@@ -1,5 +1,5 @@
-.armado {
-  background-color: aliceblue;
+.nav {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .footer {
@@ -16,6 +16,9 @@
   border-radius: 10px;
   flex-wrap: wrap;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  color: rgb(65, 65, 65);
+  border: 1px solid #e2e2e2;
+  
 }
 
 .totalContainer {
@@ -25,6 +28,8 @@
   height: 100px;
   width: 330px;
   background-color: #fff;
+  color: rgb(65, 65, 65);
+  border: 1px solid #e2e2e2;
 }
 
 .subContainerTotal {
@@ -70,9 +75,13 @@
   margin: 0.5rem;
   width: 300px;
   background-color: #fff;
+  font-size: 20px;
+  color: rgb(65, 65, 65);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border: 1px solid #e2e2e2;
+  
 }
 
 .cardsProducts {
@@ -95,10 +104,12 @@
 }
 
 .name {
-  font-size: 0.75rem;
+  font-size: 15px;
+  /* font-size: 0.75rem; */
 }
 
 .componentName {
   margin: 0.25rem;
   font-size: 0.5rem;
+  font-size: 13px;
 }
