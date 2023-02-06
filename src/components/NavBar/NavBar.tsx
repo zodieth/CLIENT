@@ -16,10 +16,12 @@ import {
   MenuDivider,
   Stack,
   Center,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useAppSelector } from "../../hooks/hooks";
 import { auth } from "../../auth0.service";
 import { AUTH_MANAGEMENT_API_ACCESS_TOKEN } from "../../auth0.config";
+import ToggleColorMode from "../DarkMode/ToggleColorMode";
 
 function NavBar() {
   const [userName, setUserName] = useState("");
@@ -65,18 +67,19 @@ function NavBar() {
   }, [handleUser]);
   return (
     <Box className={style.navBar}>
-      <div className={style.logo}>
+      <Box className={style.logo}>
         <Link to="/">
           <HamburgerIcon boxSize={8} color="Gray" />
         </Link>
         <Link to="/" >
           <h1 className={style.h1Logo}> AllTech</h1>
         </Link>
-      </div>
-      {/* <div>
+      </Box>
+      {/* <Box>
         <SearchBar />
-      </div> */}
-      <div className={style.buttons}>
+      </Box> */}
+      <Box className={style.buttons}>
+        <ToggleColorMode />
         <Link to="/cart" className={style.cartI}>
           <Button
             leftIcon={<FaShoppingCart />}
@@ -99,7 +102,7 @@ function NavBar() {
         </Link>
 
         {activeSession ? (
-          <div className={style.avatar_login}>
+          <Box className={style.avatar_login}>
             <Button
               rightIcon={<FiLogIn />}
               className={style.button}
@@ -121,7 +124,7 @@ function NavBar() {
                 >
                   <Avatar size={"sm"} src={picture} />
                 </MenuButton>
-                <MenuList alignItems={"center"} style={{ color: "#495057" }}>
+                <MenuList  alignItems={"center"}>
                   <br />
                   <Center>
                     <Avatar size={"2xl"} src={picture} />
@@ -132,13 +135,13 @@ function NavBar() {
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem onClick={() => navigate("/user")}>Mi cuenta de usuario</MenuItem>
+                  <MenuItem   onClick={() => navigate("/user")}>Mi cuenta de usuario</MenuItem>
                   {isAdmin ? <MenuItem onClick={() => navigate("/admin")}>Mi cuenta de administrador</MenuItem> : null}
                   <MenuItem onClick={handleLogout}>Salir</MenuItem>
                 </MenuList>
               </Menu>
             </Stack>
-          </div>
+          </Box>
         ) : (
           <Link to="/signin">
             <Button
@@ -151,7 +154,7 @@ function NavBar() {
             </Button>
           </Link>
         )}
-      </div>
+      </Box>
     </Box>
   );
 }

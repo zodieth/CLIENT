@@ -43,7 +43,7 @@ function Cart() {
   return (
     <Box className={style.cart}>
       <div className={style.nav}>
-        <NavBar /> <ToggleColorMode />
+        <NavBar />
       </div>
 
       {/* <SubNav /> */}

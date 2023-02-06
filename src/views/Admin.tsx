@@ -44,6 +44,7 @@ import {
 import { auth } from "../auth0.service";
 import ToggleColorMode from "../components/DarkMode/ToggleColorMode";
 import { AUTH_MANAGEMENT_API_ACCESS_TOKEN } from "../auth0.config";
+import DarkModeAdmin from "../components/DarkMode/DarkModeAdmin";
 
 interface LinkItemProps {
   name: string;
@@ -123,7 +124,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       pos="fixed"
       h="full"
       {...rest}
-    > <ToggleColorMode /> {/* boton modo noche */}
+    > <DarkModeAdmin /> {/* boton modo noche */}
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Link href="/admin">
           <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">

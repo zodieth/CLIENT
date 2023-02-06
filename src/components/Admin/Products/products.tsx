@@ -1,5 +1,5 @@
 import style from "./products.module.css";
-import { Input, Select } from "@chakra-ui/react";
+import { Box, Button, Input, Select, useColorModeValue } from "@chakra-ui/react";
 import { useState } from "react";
 import { formData } from "./types";
 import { createProduct } from "../../../app/actionsCreators";
@@ -75,8 +75,9 @@ export default function ProductAdmin() {
     });
   };
   return (
-    <form className={style.container} onSubmit={handeleSubmit}>
-      <div className={style.groupInputs}>
+    <Box bg={useColorModeValue("white", "whiteAlpha.100")} className={style.container}>
+    <form   onSubmit={handeleSubmit}>
+      <Box  className={style.groupInputs}>
         <label>Nombre</label>
         <Input
           onChange={(e) => handleChange(e)}
@@ -85,9 +86,10 @@ export default function ProductAdmin() {
           name="name"
           placeholder="Nombre del producto"
           width='sm'
+          
         />
-      </div>
-      <div className={style.groupInputs}>
+      </Box>
+      <Box  className={style.groupInputs}>
         <label>Descripción</label>
         <Input
           width='sm'
@@ -96,9 +98,10 @@ export default function ProductAdmin() {
           onChange={(e) => handleChange(e)}
           value={inputProducts.description}
           name="description"
+          
         />
-      </div>
-      <div className={style.groupInputs}>
+      </Box>
+      <Box  className={style.groupInputs}>
         <label>Precio (US$)</label>
         <Input
           width='sm'
@@ -107,9 +110,10 @@ export default function ProductAdmin() {
           onChange={(e) => handleChange(e)}
           value={inputProducts.price}
           name="price"
+          
         />
-      </div>
-      <div className={style.groupInputs}>
+      </Box>
+      <Box  className={style.groupInputs}>
         <label>Imagen</label>
         <CloudinaryUploadWidget  />
         <Input
@@ -118,40 +122,44 @@ export default function ProductAdmin() {
           type="hidden"
           placeholder="Imagen del producto"
           name="images"
+          
         />
-      </div>
-      <div className={style.groupInputs}>
+      </Box>
+      <Box   className={style.groupInputs}>
         <label>Marca</label>
         <Select
             name='brand'
             onChange={(e) => handleChange(e)}
             placeholder="Marca del producto"
             value={inputProducts.brand}
-            width='sm' >
+            width='sm' 
+            >
             { Store.brands.allBrands.map((brand:interfaceBrand) => {
                 return <option key={brand._id} value={brand._id}>{brand.name}</option>
               })}
           </Select>
-      </div>
-      <div className={style.groupInputs}>
+      </Box>
+      <Box  className={style.groupInputs}>
         <label>Categoria</label>
         <Select
           name='category'
           onChange={(e) => handleChange(e)}
           placeholder="Categoría del producto"
           value={inputProducts.category}
-          width='sm' >
+          width='sm' 
+          >
           { Store.categories.allCategories.map((category:interfaceCategory) => {
               return <option key={category._id} value={category._id}>{category.name}</option>
             })}
         </Select>
-      </div>
+      </Box>
       <img id="uploadedimage" src=""></img>
       <hr className={style.hrLineDashed} />
-      <div className={style.groupButtons}>
-        <button className={style.btnWhite}>Cancelar</button>
-        <button className={style.btnPrimary}>Crear</button>
-      </div>
+      <Box className={style.groupButtons}>
+        <Button className={style.btnWhite}>Cancelar</Button>
+        <button type="submit" className={style.btnPrimary}>Crear</button>
+      </Box>
     </form>
+    </Box>
   );
 }

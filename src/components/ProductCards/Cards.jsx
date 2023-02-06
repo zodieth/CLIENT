@@ -3,6 +3,7 @@ import style from "./cards.module.css";
 import { useAppSelector } from "../../app/hooks";
 import Pagination from "../Pagination/Pagination";
 import { useEffect, useState } from "react";
+import { LightMode, Box } from "@chakra-ui/react";
 
 function Cards() {
   const [actualPage, setActualPage] = useState(1);
@@ -24,12 +25,12 @@ function Cards() {
   };
 
   return (
-    <div>
-      <div className={style.container}>
+    <Box>
+      <Box className={style.container}>
         {products.isLoading ? (
-          <div className={style.loading}></div>
+          <Box className={style.loading}></Box>
         ) : products.errMess ? (
-          <div className={style.error}></div>
+          <Box className={style.error}></Box>
         ) : products ? (
           productsPagination.map((e) => {
             return (
@@ -46,7 +47,7 @@ function Cards() {
         ) : (
           ""
         )}
-      </div>
+      </Box>
       <Pagination
         page={actualPage}
         total={getTotalPages()}
@@ -54,7 +55,7 @@ function Cards() {
           setActualPage(pageChange);
         }}
       />
-    </div>
+    </Box>
   );
 }
 

@@ -1,7 +1,7 @@
 import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
 import { BsHeartFill } from "react-icons/bs";
 import style from "./productCard.module.css";
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useState } from "react";
 import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import { useAppDispatch } from "../../app/hooks";
@@ -89,18 +89,18 @@ function ProductCard(props: any) {
   };
 
   return (
-    <div className={style.container}>
-      <div className={style.card}>
+    <Box className={style.container}>
+      <Box className={style.card}>
         <Link to={`/productos/${props.name}`}>
-          <div className={style.imgBx}>
+          <Box className={style.imgBx}>
             <img className={style.img} src={props.img} />
-          </div>
+          </Box>
         </Link>
 
-        <div className={style.contentBx}>
-          <div className={style.name}>
+        <Box className={style.contentBx}>
+          <Box className={style.name}>
             <h2>{props.name}</h2>
-          </div>
+          </Box>
 
           <Button
             colorScheme="blue"
@@ -129,25 +129,25 @@ function ProductCard(props: any) {
               color={isFavorite(props.name) ? "red" : "white"}
             />
           </Button>
-        </div>
-        <div className={style.calificacion}>
-          <div className={style.starsOuter}>
-            <div
+        </Box>
+        <Box className={style.calificacion}>
+          <Box className={style.starsOuter}>
+            <Box
               className={style.starsInner}
               style={{ width: `${startPercentage()}%` }}
-            ></div>
-          </div>
-        </div>
-        <div className={style.price_Discount}>
-          <div className={style.price}>US$ {props.price}</div>
+            ></Box>
+          </Box>
+        </Box>
+        <Box className={style.price_Discount}>
+          <Box className={style.price}>US$ {props.price}</Box>
           <img
             src="https://www.qloud.com.ar/img/a12.svg"
             alt=""
             className={style.ahora12}
           />
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 
