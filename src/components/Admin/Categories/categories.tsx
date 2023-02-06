@@ -22,31 +22,6 @@ import { Link } from "react-router-dom";
 export default function CategoriesAdmin() {
   const categoriesStore = useAppSelector((state) => state.categories)
   const dispatch = useAppDispatch();
-
-  const deleteCategory = (id:string) => {
-    try{
-      dispatch(deleteCateogry(id))
-      
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-  
-      Toast.fire({
-        icon: "success",
-        title: "Eliminado Correctamente",
-      });
-    }catch(error){
-      
-    }
-  }
   
   const setActive = (id:string, active:Boolean) => {
     dispatch(putCateogry(id, {active: !active}))
@@ -79,9 +54,6 @@ export default function CategoriesAdmin() {
                     <Td>{category.father?.name}</Td>
                     <Td><Switch id='email-alerts' isChecked={category.active ? true : false} onChange={() => setActive(category._id, category.active)} /></Td>
                     <Td style={{ display: "flex" }}>
-                      <Button onClick={() => deleteCategory(category._id)}>
-                        <HiTrash size={20}/>
-                      </Button>
                       <Button>
                         <Link to={`/Admin/categories/edit/${category._id}`}>
                           <HiOutlinePencilAlt size={20}/>

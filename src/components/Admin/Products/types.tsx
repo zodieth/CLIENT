@@ -2,9 +2,8 @@ export interface formData {
     name: string;
     description: string;
     price: number;
-    images: string[];
+    stock: number;
     category:'';
     brand:'';
-    
   }
   

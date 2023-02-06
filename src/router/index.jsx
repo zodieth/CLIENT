@@ -9,13 +9,14 @@ import CreateCategoryAdmin from "../components/Admin/Categories/createCategory";
 import CategoriesAdmin from "../components/Admin/Categories/categories";
 import EditCategoryAdmin from "../components/Admin/Categories/editCategory";
 import ArmaPC from "../views/ArmaPC/ArmaPC";
-import ProductAdmin from "../components/Admin/Products/products";
+import CreateProductAdmin from "../components/Admin/Products/createProduct";
 import Detail from "../views/Detail/Detail";
 import PostLogin from "../views/PostLogin/PostLogin";
 import PostSignUp from "../views/PostSignUp/PostSignUp";
 import CreateBrandAdmin from "../components/Admin/Brands/createBrand";
 import BrandsAdmin from "../components/Admin/Brands/brands";
 import EditBrandAdmin from "../components/Admin/Brands/editBrand";
+import ProductsAdmin from "../components/Admin/Products/products";
 
 export const router = createBrowserRouter([
   {
@@ -64,7 +65,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/user/purchases",
-    element: <Admin children={<ProductAdmin />} />,
+    element: <Admin children={<ProductsAdmin />} />,
     exact: true,
   },
   {
@@ -74,7 +75,12 @@ export const router = createBrowserRouter([
   },
   {
     path: "/Admin/products",
-    element: <Admin children={<ProductAdmin />} />,
+    element: <Admin children={<ProductsAdmin />} />,
+    exact: true,
+  },
+  {
+    path: "/Admin/products/create",
+    element: <Admin children={<CreateProductAdmin />} />,
     exact: true,
   },
   {

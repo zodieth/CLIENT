@@ -39,7 +39,7 @@ export default function Pagination(props:any) {
   return (
     <div className={StylePagination.pagination} style={{ marginTop: "25px", width: "100%" }}>
       <span>
-        Página {props.page} de {props.total}
+        {/* Página {props.page} de {props.total} */}
       </span><br/>
       { getPages() }
     </div>
