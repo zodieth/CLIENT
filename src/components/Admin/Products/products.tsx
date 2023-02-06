@@ -35,7 +35,7 @@ export default function ProductsAdmin() {
       </Box>
       <TableContainer>
         <Table variant='simple'>
-          <TableCaption>Listado de categorías</TableCaption>
+          <TableCaption>Listado de productos</TableCaption>
           <Thead>
             <Tr>
               <Th>Nombre</Th>
