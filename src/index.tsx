@@ -5,31 +5,18 @@ import { store } from "./app/store";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router/index";
 import { ChakraProvider } from "@chakra-ui/react";
-import { Auth0Provider } from "@auth0/auth0-react";
+import { ColorModeScript } from "@chakra-ui/color-mode";
+import theme from "./theme"; /// dark mode
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 
-const getAuth = () => {
-  const token = localStorage.getItem("user-token");
-  return token ? token : null;
-};
-
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ChakraProvider>
-        <Auth0Provider
-          domain="dev-6d0rlv0acg7xdkxt.us.auth0.com"
-          clientId="2EHZJm086BzkgwY5HXmPeK5UnbHegBXl"
-          cacheLocation="localstorage"
-          authorizationParams={{
-            redirect_uri: "https://client-zodieth.vercel.app/",
-            audience: "https://all-tech.com",
-          }}
-        >
-          <RouterProvider router={router} />
-        </Auth0Provider>
+      <ChakraProvider theme={theme}>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <RouterProvider router={router} />
       </ChakraProvider>
     </Provider>
   </React.StrictMode>

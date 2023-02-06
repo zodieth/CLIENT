@@ -1,11 +1,11 @@
 import style from "./products.module.css"
-import { Input, Select, Textarea } from "@chakra-ui/react";
+import { Box, Input, Select, Textarea, useColorModeValue } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import interfaceCategory from  "../../../features/categories/interfaceCategory";
 import { useEffect, useState } from "react";
 import { putCateogry } from "../../../app/actionsCreators"
 import Swal from "sweetalert2";
-import { useParams } from "react-router-dom";
+import { redirect, useParams } from "react-router-dom";
 
 export function validate(inputs: any) {
   let errors = {
@@ -74,9 +74,11 @@ export default function EditCategoryAdmin() {
       dispatch(
         putCateogry(
           inputs.id,
-          inputs.name,
-          inputs.description,
-          inputs.father,
+          {
+            name: inputs.name,
+            description: inputs.description,
+            father: inputs.father,
+          }
         )
       );
 
@@ -102,14 +104,16 @@ export default function EditCategoryAdmin() {
         name: "",
         description: ""
       });
+
+      window.history.back();
     }
   }
 
   return (
-    <div className={style.container}>
+    <Box bg={useColorModeValue("white", "whiteAlpha.100")} className={style.container}>
       <form id="createActivity" onSubmit={handleSubmit}>
         <input type="hidden" value="{categorySelected?.id}" />
-        <div className={style.groupInputs}>
+        <Box className={style.groupInputs}>
           <label>Nombre</label>
           <Input 
             type='text'
@@ -120,8 +124,8 @@ export default function EditCategoryAdmin() {
             value={inputs.name}
           />
           <p >{errors.name}</p>
-        </div>
-        <div className={style.groupInputs}>
+        </Box>
+        <Box className={style.groupInputs}>
           <label>Descripción</label>
           <Textarea 
             value={inputs.description}
@@ -129,8 +133,8 @@ export default function EditCategoryAdmin() {
             name='description'
             width='sm'/>
             <p >{errors.description}</p>
-        </div>
-        <div className={style.groupInputs}>
+        </Box>
+        <Box className={style.groupInputs}>
           <label>Cat. padre</label>
           <Select
             name='father'
@@ -142,15 +146,15 @@ export default function EditCategoryAdmin() {
                 return <option key={category._id} value={category._id}>{category.name}</option>
               })}
           </Select>
-        </div>
+        </Box>
 
         <hr className={style.hrLineDashed}/>
         
-        <div className={style.groupButtons}>
-          <a href="./" className={style.btnWhite}>Cancelar</a>
+        <Box className={style.groupButtons}>
+          <a href="#" onClick={() => window.history.back()} className={style.btnWhite}>Cancelar</a>
           <button type="submit" className={style.btnPrimary}>Guardar</button>
-        </div>
+        </Box>
       </form>
-    </div>
+    </Box>
   );
 }

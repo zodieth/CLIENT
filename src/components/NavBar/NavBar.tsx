@@ -1,5 +1,7 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import style from "./navBar.module.css";
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdComputer } from "react-icons/md";
@@ -15,21 +17,59 @@ import {
   Stack,
   Center,
 } from "@chakra-ui/react";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useAppSelector } from "../../hooks/hooks";
+import { auth } from "../../auth0.service";
+import { AUTH_MANAGEMENT_API_ACCESS_TOKEN } from "../../auth0.config";
 
 function NavBar() {
+  const [userName, setUserName] = useState("");
+  const [picture, setPicture] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+
   const cartItems = useAppSelector((state) => state.cart);
+  const navigate = useNavigate();
 
-  const { isAuthenticated, logout } = useAuth0();
+  const accessToken = localStorage.getItem("accessToken");
+  const activeSession = accessToken ? true : false;
+  const handleUser = async () => {
+    await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
+      if(error) {
+        console.log("Error: ", error);
+        //Para disimular la limitación en la tasa de peticiones, se puede desloguear al usuario cuando se excede dicho límite.
+      } else {
+        setUserName(user.nickname);
+        setPicture(user.picture);
+        const userId = user.sub;
+        const userRolesResponse = await fetch(`https://dev-6d0rlv0acg7xdkxt.us.auth0.com/api/v2/users/${userId}/roles`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${AUTH_MANAGEMENT_API_ACCESS_TOKEN}`
+          }
+        });
+        const userRoles = await userRolesResponse.json();
+        const hasAdminRole = userRoles.some((role : { id : String, name : String, description : String }) => role.name === "alltech-admin");
+        setIsAdmin(hasAdminRole);
+      };
+    })
+  };
+  const handleLogout = async () => {
+    localStorage.removeItem("accessToken");
+    await auth.logout({
+      returnTo: window.location.origin,
+      clientID: "2EHZJm086BzkgwY5HXmPeK5UnbHegBXl"
+    });
+  };
 
+  useEffect(() => {
+    handleUser();
+  }, [handleUser]);
   return (
-    <div className={style.navBar}>
+    <Box className={style.navBar}>
       <div className={style.logo}>
         <Link to="/">
-          <HamburgerIcon boxSize={8} color="black" />
+          <HamburgerIcon boxSize={8} color="Gray" />
         </Link>
-        <Link to="/">
+        <Link to="/" >
           <h1 className={style.h1Logo}> AllTech</h1>
         </Link>
       </div>
@@ -47,7 +87,7 @@ function NavBar() {
             {cartItems.cart.length}
           </Button>
         </Link>
-        <Link to="armatupc">
+        <Link to="/armatupc">
           <Button
             rightIcon={<MdComputer />}
             className={style.button}
@@ -58,16 +98,16 @@ function NavBar() {
           </Button>
         </Link>
 
-        {isAuthenticated ? (
+        {activeSession ? (
           <div className={style.avatar_login}>
             <Button
               rightIcon={<FiLogIn />}
               className={style.button}
               colorScheme="teal"
               variant="solid"
-              onClick={() => logout()}
+              onClick={handleLogout}
             >
-              Logout
+              Salir
             </Button>
             <Stack direction={"row"} spacing={7}>
               <Menu>
@@ -79,22 +119,22 @@ function NavBar() {
                   cursor={"pointer"}
                   minW={0}
                 >
-                  <Avatar size={"sm"} src={""} />
+                  <Avatar size={"sm"} src={picture} />
                 </MenuButton>
                 <MenuList alignItems={"center"} style={{ color: "#495057" }}>
                   <br />
                   <Center>
-                    <Avatar size={"2xl"} src={""} />
+                    <Avatar size={"2xl"} src={picture} />
                   </Center>
                   <br />
                   <Center>
-                    <p>Username</p>
+                    <p>{userName}</p>
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem>Cart</MenuItem>
-                  <MenuItem>Account Settings</MenuItem>
-                  <MenuItem onClick={() => logout()}>Logout</MenuItem>
+                  <MenuItem onClick={() => navigate("/user")}>Mi cuenta de usuario</MenuItem>
+                  {isAdmin ? <MenuItem onClick={() => navigate("/admin")}>Mi cuenta de administrador</MenuItem> : null}
+                  <MenuItem onClick={handleLogout}>Salir</MenuItem>
                 </MenuList>
               </Menu>
             </Stack>
@@ -112,7 +152,7 @@ function NavBar() {
           </Link>
         )}
       </div>
-    </div>
+    </Box>
   );
 }
 

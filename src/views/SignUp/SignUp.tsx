@@ -14,9 +14,11 @@ import {
   useColorModeValue,
   Select
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { auth } from "../../auth0.service";
+import style from "./SignUp.module.css"
 
 export default function SignupCard() {
   const [userName, setUserName] = useState("");
@@ -30,65 +32,104 @@ export default function SignupCard() {
   const [province, setProvince] = useState("");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
-  const [postalCode, setPostalCode] = useState("");
+  const [zip, setZip] = useState("");
   const [allowSignUp, setAllowSignUp] = useState(false);
 
-  const handleSignUp = async () => {
-    const Auth0Response = await fetch("https://dev-6d0rlv0acg7xdkxt.us.auth0.com/dbconnections/signup", {
+  const navigate = useNavigate();
+
+  const handleUserCreation = async (
+    province : String,
+    city : String,
+    address : String,
+    zip : String,
+    firstName : String,
+    lastName : String,
+    userName : String,
+    phoneNumber : String,
+    email : String,
+    // accessToken : String
+    ) => {
+    const locationResponse = await fetch(`http://localhost:3001/location`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          cliend_id: "2EHZJm086BzkgwY5HXmPeK5UnbHegBXl",
-          email: email,
-          password: password,
-          connection: "Username-Password-Authentication",
-          username: userName,
-          given_name: firstName,
-          family_name: lastName,
-          // picture: "",
-          user_metadata: {
-            phone_number: phoneNumber,
-            province: province,
-            city: city,
-            address: address,
-            postal_code: postalCode
-          }
-        })
-    });
-    const userAuth0 = await Auth0Response.json();
-    console.log("Auth0 user: ", userAuth0);
-    if(userAuth0) {
-      const locationResponse = await fetch("http://localhost:3001/location", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json"
+          // Authorization: `Bearer ${accessToken}`
         },
         body: JSON.stringify({
           province,
           city,
           address,
-          zip: postalCode
+          zip
         })
       });
       const locationDB = await locationResponse.json();
       const locationId = locationDB._id;
-      const userDB = await fetch("http://localhost:3001/user", {
+      const userResponse = await fetch(`http://localhost:3001/user`, {
         method: "POST",
         headers: {
-          "content-type": "application/json"
+          "content-type": "application/json",
+          // Authorization: `Bearer ${accessToken}`
         },
         body: JSON.stringify({
-          firstName: firstName,
-          lastName: lastName,
-          userName: userName,
-          email: email,
-          phoneNumber: phoneNumber,
+          firstName,
+          lastName,
+          userName,
+          phoneNumber,
+          email,
           location: locationId
         })
       })
-      console.log("DB user: ", userDB);
+      const userDB = await userResponse.json();
+      if(userDB.hasOwnProperty("errors")) {
+        const userNameExists = userDB.errors.some((error : { value : String, msg : String, param : String, location: String }) => {
+          return error.param === "userName";
+        });
+        const emailExists = userDB.errors.some((error : { value : String, msg : String, param : String, location: String }) => {
+          return error.param === "email";
+        });
+        const phoneNumberExists = userDB.errors.some((error : { value : String, msg : String, param : String, location: String }) => {
+          return error.param === "phoneNumber";
+        });
+        if(userNameExists) {
+          window.alert("Ya existe una cuenta con el nombre de usuario ingresado.");
+        } else if(emailExists) {
+          window.alert("Ya existe una cuenta con el correo electrónico ingresado.");
+        } else if(phoneNumberExists) {
+          window.alert("Ya existe una cuenta con el número telefónico ingresado.");
+        };
+        return false;
+      } else {
+        return true;
+      };
+  };
+  const handleSignUp = async () => {
+    const successfulUserCreation = await handleUserCreation(
+      province,
+      city,
+      address,
+      zip,
+      firstName,
+      lastName,
+      userName,
+      phoneNumber,
+      email
+      // accessToken
+    );
+    if(successfulUserCreation) {
+      auth.signup({
+        email: email,
+        password: password,
+        connection: "Username-Password-Authentication"
+      }, async (error : Auth0Error | null, result : any) => {
+        if(error) {
+          //OJO, debe haber validación de datos en tiempo real en concordancia con los modelos y la configuración de Auth0. La validación en las rutas del servidor sólo se usará para efectos de determinar si ya existe un documento con el mismo valor en cierto campo.
+          window.alert("El proceso de registro no ha sido exitoso. Por favor, intenta más tarde.");
+        } else {
+          window.alert("Bienvenido a AllTech. Revisa tu correo electrónico, recuerda que debes verificar tu cuenta antes de ingresar.");
+          //Esta alerta podría recordar al usuario los datos de la cuenta recién creada...
+          navigate("/signin");
+        };
+      });
     };
   };
 
@@ -109,10 +150,10 @@ export default function SignupCard() {
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} textAlign={"center"}>
-            Sign up
+            Crear cuenta
           </Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool products ✌️
+            Disfrute de todos nuestros productos ✌️
           </Text>
         </Stack>
         <Box
@@ -123,14 +164,14 @@ export default function SignupCard() {
         >
           <Stack spacing={4}>
           <FormControl id="email" isRequired>
-              <FormLabel>Username</FormLabel>
+              <FormLabel className={style.largo}>Nombre de usuario</FormLabel>
               <Input type="text" value={userName}
                                   onChange={e => setUserName(e.target.value)}/>
             </FormControl>
             <HStack>
               <Box>
                 <FormControl id="password" isRequired>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className={style.largo}>Contraseña</FormLabel>
                     <InputGroup>
                       <Input type={showPassword ? "text" : "password"}
                               value={password}
@@ -142,7 +183,7 @@ export default function SignupCard() {
               </Box>
               <Box>
                 <FormControl id="password" isRequired>
-                  <FormLabel>Confirm password</FormLabel>
+                  <FormLabel className={style.largo}>Confirmar contraseña</FormLabel>
                     <InputGroup>
                       <Input type={showPassword ? "text" : "password"}
                               value={confirmPassword}
@@ -163,7 +204,7 @@ export default function SignupCard() {
             <HStack>
               <Box>
                 <FormControl id="firstName" isRequired>
-                  <FormLabel>First Name</FormLabel>
+                  <FormLabel>Nombre</FormLabel>
                   <Input type="text"
                           value={firstName}
                           onChange={e => setFirstName(e.target.value)}/>
@@ -171,7 +212,7 @@ export default function SignupCard() {
               </Box>
               <Box>
                 <FormControl id="lastName" isRequired>
-                  <FormLabel>Last Name</FormLabel>
+                  <FormLabel>Apellido</FormLabel>
                   <Input type="text"
                           value={lastName}
                           onChange={e => setLastName(e.target.value)}/>
@@ -189,7 +230,7 @@ export default function SignupCard() {
               </Box>
               <Box>
                 <FormControl id="email" isRequired>
-                  <FormLabel>Phone number</FormLabel>
+                  <FormLabel className={style.largo}>Número telefónico</FormLabel>
                   <Input type="tel"
                           value={phoneNumber}
                           onChange={e => setPhoneNumber(e.target.value)}/>
@@ -199,29 +240,40 @@ export default function SignupCard() {
             <HStack>
               <Box>
                 <FormControl id="email" isRequired>
-                  <FormLabel>Province/Territory</FormLabel>
-                  <Select placeholder="Province/Territory"
+                  <FormLabel>Provincia</FormLabel>
+                  <Select  placeholder="Provincia"
                           value={province}
                           onChange={e => setProvince(e.target.value)}>
-                    <option value="Alberta">Alberta</option>
-                    <option value="British Columbia">British Columbia</option>
-                    <option value="Manitoba">Manitoba</option>
-                    <option value="New Brunswick">New Brunswick</option>
-                    <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
-                    <option value="Northwest Territories">Northwest Territories</option>
-                    <option value="Nova Scotia">Nova Scotia</option>
-                    <option value="Nunavut">Nunavut</option>
-                    <option value="Ontario">Ontario</option>
-                    <option value="Prince Edward Island">Prince Edward Island</option>
-                    <option value="Quebec">Quebec</option>
-                    <option value="Saskatchewan">Saskatchewan</option>
-                    <option value="Yukon">Yukon</option>
+                    <option value="Buenos Aires">Buenos Aires</option>
+                    <option value="Ciudad Autónoma de Buenos Aires">Ciudad Autónoma de Buenos Aires</option>
+                    <option value="Catamarca">Catamarca</option>
+                    <option value="Chaco">Chaco</option>
+                    <option value="Chubut">Chubut</option>
+                    <option value="Córdoba">Córdoba</option>
+                    <option value="Corrientes">Corrientes</option>
+                    <option value="Entre Ríos">Entre Ríos</option>
+                    <option value="Formosa">Formosa</option>
+                    <option value="Jujuy">Jujuy</option>
+                    <option value="La Pampa">La Pampa</option>
+                    <option value="La Rioja">La Rioja</option>
+                    <option value="Mendoza">Mendoza</option>
+                    <option value="Misiones">Misiones</option>
+                    <option value="Neuquén">Neuquén</option>
+                    <option value="Río Negro">Río Negro</option>
+                    <option value="Salta">Salta</option>
+                    <option value="San Juan">San Juan</option>
+                    <option value="San Luis">San Luis</option>
+                    <option value="Santa Cruz">Santa Cruz</option>
+                    <option value="Santa Fe">Santa Fe</option>
+                    <option value="Santiago del Estero">Santiago del Estero</option>
+                    <option value="Tierra del Fuego">Tierra del Fuego</option>
+                    <option value="Tucumán">Tucumán</option>
                   </Select>
                 </FormControl>
               </Box>
               <Box>
                 <FormControl id="email" isRequired>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel>Ciudad</FormLabel>
                   <Input type="text"
                           value={city}
                           onChange={e => setCity(e.target.value)}/>
@@ -231,7 +283,7 @@ export default function SignupCard() {
             <HStack>
               <Box>
                 <FormControl id="email" isRequired>
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel>Dirección</FormLabel>
                   <Input type="text"
                           value={address}
                           onChange={e => setAddress(e.target.value)}/>
@@ -239,10 +291,10 @@ export default function SignupCard() {
               </Box>
               <Box>
                 <FormControl id="email" isRequired>
-                  <FormLabel>Postal code</FormLabel>
+                  <FormLabel className={style.largo}>Código Postal</FormLabel>
                   <Input type="text"
-                          value={postalCode}
-                          onChange={e => setPostalCode(e.target.value)}/>
+                          value={zip}
+                          onChange={e => setZip(e.target.value)}/>
                   </FormControl>
               </Box>
             </HStack>
@@ -258,14 +310,14 @@ export default function SignupCard() {
                 disabled={!allowSignUp}
                 onClick={handleSignUp}
               >
-                Sign up
+                Crear cuenta
               </Button>
             </Stack>
             <Stack pt={6}>
               <Text align={"center"}>
-                Already a user?{" "}
+                ¿Ya eres usuario?{" "}
                 <Link style={{ color: "blue" }} to="/signin" color={"blue.400"}>
-                  Login
+                  Inicie sesión
                 </Link>
               </Text>
             </Stack>

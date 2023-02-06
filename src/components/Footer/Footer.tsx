@@ -2,7 +2,6 @@ import {
   Box,
   chakra,
   Container,
-  Link,
   SimpleGrid,
   Stack,
   Text,
@@ -10,17 +9,17 @@ import {
   Input,
   IconButton,
   useColorModeValue,
+  LightMode,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { BiMailSend } from "react-icons/bi";
 import style from "./footer.module.css";
 import MensajeMail from "./MensajeMail";
+import { Link } from "react-router-dom";
 
-
-const  myFunction = () =>{
+const myFunction = () => {
   alert("¡Dirección de correo recibido, pronto recibiras descuentos!");
-}
-
+};
 
 const Logo = (props: any) => {
   return (
@@ -84,10 +83,7 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
 
 export default function LargeWithNewsletter() {
   return (
-    <Box
-      className={style.box}
-      color={useColorModeValue("black", "white")}
-    >
+    <Box className={style.box} color={useColorModeValue("black", "white")}>
       <Container as={Stack} maxW={"6xl"} py={10}>
         <SimpleGrid
           templateColumns={{ sm: "1fr 1fr", md: "2fr 1fr 1fr 2fr" }}
@@ -97,35 +93,38 @@ export default function LargeWithNewsletter() {
             <Box>
               <Logo color={useColorModeValue("gray.700", "white")} />
             </Box>
-            <Text fontSize={"sm"}>© 2023 AllTech. All rights reserved</Text>
+            <Text fontSize={"sm"}>
+              © 2023 AllTech. Todos los derechos reservados
+            </Text>
+          </Stack>
+
+          <Stack align={"flex-start"}>
+            <ListHeader>Nosotros</ListHeader>
+            <Link to="">Sobre nosotros</Link>
+            <Link to="">Envíos y entregas</Link>
+            <Link to="">Políticas de garantías</Link>
+            <Link to="">Cambios y devoluciones</Link>
+            <Link to="">Testimonios</Link>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>Company</ListHeader>
-            <Link href={"#"}>About us</Link>
-            <Link href={"#"}>Blog</Link>
-            <Link href={"#"}>Contact us</Link>
-            <Link href={"#"}>Pricing</Link>
-            <Link href={"#"}>Testimonials</Link>
+            <ListHeader>Soporte</ListHeader>
+            <Link to="/comocomprar">Cómo comprar</Link>
+            <Link to="/preguntas">Preguntas Frecuentes</Link>
+            <Link to="">Contáctenos</Link>
+            <Link to="">Términos y condiciones</Link>
+            <Link to="">Políticas de privacidad</Link>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>Support</ListHeader>
-            <Link href={"#"}>Help Center</Link>
-            <Link href={"#"}>Terms of Service</Link>
-            <Link href={"#"}>Legal</Link>
-            <Link href={"#"}>Privacy Policy</Link>
-            <Link href={"#"}>Satus</Link>
-          </Stack>
-          <Stack align={"flex-start"}>
-            <ListHeader>¡Recibe Descuentos!</ListHeader>
+            <ListHeader>¡Recibi descuentos y promociones!</ListHeader>
             <Stack direction={"row"}>
               <Input
-                placeholder={"Your email address"}
+                placeholder={"Ingrese email"}
                 bg={useColorModeValue("white", "white")}
                 border={0}
                 _focus={{
                   bg: "white",
                 }}
-              /> 
+              />
               {/* <IconButton
                 bg={useColorModeValue("green.400", "green.800")}
                 color={useColorModeValue("white", "gray.800")}
@@ -136,7 +135,7 @@ export default function LargeWithNewsletter() {
                 icon={<BiMailSend />}
                 onClick={() => myFunction()}
               /> */}
-              <MensajeMail/>
+              <MensajeMail />
             </Stack>
           </Stack>
         </SimpleGrid>

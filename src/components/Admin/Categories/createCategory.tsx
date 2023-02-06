@@ -1,5 +1,5 @@
 import style from "./products.module.css"
-import { Input, Select } from "@chakra-ui/react";
+import { Box, Input, LightMode, Select, useColorModeValue } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import interfaceCategory from  "../../../features/categories/interfaceCategory";
 import { useState } from "react";
@@ -21,7 +21,7 @@ export function validate(inputs: any) {
   return errors;
 }
 
-export default function CategoryAdmin() {
+export default function CreateCategoryAdmin() {
   const dispatch = useAppDispatch();
   const categoriesStore = useAppSelector((state) => state.categories)
   const [inputs, setInputs] = useState({
@@ -84,13 +84,15 @@ export default function CategoryAdmin() {
         name: "",
         description: ""
       });
+
+      window.history.back();
     }
   }
 
   return (
-    <div className={style.container}>
+    <Box bg={useColorModeValue("white", "whiteAlpha.100")} className={style.container}>
       <form id="createActivity" onSubmit={handleSubmit}>
-        <div className={style.groupInputs}>
+        <Box className={style.groupInputs}>
           <label>Nombre</label>
           <Input 
             type='text'
@@ -101,8 +103,8 @@ export default function CategoryAdmin() {
             value={inputs.name}
           />
           <p >{errors.name}</p>
-        </div>
-        <div className={style.groupInputs}>
+        </Box>
+        <Box className={style.groupInputs}>
           <label>Descripción</label>
           <Input 
             type='text'
@@ -111,8 +113,8 @@ export default function CategoryAdmin() {
             name='description'
             width='auto'/>
             <p >{errors.description}</p>
-        </div>
-        <div className={style.groupInputs}>
+        </Box>
+        <Box className={style.groupInputs}>
           <label>Cat. padre</label>
           <Select
             name='father'
@@ -124,15 +126,15 @@ export default function CategoryAdmin() {
                 return <option key={category._id} value={category._id}>{category.name}</option>
               })}
           </Select>
-        </div>
+        </Box>
 
         <hr className={style.hrLineDashed}/>
         
-        <div className={style.groupButtons}>
-          <a href="./" className={style.btnWhite}>Cancelar</a>
-          <button type="submit" className={style.btnPrimary}>Guardar</button>
-        </div>
+        <Box className={style.groupButtons}>
+          <a href="#" onClick={() => window.history.back()} className={style.btnWhite}>Cancelar</a>
+          <button type="submit" className={style.btnPrimary}>Crear</button>
+        </Box> 
       </form>
-    </div>
+    </Box>
   );
 }

@@ -1,4 +1,5 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   IconButton,
   Avatar,
@@ -40,7 +41,9 @@ import {
   fetchBrandApi,
   fetchCategoryApi,
 } from "../app/actionsCreators";
-import { useAuth0 } from "@auth0/auth0-react";
+import { auth } from "../auth0.service";
+import ToggleColorMode from "../components/DarkMode/ToggleColorMode";
+import { AUTH_MANAGEMENT_API_ACCESS_TOKEN } from "../auth0.config";
 
 interface LinkItemProps {
   name: string;
@@ -56,7 +59,7 @@ const LinkItems: Array<LinkItemProps> = [
     icon: FiCompass,
     url: "/admin/categories",
   },
-  { name: "Marcas", icon: FiStar, url: "#" },
+  { name: "Marcas", icon: FiStar, url: "/admin/brands" },
   { name: "Sucursales", icon: FiSettings, url: "#" },
   { name: "Usuarios", icon: FiSettings, url: "#" },
 ];
@@ -66,35 +69,6 @@ export default function SidebarWithHeader({
 }: {
   children: ReactNode;
 }) {
-  const { getAccessTokenSilently, user, isAuthenticated, isLoading, error } =
-    useAuth0();
-
-  useEffect(() => {
-    console.log("My user: ", user);
-    console.log("Authenticated: ", isAuthenticated);
-    console.log("Loading: ", isLoading);
-    console.log("Error: ", error);
-  }, [user, isAuthenticated, isLoading, error]);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      const getToken = async () => {
-        const accessToken = await getAccessTokenSilently();
-        console.log("Token: ", accessToken);
-        const response = await fetch("http://localhost:3001/claims", {
-          method: "GET",
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        const allClaims = await response.json();
-        console.log("Claims: ", allClaims);
-        return allClaims;
-      };
-      getToken();
-    }
-  }, [getAccessTokenSilently, isAuthenticated]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
@@ -103,14 +77,15 @@ export default function SidebarWithHeader({
     dispatch(fetchProductsApi());
     dispatch(fetchBrandApi());
     dispatch(fetchCategoryApi());
-  }, []);
+  }, [dispatch]);
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
-      <SidebarContent
+    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}> {/* el centro del panel */}
+      
+      <SidebarContent  /* menu de la izquierda */
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
       />
-      <Drawer
+      <Drawer 
         autoFocus={false}
         isOpen={isOpen}
         placement="left"
@@ -124,7 +99,7 @@ export default function SidebarWithHeader({
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
+      <MobileNav  onOpen={onOpen} /> {/* panel de arriba donde esta el admin */}
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
@@ -139,7 +114,7 @@ interface SidebarProps extends BoxProps {
 //formacion del menu de la izquierda
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
-    <Box
+    <Box  /* Menu de la izquierda y sus caracteristicas */
       transition="3s ease"
       bg={useColorModeValue("white", "gray.900")}
       borderRight="1px"
@@ -148,7 +123,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       pos="fixed"
       h="full"
       {...rest}
-    >
+    > <ToggleColorMode /> {/* boton modo noche */}
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Link href="/admin">
           <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
@@ -215,8 +190,48 @@ interface MobileProps extends FlexProps {
 }
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const [userName, setUserName] = useState("");
+  const [picture, setPicture] = useState("");
+
+  const navigate = useNavigate();
+
+  const accessToken = localStorage.getItem("accessToken");
+  const activeSession = accessToken ? true : false;
+  const handleUser = async () => {
+    await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
+      if(error) {
+        console.log("Error: ", error);
+        navigate("/");
+      } else {
+        const userId = user.sub;
+        const userRolesResponse = await fetch(`https://dev-6d0rlv0acg7xdkxt.us.auth0.com/api/v2/users/${userId}/roles`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${AUTH_MANAGEMENT_API_ACCESS_TOKEN}`
+          }
+        });
+        const userRoles = await userRolesResponse.json();
+        const hasAdminRole = userRoles.some((role : { id : String, name : String, description : String }) => role.name === "alltech-admin");
+        if(!hasAdminRole) navigate("/");
+        setUserName(user.nickname);
+        setPicture(user.picture);
+      };
+    })
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    auth.logout({
+      returnTo: window.location.origin,
+      clientID: "2EHZJm086BzkgwY5HXmPeK5UnbHegBXl"
+    });
+  };
+
+  useEffect(() => {
+    if(!activeSession) navigate("/");
+    handleUser();
+  }, [handleUser]);
   return (
-    <Flex
+    <Flex /* devuelta es la barra donde esta la parte del administrador arriba */
       ml={{ base: 0, md: 60 }}
       px={{ base: 4, md: 4 }}
       height="20"
@@ -244,7 +259,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         Logo
       </Text>
 
-      <HStack spacing={{ base: "0", md: "6" }}>
+      <HStack spacing={{ base: "0", md: "6" }}> {/* seccion chiquita donde esta la parte del administrador */}
         {" "}
         {/* Arriba a la derecha */}
         <IconButton
@@ -264,7 +279,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 <Avatar
                   size={"sm"}
                   src={
-                    "https://imgs.search.brave.com/YkRbL8xLopUPaN7VXs6KifkdQH7BuixzHZwtx8cQKr4/rs:fit:980:980:1/g:ce/aHR0cHM6Ly9jZG4u/b25saW5ld2ViZm9u/dHMuY29tL3N2Zy9p/bWdfMjU4MDgzLnBu/Zw"
+                    picture
                   }
                 />
                 <VStack
@@ -273,9 +288,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Username</Text>
+                  <Text fontSize="sm">{userName}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    Administrador
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
@@ -287,10 +302,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
+              <MenuItem onClick={() => navigate("/cart")}>Mi carrito de compras</MenuItem>
+              <MenuItem onClick={() => navigate("/user")}>Mi cuenta de usuario</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={() => navigate("/")}>Volver a la tienda</MenuItem>
+              <MenuItem onClick={handleLogout}>Salir</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

@@ -3,11 +3,8 @@
 }
 
 .detail {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  
+  display: grid;
+
 }
 .contenedor{
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
@@ -16,33 +13,47 @@
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  height: 400px;
-  margin: 10rem;
+  margin: 2rem;
   border-radius: 20px;
+  padding: 1.5rem;
 }
 
 .imgDetail {
   height: 300px;
-  margin: 10rem;
+  padding-left: 2rem;
+  margin-left: 7rem;
   position: relative;
 }
 .texto{
-  position:absolute;
-  top: 70px;
-  bottom: 1px;
+  margin-left: 5rem; 
   display: flex;
   align-items: center;
-  justify-content:right;
   flex-direction: row;
+  margin-top: 20px;
+}
+.text {
+  margin-right: 5rem;
+  margin-left: 1rem;
 }
 
 .name {
   font-size: 3rem;
+  margin-left: 5rem;
+}
+
+.description {
+  font-size: 1.5rem;
+  contain: content;
+  width: 30rem;
+  margin-left: 7rem;
 }
 
 .price {
   margin: 1rem;
   font-size: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
 }
 
 .right {
@@ -58,3 +69,92 @@
   align-items: center;
   justify-content: center;
 }
+
+.preguntas {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  margin: auto;
+  display: grid;
+  align-items: center;
+  flex-direction: row;
+  /* width: 90%; */
+  margin: 2rem;
+  border-radius: 20px;
+  padding: 1.5rem;
+}
+
+.tituloPreguntas {
+  font-size: 1.5rem;
+  contain: content;
+}
+
+.question {
+  display: grid;
+  border: 3px solid rgba(71, 70, 70, 0.5);
+  border-radius: 15px ;
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.question dd {
+  display: flex;
+  align-items: center;
+  margin-left: 20%;
+  margin-top: 20px;
+  color:grey
+}
+
+.question dt{
+  font-size: 1.2rem;
+  contain: content;
+}
+.newQuestion {
+  display: inline-flex;
+  justify-content: flex-end;
+  width: 100%;
+  align-items: center;
+}
+.newQuestion textarea {
+  width:70%;
+  height:50px;
+  border:1px solid black;
+}
+
+/* /////////////////////////////////////// */
+.calificacion {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.starsOuter {
+  display: inline-block;
+  position: relative;
+  margin-top: -30px;
+  margin: 0 auto;
+
+}
+
+.starsOuter::before {
+  content: "\2606 \2606 \2606 \2606 \2606";
+  color: rgba(108, 108, 108, 0.314);
+  font-size: 50px;
+}
+
+.starsInner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 50%;
+}
+
+.starsInner::before {
+  content: "\2605 \2605 \2605 \2605 \2605";
+  color: #f8ce0b;
+  font-size: 50px;
+}
+
+
+

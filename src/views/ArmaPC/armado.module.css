@@ -1,0 +1,125 @@
+.nav {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+  margin-top: 15rem;
+}
+
+.componentsPhotos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: fit-content;
+  width: 400px;
+  background-color: #fff;
+  border-radius: 10px;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  color: rgb(65, 65, 65);
+  border: 1px solid #e2e2e2;
+  
+}
+
+.totalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100px;
+  width: 330px;
+  background-color: #fff;
+  color: rgb(65, 65, 65);
+  border: 1px solid #e2e2e2;
+}
+
+.subContainerTotal {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem;
+}
+
+.totalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  margin-right: 2rem;
+}
+
+.total {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 2rem;
+}
+
+.photoComponent {
+  height: 100px;
+}
+
+.box {
+  height: 120px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 1.5rem;
+  max-width: 100px;
+}
+
+.build {
+  margin-top: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  cursor: pointer;
+  height: 175px;
+  margin: 0.5rem;
+  width: 400px;
+  background-color: #fff;
+  font-size: 20px;
+  color: rgb(65, 65, 65);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #e2e2e2;
+  
+}
+
+.cardsProducts {
+  margin-left: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  width: 1000px;
+}
+
+.imgCard {
+  margin: 1rem;
+  height: 100px;
+}
+
+.titleImg {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.name {
+  font-size: 15px;
+  /* font-size: 0.75rem; */
+}
+
+.componentName {
+  margin: 0.25rem;
+  font-size: 0.5rem;
+  font-size: 13px;
+}

@@ -1,8 +1,9 @@
-.container{
+.container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+  margin: 3rem;
 }
 
 .cards {
@@ -18,3 +19,24 @@
   font-size: 1.5rem;
 }
 
+.loading {
+  margin: 50px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 5px #fefefe;
+  border-top: solid 5px #3498db;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  animation: loading 1s infinite linear;
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

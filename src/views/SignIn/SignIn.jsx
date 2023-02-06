@@ -15,36 +15,47 @@ import {
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { useAuth0 } from "@auth0/auth0-react";
+import { auth } from "../../auth0.service";
+import style from "./SignIn.module.css"
 
 export default function SimpleCard() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const { loginWithRedirect, getAccessTokenSilently } = useAuth0();
-  const handleLogin = async () => {
-    // const accessToken = await getAccessTokenSilently();
-    // const loginResponse = await fetch("https://dev-6d0rlv0acg7xdkxt.us.auth0.com/authorize?response_type=token&client_id=2EHZJm086BzkgwY5HXmPeK5UnbHegBXl&connection=google-oauth2&redirect_uri=http://localhost:3000", {
-    //   method: "GET",
-    //   // headers: {
-    //   //   Authorization: `Bearer ${accessToken}`
-    //   // },
-    //   redirect: "follow"
-    // });
-    // if(loginResponse.redirected) window.location.href = loginResponse.url;
-    // console.log("Login response: ", loginResponse);
-    // const userAuth0 = await loginResponse.json();
-    // console.log("userAuth0: ", userAuth0);
-    await loginWithRedirect({
-      appState: {
-        returnTo: "/"
-      },
-      authorizationParams: {
-        prompt: "login"
-      }
+  //Necesitamos un estado global de Redux para guardar los datos del usuario activo. Cuando el usuario se loguee, se llenará ese estado haciendo una request al back...
+  const handleLogin = () => {
+    auth.login({
+      email: email,
+      password: password,
+      realm: "Username-Password-Authentication",
+      redirectUri: `${window.location.origin}/postlogin`,
+      responseType: "token"
+    }, (error, result) => {
+      if(error) {
+        console.log("Error: ", error);
+        if(error.code === "access_denied") {
+          window.alert("El correo electrónico o la contraseña ingresados son incorrectos.");
+        };
+      } else {
+        console.log("Result: ", result);
+      };
     });
   };
-
+  const handleGoogleLogin = () => {
+    auth.authorize({
+      connection: "google-oauth2",
+      redirectUri: `${window.location.origin}/postsignup`,
+      responseType: "token"
+    }, (error, result) => {
+      if(error) {
+        console.log("Error: ", error);
+        if(error.code === "access_denied") {
+          window.alert("El correo electrónico o la contraseña ingresados son incorrectos.");
+        };
+      } else {
+        console.log("Result: ", result);
+      };
+    });
+  };
   return (
     <Flex
       minH={"100vh"}
@@ -54,9 +65,9 @@ export default function SimpleCard() {
     >
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>Sign in to your account</Heading>
+          <Heading fontSize={"3xl"}>Inicie sesión con una cuenta</Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool products ✌️
+          Disfrute de todos nuestros productos ✌️
           </Text>
         </Stack>
         <Box
@@ -67,7 +78,7 @@ export default function SimpleCard() {
         >
           <Stack spacing={4}>
             <FormControl id="email">
-              <FormLabel>Email address</FormLabel>
+              <FormLabel className={style.direccion}>Dirección de correo electrónico</FormLabel>
               <Input
                 type="email"
                 onChange={(e) => {
@@ -76,7 +87,7 @@ export default function SimpleCard() {
               />
             </FormControl>
             <FormControl id="password">
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Contraseña</FormLabel>
               <Input
                 type="password"
                 onChange={(e) => {
@@ -90,12 +101,16 @@ export default function SimpleCard() {
                 align={"start"}
                 justify={"space-between"}
               >
-                <Checkbox>Remember me</Checkbox>
-                <Link color={"blue.400"}>Forgot password?</Link>
+                <Checkbox>Recuérdame</Checkbox>
+                
               </Stack>
-              <Button w={"full"} variant={"outline"} leftIcon={<FcGoogle />}>
+              <Button
+                w={"full"}
+                variant={"outline"}
+                leftIcon={<FcGoogle />}
+                onClick={handleGoogleLogin}>
                 <Center>
-                  <Text onClick={handleLogin}>Sign in with Google</Text>
+                  <Text>Inicia sesión con Google</Text>
                 </Center>
               </Button>
 
@@ -109,25 +124,32 @@ export default function SimpleCard() {
                 }
               >
                 <Button
+                className={style.iniciosesion}
                   width={"full"}
                   bg={"blue.400"}
                   color={"white"}
                   _hover={{
                     bg: "blue.500",
                   }}
+                  onClick={handleLogin}
                 >
-                  Sign in
+                  Iniciar sesión
                 </Button>
               </Link>
+
+              <Stack classname={style.olvido}>
+                <Link  color={"blue.400"}>¿Olvidaste tu contraseña?</Link>
+              </Stack>
+
               <Stack pt={6}>
                 <Text align={"center"}>
-                  Don't you have a user?{" "}
+                ¿No tienes un usuario?{" "}
                   <Link
                     style={{ color: "blue" }}
                     to="/signup"
                     color={"blue.400"}
                   >
-                    Sign Up
+                    Crear usuario
                   </Link>
                 </Text>
               </Stack>
