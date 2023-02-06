@@ -20,6 +20,7 @@ import ProductsAdmin from "../components/Admin/Products/products";
 import EditProductAdmin from "../components/Admin/Products/editProduct";
 import PreguntasFrecuentes from "../views/PreguntasFrecuentes/PreguntasFrecuentes";
 import ComoComprar from "../views/ComoComprar/ComoComprar";
+import QuestionsAdmin from "../components/Admin/Questions/questions";
 
 export const router = createBrowserRouter([
   {
@@ -133,6 +134,11 @@ export const router = createBrowserRouter([
   {
     path: "/comocomprar",
     element: <ComoComprar />,
+    exact: true,
+  },
+  {
+    path: "/Admin/questions",
+    element: <Admin children={<QuestionsAdmin />} />,
     exact: true,
   },
 ]);

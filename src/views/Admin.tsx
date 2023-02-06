@@ -32,6 +32,7 @@ import {
   FiMenu,
   FiBell,
   FiChevronDown,
+  FiHelpCircle
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
@@ -60,6 +61,7 @@ const LinkItems: Array<LinkItemProps> = [
     url: "/admin/categories",
   },
   { name: "Marcas", icon: FiStar, url: "/admin/brands" },
+  { name: "Preguntas", icon: FiHelpCircle, url: "/admin/questions" },
   { name: "Usuarios", icon: FiSettings, url: "#" },
 ];
 
