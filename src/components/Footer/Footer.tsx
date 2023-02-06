@@ -83,11 +83,7 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
 
 export default function LargeWithNewsletter() {
   return (
-
     <Box className={style.box} color={useColorModeValue("black", "white")}>
-
-
-
       <Container as={Stack} maxW={"6xl"} py={10}>
         <SimpleGrid
           templateColumns={{ sm: "1fr 1fr", md: "2fr 1fr 1fr 2fr" }}
@@ -101,7 +97,7 @@ export default function LargeWithNewsletter() {
               © 2023 AllTech. Todos los derechos reservados
             </Text>
           </Stack>
-          
+
           <Stack align={"flex-start"}>
             <ListHeader>Nosotros</ListHeader>
             <Link to="">Sobre nosotros</Link>
@@ -128,7 +124,7 @@ export default function LargeWithNewsletter() {
                 _focus={{
                   bg: "white",
                 }}
-
+              />
               {/* <IconButton
                 bg={useColorModeValue("green.400", "green.800")}
                 color={useColorModeValue("white", "gray.800")}
@@ -140,7 +136,6 @@ export default function LargeWithNewsletter() {
                 onClick={() => myFunction()}
               /> */}
               <MensajeMail />
-
             </Stack>
           </Stack>
         </SimpleGrid>
