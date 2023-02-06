@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   height: fit-content;
-  width: 330px;
+  width: 400px;
   background-color: #fff;
   border-radius: 10px;
   flex-wrap: wrap;
@@ -40,18 +40,28 @@
   margin: 2rem;
 }
 
+.totalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  margin-right: 2rem;
+}
+
 .total {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 1rem;
+  margin-right: 2rem;
 }
 
 .photoComponent {
-  height: 60px;
+  height: 100px;
 }
 
 .box {
+  height: 120px;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -71,9 +81,9 @@
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
   border-radius: 10px;
   cursor: pointer;
-  height: 100px;
+  height: 175px;
   margin: 0.5rem;
-  width: 300px;
+  width: 400px;
   background-color: #fff;
   font-size: 20px;
   color: rgb(65, 65, 65);
@@ -88,12 +98,12 @@
   margin-left: 3rem;
   display: flex;
   flex-wrap: wrap;
-  width: 750px;
+  width: 1000px;
 }
 
 .imgCard {
   margin: 1rem;
-  height: 60px;
+  height: 100px;
 }
 
 .titleImg {

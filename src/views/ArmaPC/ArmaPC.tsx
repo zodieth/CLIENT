@@ -1,4 +1,6 @@
 import style from "./armado.module.css";
+import { HiShoppingCart } from "react-icons/hi";
+
 import NavBar from "../../components/NavBar/NavBar";
 import { useState } from "react";
 import cpu from "./armapcImages/cpu2.png";
@@ -78,16 +80,16 @@ function ArmaPC() {
     (product: interfaceProduct) => product.category?.name === "Procesadores"
   );
 
-  const procesadorDescription = procesador.map((e: any) => e.description);
-
   const [motherCards, setMotherCards] = useState(false);
   const mothers = products.allProducts.filter(
     (product: interfaceProduct) => product.category?.name === "Motherboards"
   );
 
-  const socket = mothers.filter(
-    (m: interfaceProduct) => m.description === "Socket LGA1700"
-  );
+  // const procesadorDescription = procesador.map((e: any) => e.description);
+
+  // const socket = mothers.filter(
+  //   (m: interfaceProduct) => m.description === "Socket LGA1700"
+  // );
 
   const [coolerCards, setCoolerCards] = useState(false);
   const coolers = products.allProducts.filter(
@@ -237,7 +239,7 @@ function ArmaPC() {
             <Box className={style.subContainerTotal}>
               <Link to="/cart">
                 <Button onClick={() => [addToCartAlert()]}>
-                  Agregar al Carrito
+                  <HiShoppingCart />
                 </Button>
               </Link>
 
@@ -296,7 +298,7 @@ function ArmaPC() {
         {/* ------------------------------MOTHERBOARD-------------------------------- */}
         {motherCards === true ? (
           <Box className={style.cardsProducts}>
-            {socket.map((e: any, index: any) => {
+            {mothers.map((e: any, index: any) => {
               return (
                 <Box
                   key={index}
