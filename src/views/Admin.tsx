@@ -44,6 +44,7 @@ import {
 import { auth } from "../auth0.service";
 import ToggleColorMode from "../components/DarkMode/ToggleColorMode";
 import { AUTH_MANAGEMENT_API_ACCESS_TOKEN } from "../auth0.config";
+import DarkModeAdmin from "../components/DarkMode/DarkModeAdmin";
 
 interface LinkItemProps {
   name: string;
@@ -98,7 +99,7 @@ export default function SidebarWithHeader({
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav  onOpen={onOpen} /> {/* panel de arriba donde esta el admin */}
+      {/* <MobileNav  onOpen={onOpen} /> */} {/* panel de arriba donde esta el admin */} {/* comentar para que no te saque de la pag, esto sacara la barra de administrador tambien */}
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
@@ -122,7 +123,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       pos="fixed"
       h="full"
       {...rest}
-    > <ToggleColorMode /> {/* boton modo noche */}
+    > <DarkModeAdmin /> {/* boton modo noche */}
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Link href="/admin">
           <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">

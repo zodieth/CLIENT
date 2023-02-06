@@ -11,6 +11,8 @@ import {
   TableContainer,
   Button, 
   Switch,
+  Box,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import interfaceProduct from  "../../../features/products/interfaceProduct";
@@ -27,13 +29,13 @@ export default function ProductsAdmin() {
   }
 
   return (
-    <div className={style.container}>
-      <div className={style.header}>
+    <Box bg={useColorModeValue("white", "whiteAlpha.100")} className={style.container}>
+      <Box className={style.header}>
         <Link to="./create" className={style.btnPrimary}>Nuevo</Link>
-      </div>
+      </Box>
       <TableContainer>
         <Table variant='simple'>
-          <TableCaption>Listado de categorías</TableCaption>
+          <TableCaption>Listado de productos</TableCaption>
           <Thead>
             <Tr>
               <Th>Nombre</Th>
@@ -68,6 +70,6 @@ export default function ProductsAdmin() {
           </Tbody>
         </Table>
       </TableContainer>
-    </div>
+    </Box>
   );
 }
