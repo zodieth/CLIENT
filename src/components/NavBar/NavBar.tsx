@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "./navBar.module.css";
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdComputer } from "react-icons/md";
@@ -19,6 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { useAppSelector } from "../../hooks/hooks";
 import { auth } from "../../auth0.service";
+import { AUTH_MANAGEMENT_API_ACCESS_TOKEN } from "../../auth0.config";
 
 function NavBar() {
   const [userName, setUserName] = useState("");
@@ -34,19 +35,26 @@ function NavBar() {
     await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
       if(error) {
         console.log("Error: ", error);
+        //Para disimular la limitación en la tasa de peticiones, se puede desloguear al usuario cuando se excede dicho límite.
       } else {
-        console.log("Usuario: ", user)
         setUserName(user.nickname);
         setPicture(user.picture);
-        //Aquí se accede al rol del usuario
+        const userId = user.sub;
+        const userRolesResponse = await fetch(`https://dev-6d0rlv0acg7xdkxt.us.auth0.com/api/v2/users/${userId}/roles`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${AUTH_MANAGEMENT_API_ACCESS_TOKEN}`
+          }
+        });
+        const userRoles = await userRolesResponse.json();
+        const hasAdminRole = userRoles.some((role : { id : String, name : String, description : String }) => role.name === "alltech-admin");
+        setIsAdmin(hasAdminRole);
       };
     })
   };
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("scope");
-    localStorage.removeItem("state");
-    auth.logout({
+    await auth.logout({
       returnTo: window.location.origin,
       clientID: "2EHZJm086BzkgwY5HXmPeK5UnbHegBXl"
     });
@@ -54,15 +62,14 @@ function NavBar() {
 
   useEffect(() => {
     handleUser();
-  }, [userName, picture, handleUser]);
-
+  }, [handleUser]);
   return (
-    <div className={style.navBar}>
+    <Box className={style.navBar}>
       <div className={style.logo}>
         <Link to="/">
-          <HamburgerIcon boxSize={8} color="black" />
+          <HamburgerIcon boxSize={8} color="Gray" />
         </Link>
-        <Link to="/">
+        <Link to="/" >
           <h1 className={style.h1Logo}> AllTech</h1>
         </Link>
       </div>
@@ -125,7 +132,6 @@ function NavBar() {
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem onClick={() => navigate("/cart")}>Mi carrito de compras</MenuItem>
                   <MenuItem onClick={() => navigate("/user")}>Mi cuenta de usuario</MenuItem>
                   {isAdmin ? <MenuItem onClick={() => navigate("/admin")}>Mi cuenta de administrador</MenuItem> : null}
                   <MenuItem onClick={handleLogout}>Salir</MenuItem>
@@ -146,7 +152,7 @@ function NavBar() {
           </Link>
         )}
       </div>
-    </div>
+    </Box>
   );
 }
 

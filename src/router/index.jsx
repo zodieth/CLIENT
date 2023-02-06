@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "../views/Home.tsx";
 import Cart from "../components/Cart/Cart";
-import User from "../views/User"
+import User from "../views/User";
 import Admin from "../views/Admin";
 import SignUp from "../views/SignUp/SignUp";
 import SignIn from "../views/SignIn/SignIn";
@@ -18,6 +18,8 @@ import BrandsAdmin from "../components/Admin/Brands/brands";
 import EditBrandAdmin from "../components/Admin/Brands/editBrand";
 import ProductsAdmin from "../components/Admin/Products/products";
 import EditProductAdmin from "../components/Admin/Products/editProduct";
+import PreguntasFrecuentes from "../views/PreguntasFrecuentes/PreguntasFrecuentes";
+import ComoComprar from "../views/ComoComprar/ComoComprar";
 
 export const router = createBrowserRouter([
   {
@@ -121,6 +123,16 @@ export const router = createBrowserRouter([
   {
     path: "/Admin/brands/edit/:id",
     element: <Admin children={<EditBrandAdmin />} />,
+    exact: true,
+  },
+  {
+    path: "/preguntas",
+    element: <PreguntasFrecuentes />,
+    exact: true,
+  },
+  {
+    path: "/comocomprar",
+    element: <ComoComprar />,
     exact: true,
   },
 ]);

@@ -11,6 +11,7 @@ import {
   TableContainer,
   Button, 
   Switch,
+  LightMode,
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import interfaceBrand from  "../../../features/brands/interfaceBrand";
@@ -46,15 +47,16 @@ export default function BrandsAdmin() {
             { brandsStore.allBrands.map((brand:interfaceBrand) => {
               return( 
                 <>
-                  <Tr key={brand.name}>
+                  <Tr color="black" key={brand.name}>
                     <Td>{brand.name}</Td>
-                    <Td><Switch id='email-alerts' isChecked={brand.active ? true : false} onChange={() => setActive(brand._id, brand.active)} /></Td>
+                    <LightMode><Td><Switch id='email-alerts' isChecked={brand.active ? true : false} onChange={() => setActive(brand._id, brand.active)} /></Td> </LightMode>
                     <Td style={{ display: "flex" }}>
-                      <Button>
+                      <LightMode><Button>
                         <Link to={`/Admin/brands/edit/${brand._id}`}>
                           <HiOutlinePencilAlt size={20}/>
                         </Link>
-                      </Button>
+                      </Button></LightMode>
+                      
                     </Td>
                   </Tr>
                 </>)

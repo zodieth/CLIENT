@@ -1,0 +1,29 @@
+.preguntas {
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.title {
+  margin-bottom: 2rem;
+  margin-left: 2rem;
+}
+.preguntasView {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.container {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.accordionItem {
+  width: 800px;
+  margin: 1rem;
+}

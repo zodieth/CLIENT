@@ -11,6 +11,9 @@ import {
   TableContainer,
   Button, 
   Switch,
+  LightMode,
+  Box,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import interfaceCategory from  "../../../features/categories/interfaceCategory";
@@ -28,10 +31,10 @@ export default function CategoriesAdmin() {
   }
 
   return (
-    <div className={style.container}>
-      <div className={style.header}>
-        <Link to="./create" className={style.btnPrimary}>Nuevo</Link>
-      </div>
+    <Box bg={useColorModeValue("white", "white")} className={style.container}>
+      <Box className={style.header}>
+      <Link to="./create" className={style.btnPrimary}>Nuevo</Link>
+      </Box>
       <TableContainer>
         <Table variant='simple'>
           <TableCaption>Listado de categorías</TableCaption>
@@ -48,17 +51,18 @@ export default function CategoriesAdmin() {
             { categoriesStore.allCategories.map((category:interfaceCategory) => {
               return( 
                 <>
-                  <Tr key={category.name}>
+                  <Tr color="black" key={category.name}>
                     <Td>{category.name}</Td>
                     <Td>{category.description.substring(0,50)+"..."}</Td>
                     <Td>{category.father?.name}</Td>
-                    <Td><Switch id='email-alerts' isChecked={category.active ? true : false} onChange={() => setActive(category._id, category.active)} /></Td>
+                    <LightMode><Td><Switch id='email-alerts' isChecked={category.active ? true : false} onChange={() => setActive(category._id, category.active)} /></Td> </LightMode>
                     <Td style={{ display: "flex" }}>
-                      <Button>
+                        <LightMode><Button color="black">
                         <Link to={`/Admin/categories/edit/${category._id}`}>
                           <HiOutlinePencilAlt size={20}/>
                         </Link>
-                      </Button>
+                      </Button></LightMode>
+
                     </Td>
                   </Tr>
                 </>)
@@ -75,6 +79,6 @@ export default function CategoriesAdmin() {
           </Tfoot>
         </Table>
       </TableContainer>
-    </div>
+    </Box>
   );
 }

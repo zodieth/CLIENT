@@ -18,10 +18,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { auth } from "../../auth0.service";
-import auth0 from "auth0-js";
 import style from "./PostSignUp.module.css"
 
 export default function SignupCard() {
+  const [renderForm, setRenderForm] = useState(false);
   const [userName, setUserName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -37,21 +37,32 @@ export default function SignupCard() {
   const navigate = useNavigate();
 
   const handleHash = async (hash: String) => {
-    auth.parseHash({
+    await auth.parseHash({
       hash
-    }, (error : Auth0ParseHashError | null, result : Auth0DecodedHash | null) => {
+    }, async (error : Auth0ParseHashError | null, result : Auth0DecodedHash | null) => {
       if(error) {
         console.log("Error: ", error);
       } else {
-        const { accessToken, scope, state } = result;
+        const { accessToken } = result;
         localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("scope", scope);
-        localStorage.setItem("state", state);
         if(accessToken) {
-          auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
+          await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
             if(error) {
               console.log("Error: ", error);
             } else {
+              const userExistsResponse = await fetch(`http://localhost:3001/user/${user.email}`, {
+                method: "GET",
+                headers: {
+                  "content-type": "application/json",
+                  // Authorization: `Bearer ${accessToken}`
+                }
+              });
+              const userExists = await userExistsResponse.json();
+              if(userExists) {
+                navigate("/");
+              } else {
+                setRenderForm(true);
+              };
               setFirstName(user.given_name);
               setLastName(user.family_name);
               setEmail(user.email);
@@ -61,7 +72,6 @@ export default function SignupCard() {
       };
     });
   };
-
   const handleUserCreation = async (
     province : String,
     city : String,
@@ -71,7 +81,8 @@ export default function SignupCard() {
     lastName : String,
     userName : String,
     phoneNumber : String,
-    email : String
+    email : String,
+    // accessToken : String
     ) => {
     const locationResponse = await fetch(`http://localhost:3001/location`, {
         method: "POST",
@@ -87,7 +98,6 @@ export default function SignupCard() {
         })
       });
       const locationDB = await locationResponse.json();
-      console.log(locationDB);
       const locationId = locationDB._id;
       const userResponse = await fetch(`http://localhost:3001/user`, {
         method: "POST",
@@ -105,11 +115,25 @@ export default function SignupCard() {
         })
       })
       const userDB = await userResponse.json();
-      console.log("DB user: ", userDB);
+      if(userDB.hasOwnProperty("errors")) {
+        const userNameExists = userDB.errors.some((error : { value : String, msg : String, param : String, location: String }) => {
+          return error.param === "userName";
+        });
+        const phoneNumberExists = userDB.errors.some((error : { value : String, msg : String, param : String, location: String }) => {
+          return error.param === "phoneNumber";
+        });
+        if(userNameExists) {
+          window.alert("Ya existe una cuenta con el nombre de usuario ingresado.");
+        } else if(phoneNumberExists) {
+          window.alert("Ya existe una cuenta con el número telefónico ingresado.");
+        };
+        return false;
+      } else {
+        return true;
+      };
   };
-
   const handleSignUp = async () => {
-    await handleUserCreation(
+    const successfulUserCreater = await handleUserCreation(
       province,
       city,
       address,
@@ -121,66 +145,18 @@ export default function SignupCard() {
       email
       // accessToken
     );
-    window.alert("Bienvenido a AllTech. Serás redirigido a nuestra tienda.");
-    navigate("/");
-    // auth.checkSession({
-    //   audience: "https://dev-6d0rlv0acg7xdkxt.us.auth0.com/api/v2/",
-    //   scope: "read:current_user update:current_user_metadata",
-    //   redirectUri: window.location.origin,
-    //   responseType: "token"
-    // }, (error : Auth0Error, result : any) => {
-    //   if(error) {
-    //     console.log("Error: ", error);
-    //     window.alert("El proceso de registro no ha sido exitoso. Por favor, intenta más tarde.");
-    //   } else {
-    //     console.log("Result: ", result);
-    //     const authManage = new auth0.Management({
-    //       domain: "dev-6d0rlv0acg7xdkxt.us.auth0.com",
-    //       token: result.accessToken
-    //     });
-    //     authManage.patchUserMetadata(result.userId, {
-    //       userName,
-    //       firstName,
-    //       lastName,
-    //       email,
-    //       phoneNumber,
-    //       province,
-    //       city,
-    //       address,
-    //       zip
-    //     }, async (error : Auth0Error | null, result : any) => {
-    //       if(error) {
-    //         //Debería haber un modal que informe al usuario que el proceso de registro no fue exitoso...
-    //         console.log("Error: ", error);
-    //         window.alert("El proceso de registro no ha sido exitoso. Por favor, intenta más tarde.");
-    //       } else {
-    //         console.log("Result: ", result);
-    //         await handleUserCreation(
-    //           result.userMetadata.province,
-    //           result.userMetadata.city,
-    //           result.userMetadata.address,
-    //           result.userMetadata.zip,
-    //           result.userMetadata.firstName,
-    //           result.userMetadata.lastName,
-    //           result.userMetadata.userName,
-    //           result.userMetadata.phoneNumber,
-    //           result.userMetadata.email
-    //           // accessToken
-    //         );
-    //         window.alert("Bienvenido a AllTech. Serás redirigido a nuestra tienda.");
-    //         navigate("/");
-    //       };
-    //     });
-    //   };
-    // });
+    if(successfulUserCreater) {
+      window.alert("Bienvenido a AllTech. Serás redirigido a nuestra tienda.");
+      navigate("/");
+    };
   };
 
   useEffect(() => {
     if(location.hash) {
       handleHash(location.hash);
     } else {
-      window.alert("El proceso de autenticación no puede continuar");
-      navigate("/");
+      window.alert("El proceso de autenticación no ha sido exitoso. Por favor, intenta más tarde.");
+      navigate("/signin");
     };
   }, [location, navigate]);
   return (
@@ -191,21 +167,21 @@ export default function SignupCard() {
       bg={useColorModeValue("gray.50", "gray.800")}
     >
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
-        <Stack align={"center"}>
+        {!renderForm ? <></> : <Stack align={"center"}>
           <Heading fontSize={"4xl"} textAlign={"center"}>
             Bienvenido a AllTech... casi...
           </Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
-            Completa los siguientes datos para completar el proceso de registro ✅
+            Ingresa los siguientes datos para completar el proceso de registro ✅
           </Text>
-        </Stack>
+        </Stack>}
         <Box
           rounded={"lg"}
           bg={useColorModeValue("white", "gray.700")}
           boxShadow={"lg"}
           p={8}
         >
-          <Stack spacing={4}>
+          {!renderForm ? <></> : <Stack spacing={4}>
           <FormControl id="email" isRequired>
               <FormLabel className={style.largo}>Nombre de usuario</FormLabel>
               <Input type="text" value={userName}
@@ -297,7 +273,7 @@ export default function SignupCard() {
                 Crear cuenta
               </Button>
             </Stack>
-          </Stack>
+          </Stack>}
         </Box>
       </Stack>
     </Flex>
