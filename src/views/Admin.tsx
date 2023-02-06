@@ -68,7 +68,6 @@ export default function SidebarWithHeader({
 }: {
   children: ReactNode;
 }) {
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
 
@@ -196,37 +195,46 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const accessToken = localStorage.getItem("accessToken");
   const activeSession = accessToken ? true : false;
   const handleUser = async () => {
-    await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
-      if(error) {
-        console.log("Error: ", error);
-        navigate("/");
-      } else {
-        const userId = user.sub;
-        const userRolesResponse = await fetch(`https://dev-6d0rlv0acg7xdkxt.us.auth0.com/api/v2/users/${userId}/roles`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${AUTH_MANAGEMENT_API_ACCESS_TOKEN}`
-          }
-        });
-        const userRoles = await userRolesResponse.json();
-        const hasAdminRole = userRoles.some((role : { id : String, name : String, description : String }) => role.name === "alltech-admin");
-        if(!hasAdminRole) navigate("/");
-        setUserName(user.nickname);
-        setPicture(user.picture);
-      };
-    })
+    await auth.client.userInfo(
+      accessToken,
+      async (error: Auth0Error | null, user: Auth0UserProfile) => {
+        if (error) {
+          console.log("Error: ", error);
+          navigate("/");
+        } else {
+          const userId = user.sub;
+          const userRolesResponse = await fetch(
+            `https://dev-6d0rlv0acg7xdkxt.us.auth0.com/api/v2/users/${userId}/roles`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${AUTH_MANAGEMENT_API_ACCESS_TOKEN}`,
+              },
+            }
+          );
+          const userRoles = await userRolesResponse.json();
+          const hasAdminRole = userRoles.some(
+            (role: { id: String; name: String; description: String }) =>
+              role.name === "alltech-admin"
+          );
+          if (!hasAdminRole) navigate("/");
+          setUserName(user.nickname);
+          setPicture(user.picture);
+        }
+      }
+    );
   };
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     auth.logout({
       returnTo: window.location.origin,
-      clientID: "2EHZJm086BzkgwY5HXmPeK5UnbHegBXl"
+      clientID: "2EHZJm086BzkgwY5HXmPeK5UnbHegBXl",
     });
   };
 
   useEffect(() => {
-    if(!activeSession) navigate("/");
-    handleUser();
+    // if(!activeSession) navigate("/");
+    // handleUser();
   }, [handleUser]);
   return (
     <Flex
@@ -274,12 +282,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               _focus={{ boxShadow: "none" }}
             >
               <HStack>
-                <Avatar
-                  size={"sm"}
-                  src={
-                    picture
-                  }
-                />
+                <Avatar size={"sm"} src={picture} />
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
@@ -300,10 +303,16 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem onClick={() => navigate("/cart")}>Mi carrito de compras</MenuItem>
-              <MenuItem onClick={() => navigate("/user")}>Mi cuenta de usuario</MenuItem>
+              <MenuItem onClick={() => navigate("/cart")}>
+                Mi carrito de compras
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/user")}>
+                Mi cuenta de usuario
+              </MenuItem>
               <MenuDivider />
-              <MenuItem onClick={() => navigate("/")}>Volver a la tienda</MenuItem>
+              <MenuItem onClick={() => navigate("/")}>
+                Volver a la tienda
+              </MenuItem>
               <MenuItem onClick={handleLogout}>Salir</MenuItem>
             </MenuList>
           </Menu>

@@ -5,9 +5,11 @@ import { Brands } from "../features/brands/Brands";
 import logger from "redux-logger";
 import thunk from "redux-thunk";
 import { Categories } from "../features/categories/Categories";
+import { User } from "../features/user/User";
 
 export const store = configureStore({
   reducer: {
+    user: User,
     cart: Cart,
     products: Products,
     brands: Brands,
