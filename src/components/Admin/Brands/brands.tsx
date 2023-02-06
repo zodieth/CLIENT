@@ -24,31 +24,6 @@ export default function BrandsAdmin() {
   const brandsStore = useAppSelector((state) => state.brands)
   const dispatch = useAppDispatch();
 
-  const deleteBrand = (id:string) => {
-    try{
-      dispatch(deleteBrandApi(id))
-      
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-  
-      Toast.fire({
-        icon: "success",
-        title: "Eliminado Correctamente",
-      });
-    }catch(error){
-      
-    }
-  }
-  
   const setActive = (id:string, active:Boolean) => {
     dispatch(putBrand(id, {active: !active}))
   }
@@ -76,11 +51,6 @@ export default function BrandsAdmin() {
                     <Td>{brand.name}</Td>
                     <LightMode><Td><Switch id='email-alerts' isChecked={brand.active ? true : false} onChange={() => setActive(brand._id, brand.active)} /></Td> </LightMode>
                     <Td style={{ display: "flex" }}>
-                    
-                    <LightMode><Button onClick={() => deleteBrand(brand._id)}>
-                        <HiTrash size={20}/>
-                      </Button></LightMode>
-
                       <LightMode><Button>
                         <Link to={`/Admin/brands/edit/${brand._id}`}>
                           <HiOutlinePencilAlt size={20}/>

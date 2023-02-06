@@ -39,9 +39,6 @@ export default function Pagination(props:any) {
 
   return (
     <Box className={StylePagination.pagination}  color="Gray" borderColor="Gray" style={{ marginTop: "25px", width: "100%" }}>
-{/*       <span>
-        Página {props.page} de {props.total}
-      </span> */}
       <br/>
       { getPages() }
     </Box>
