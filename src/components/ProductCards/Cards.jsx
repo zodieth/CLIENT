@@ -40,6 +40,7 @@ function Cards() {
                 img={e.images[0]}
                 reviews={e.reviews}
                 count={1}
+                stock={e.stock}
               />
             );
           })
