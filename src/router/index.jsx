@@ -17,6 +17,7 @@ import CreateBrandAdmin from "../components/Admin/Brands/createBrand";
 import BrandsAdmin from "../components/Admin/Brands/brands";
 import EditBrandAdmin from "../components/Admin/Brands/editBrand";
 import PreguntasFrecuentes from "../views/PreguntasFrecuentes/PreguntasFrecuentes";
+import ComoComprar from "../views/ComoComprar/ComoComprar";
 
 export const router = createBrowserRouter([
   {
@@ -115,6 +116,11 @@ export const router = createBrowserRouter([
   {
     path: "/preguntas",
     element: <PreguntasFrecuentes />,
+    exact: true,
+  },
+  {
+    path: "/comocomprar",
+    element: <ComoComprar />,
     exact: true,
   },
 ]);
