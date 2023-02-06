@@ -100,7 +100,7 @@ export default function SidebarWithHeader({
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav  onOpen={onOpen} /> {/* panel de arriba donde esta el admin */}
+      {/* <MobileNav  onOpen={onOpen} /> */} {/* panel de arriba donde esta el admin */}
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
