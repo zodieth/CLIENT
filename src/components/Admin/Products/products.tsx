@@ -16,7 +16,6 @@ import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import interfaceProduct from  "../../../features/products/interfaceProduct";
 import { HiOutlinePencilAlt } from "react-icons/hi";
 import { putProduct } from '../../../app/actionsCreators'
-import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 
 export default function ProductsAdmin() {

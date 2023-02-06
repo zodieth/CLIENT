@@ -84,7 +84,7 @@ export const fetchProductsApi =
     dispatch(productsLoading());
 
     return await axios
-      .get("https://henry-pf-back.up.railway.app/products")
+      .get("http://localhost:3001/products")
       .then(
         function (response) {
           if (response.data.length) return response;
@@ -476,7 +476,6 @@ export const postProduct =
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     dispatch(productsLoading());
-    console.log("HOLA", newProduct);
     
     return axios
       .post("http://localhost:3001/products", newProduct)
@@ -510,7 +509,7 @@ export const putProduct =
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     dispatch(productsLoading());
-
+    console.log(product)
     return axios
       .put("http://localhost:3001/product/" + id, product)
       .then(

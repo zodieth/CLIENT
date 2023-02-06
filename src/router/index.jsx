@@ -17,6 +17,7 @@ import CreateBrandAdmin from "../components/Admin/Brands/createBrand";
 import BrandsAdmin from "../components/Admin/Brands/brands";
 import EditBrandAdmin from "../components/Admin/Brands/editBrand";
 import ProductsAdmin from "../components/Admin/Products/products";
+import EditProductAdmin from "../components/Admin/Products/editProduct";
 
 export const router = createBrowserRouter([
   {
@@ -81,6 +82,11 @@ export const router = createBrowserRouter([
   {
     path: "/Admin/products/create",
     element: <Admin children={<CreateProductAdmin />} />,
+    exact: true,
+  },
+  {
+    path: "/Admin/products/edit/:id",
+    element: <Admin children={<EditProductAdmin />} />,
     exact: true,
   },
   {
