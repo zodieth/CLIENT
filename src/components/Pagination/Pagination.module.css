@@ -23,14 +23,15 @@ button {
 }
 
 .pagination button {
-  color: black;
+  color: gray;
+  font-size: 17px;
   padding: 8px 16px;
   text-decoration: none;
 }
 
 .pagination button.active {
   background-color: #4bb8ff;
-  color: white;
+  color: gray;
   border-radius: 5px;
 }
 

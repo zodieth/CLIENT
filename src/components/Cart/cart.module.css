@@ -37,9 +37,9 @@
   justify-content: flex-end;
   height: 100px;
   width: 50rem;
-  background-color: #fff;
+  /* background-color: #fff; */
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  border: 1px solid #f7fafc;
+  border: 1px solid #e2e2e2;
   border-radius: 10px;
 }
 
@@ -50,4 +50,8 @@
 .footer {
   width: 100%;
   margin-top: 25rem;
+}
+
+.cartas{
+  background-color: black;
 }

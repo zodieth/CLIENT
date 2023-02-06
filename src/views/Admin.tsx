@@ -42,6 +42,7 @@ import {
   fetchCategoryApi,
 } from "../app/actionsCreators";
 import { auth } from "../auth0.service";
+import ToggleColorMode from "../components/DarkMode/ToggleColorMode";
 import { AUTH_MANAGEMENT_API_ACCESS_TOKEN } from "../auth0.config";
 
 interface LinkItemProps {
@@ -78,12 +79,13 @@ export default function SidebarWithHeader({
     dispatch(fetchCategoryApi());
   }, [dispatch]);
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
-      <SidebarContent
+    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}> {/* el centro del panel */}
+      
+      <SidebarContent  /* menu de la izquierda */
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
       />
-      <Drawer
+      <Drawer 
         autoFocus={false}
         isOpen={isOpen}
         placement="left"
@@ -97,7 +99,7 @@ export default function SidebarWithHeader({
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
+      <MobileNav  onOpen={onOpen} /> {/* panel de arriba donde esta el admin */}
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
@@ -112,7 +114,7 @@ interface SidebarProps extends BoxProps {
 //formacion del menu de la izquierda
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
-    <Box
+    <Box  /* Menu de la izquierda y sus caracteristicas */
       transition="3s ease"
       bg={useColorModeValue("white", "gray.900")}
       borderRight="1px"
@@ -121,7 +123,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       pos="fixed"
       h="full"
       {...rest}
-    >
+    > <ToggleColorMode /> {/* boton modo noche */}
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Link href="/admin">
           <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
@@ -229,7 +231,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     handleUser();
   }, [handleUser]);
   return (
-    <Flex
+    <Flex /* devuelta es la barra donde esta la parte del administrador arriba */
       ml={{ base: 0, md: 60 }}
       px={{ base: 4, md: 4 }}
       height="20"
@@ -257,7 +259,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         Logo
       </Text>
 
-      <HStack spacing={{ base: "0", md: "6" }}>
+      <HStack spacing={{ base: "0", md: "6" }}> {/* seccion chiquita donde esta la parte del administrador */}
         {" "}
         {/* Arriba a la derecha */}
         <IconButton

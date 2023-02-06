@@ -1,4 +1,4 @@
-import { Select } from "@chakra-ui/react";
+import { Box, Select, useColorModeValue } from "@chakra-ui/react";
 import style from "./navBar.module.css";
 import styleSearchBar from "../SearchBar/searchBar.module.css";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -24,10 +24,12 @@ function Filter() {
   }
 
   return (
-    <div className={style.subNav}>
+    <Box   className={style.subNav}>
         <div className={style.options}>
           <Input
             id="search"
+            color="Gray"
+            borderColor="Gray"
             className={styleSearchBar.input}
             placeholder="Buscar"
             onChange={handleSearch}
@@ -49,8 +51,8 @@ function Filter() {
           </Select>
           </div>
           
-        <div className={style.options}>
-          <Input className={styleSearchBar.input} style={{ width: "auto" }} type="number" id="min" placeholder="Mínimo" pattern="^[0-9]+([,.][0-9]+)?$" onChange={handleSearch}/> - <Input className={styleSearchBar.input} style={{ width: "auto" }} type="number" id="max" placeholder="Máximo" pattern="^[0-9]+([,.][0-9]+)?$" onChange={handleSearch}/>
+        <div className={style.options}> {/* Minimo - Maximo */}
+          <Input className={styleSearchBar.input}  color="Gray" borderColor="Gray" style={{ width: "auto" }} type="number" id="min" placeholder="Mínimo" pattern="^[0-9]+([,.][0-9]+)?$" onChange={handleSearch}/> - <Input className={styleSearchBar.input} color="Gray" borderColor="Gray"  style={{ width: "auto" }} type="number" id="max" placeholder="Máximo" pattern="^[0-9]+([,.][0-9]+)?$" onChange={handleSearch}/>
         </div>
         <div className={style.options}>
           <Select
@@ -80,8 +82,10 @@ function Filter() {
             })}
           </Select>
         </div>
-      </div>
+      </Box>
   );
 }
 
 export default Filter;
+
+

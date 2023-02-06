@@ -1,5 +1,5 @@
 import style from "./products.module.css"
-import { Input, Select } from "@chakra-ui/react";
+import { Box, Input, LightMode, Select, useColorModeValue } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import interfaceCategory from  "../../../features/categories/interfaceCategory";
 import { useState } from "react";
@@ -90,9 +90,9 @@ export default function CreateCategoryAdmin() {
   }
 
   return (
-    <div className={style.container}>
+    <Box bg={useColorModeValue("white", "whiteAlpha.100")} className={style.container}>
       <form id="createActivity" onSubmit={handleSubmit}>
-        <div className={style.groupInputs}>
+        <Box className={style.groupInputs}>
           <label>Nombre</label>
           <Input 
             type='text'
@@ -103,8 +103,8 @@ export default function CreateCategoryAdmin() {
             value={inputs.name}
           />
           <p >{errors.name}</p>
-        </div>
-        <div className={style.groupInputs}>
+        </Box>
+        <Box className={style.groupInputs}>
           <label>Descripción</label>
           <Input 
             type='text'
@@ -113,8 +113,8 @@ export default function CreateCategoryAdmin() {
             name='description'
             width='auto'/>
             <p >{errors.description}</p>
-        </div>
-        <div className={style.groupInputs}>
+        </Box>
+        <Box className={style.groupInputs}>
           <label>Cat. padre</label>
           <Select
             name='father'
@@ -126,15 +126,15 @@ export default function CreateCategoryAdmin() {
                 return <option key={category._id} value={category._id}>{category.name}</option>
               })}
           </Select>
-        </div>
+        </Box>
 
         <hr className={style.hrLineDashed}/>
         
-        <div className={style.groupButtons}>
+        <Box className={style.groupButtons}>
           <a href="#" onClick={() => window.history.back()} className={style.btnWhite}>Cancelar</a>
           <button type="submit" className={style.btnPrimary}>Crear</button>
-        </div>
+        </Box> 
       </form>
-    </div>
+    </Box>
   );
 }

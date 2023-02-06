@@ -34,10 +34,10 @@ function Home() {
   return (
     <div>
         <div /* className={style.app} */>  {/* sacamos el estilo para que funcione el dark mode junto al archivo theme.js */}
-          <ToggleColorMode />
+          <ToggleColorMode /> {/* boton dark mode */}
           <NavBar />
           <Carousel />
-          <Filter />
+          <LightMode><Filter /></LightMode>
           <Cards />
           <CarouselDown />
           <LightMode><Footer /></LightMode>

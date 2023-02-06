@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "./navBar.module.css";
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdComputer } from "react-icons/md";
@@ -64,12 +64,12 @@ function NavBar() {
     handleUser();
   }, [handleUser]);
   return (
-    <div className={style.navBar}>
+    <Box className={style.navBar}>
       <div className={style.logo}>
         <Link to="/">
-          <HamburgerIcon boxSize={8} color="black" />
+          <HamburgerIcon boxSize={8} color="Gray" />
         </Link>
-        <Link to="/">
+        <Link to="/" >
           <h1 className={style.h1Logo}> AllTech</h1>
         </Link>
       </div>
@@ -152,7 +152,7 @@ function NavBar() {
           </Link>
         )}
       </div>
-    </div>
+    </Box>
   );
 }
 

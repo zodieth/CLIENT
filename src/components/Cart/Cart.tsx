@@ -3,12 +3,13 @@ import CartCard from "../CartCard/CartCard";
 import NavBar from "../NavBar/NavBar";
 import SubNav from "../NavBar/SubNav";
 import style from "./cart.module.css";
-import { Button, LightMode } from "@chakra-ui/react";
+import { Box, Button, LightMode } from "@chakra-ui/react";
 import { useAppSelector } from "../../app/hooks";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/hooks";
 import { payMercadoPagoApi } from "../../app/actionsCreators";
 import Footer from "../Footer/Footer";
+import ToggleColorMode from "../DarkMode/ToggleColorMode";
 
 function Cart() {
   const dispatch = useAppDispatch();
@@ -40,51 +41,58 @@ function Cart() {
   const [submitDisappear, setSubmitDisappear] = useState(true);
 
   return (
-    <div className={style.cart}>
+    <Box className={style.cart}>
       <div className={style.nav}>
-        <NavBar />
+        <NavBar /> <ToggleColorMode />
       </div>
 
       {/* <SubNav /> */}
-      <div className={style.cards}>
+      <Box 
+            color="Gray"
+            borderColor="Gray"
+            >
         {products.cart.length ? (
           products.cart.map((e: any) => {
             return (
-              <div key={e.name}>
-                <div>
-                  <CartCard
+              <Box key={e.name} >
+                <Box >
+                <CartCard  
                     key={e.name}
                     totalCompra={totalCompra}
                     setTotalCompra={setTotalCompra}
                     name={e.name}
                     price={e.price}
                     img={e.img}
-                  />
-                </div>
-              </div>
+                  /> 
+                </Box> 
+              </Box> 
             );
           })
         ) : (
-          <div className={style.nothing}>
-            <div className={style.withouth_elements}>
+          <Box className={style.nothing}>
+            <Box className={style.withouth_elements}>
               No hay elementos en el carrito
-            </div>
+            </Box>
             <Link to="/">
               <Button width={200}>Seguir comprando</Button>
             </Link>
-          </div>
+          </Box>
         )}
         {products.cart.length ? (
-          <div className={style.container_finish}>
-            <div className={style.finish}>
-              <div className={style.total}>
-                <div>TOTAL</div>
-                <div>US$ {totalCompra}</div>
-              </div>
+          <LightMode><Box  className={style.container_finish}>
+            <Box className={style.finish}>
+              <Box   className={style.total}>
+              <LightMode><Box>TOTAL</Box></LightMode>
+                <Box>US$ {totalCompra}</Box>
+              </Box>
               {submitDisappear === true ? (
-                <div>
+                <Box 
+                color="Gray"
+                borderColor="Gray">
                   {" "}
-                  <Button
+                  <Button  
+                    color="Gray"
+                    borderColor="Gray"
                     className={style.btn_finish}
                     onClick={() => [
                       pay(),
@@ -97,21 +105,21 @@ function Cart() {
                   >
                     Finalizar Compra
                   </Button>
-                </div>
+                </Box>
               ) : (
                 ""
               )}
               <form className={style.mpPay} id="pagar" method="GET"></form>
-            </div>
-          </div>
+            </Box>
+          </Box> </LightMode>
         ) : (
           ""
         )}
-      </div>
+      </Box>
       <div className={style.footer}>
       <LightMode><Footer /></LightMode>
       </div>
-    </div>
+    </Box> 
   );
 }
 
