@@ -91,11 +91,17 @@ function ProductCard(props: any) {
   return (
     <Box className={style.container}>
       <Box className={style.card}>
-        <Link to={`/productos/${props.name}`}>
+        {props.stock < 1 ? (
           <Box className={style.imgBx}>
             <img className={style.img} src={props.img} />
           </Box>
-        </Link>
+        ) : (
+          <Link to={`/productos/${props.name}`}>
+            <Box className={style.imgBx}>
+              <img className={style.img} src={props.img} />
+            </Box>
+          </Link>
+        )}
 
         <Box className={style.contentBx}>
           <Box className={style.name}>
@@ -106,7 +112,9 @@ function ProductCard(props: any) {
             colorScheme="blue"
             className={style.cardShop}
             onClick={() =>
-              onCart
+              props.stock < 1
+                ? ""
+                : onCart
                 ? [handleDeleteFromCart(props), onCartFuncion()]
                 : onCart === false
                 ? [addCart(props), onCartFuncion(), addToCartAlert()]
@@ -122,7 +130,7 @@ function ProductCard(props: any) {
           <Button
             colorScheme="blue"
             className={style.favorite}
-            onClick={handleFavorite}
+            onClick={() => (props.stock < 1 ? "" : handleFavorite())}
           >
             <BsHeartFill
               height={8}
@@ -140,6 +148,17 @@ function ProductCard(props: any) {
         </Box>
         <Box className={style.price_Discount}>
           <Box className={style.price}>US$ {props.price}</Box>
+
+          {props.stock > 10 ? (
+            <Box className={style.stock}>HAY STOCK</Box>
+          ) : props.stock < 10 && props.stock > 1 ? (
+            <Box className={style.pocoStock}>BAJO STOCK</Box>
+          ) : props.stock < 1 ? (
+            <Box className={style.sin}>NO DISPONIBLE</Box>
+          ) : (
+            ""
+          )}
+
           <img
             src="https://www.qloud.com.ar/img/a12.svg"
             alt=""
