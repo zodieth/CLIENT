@@ -27,8 +27,9 @@
 
 .price_Discount {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .ahora12 {
@@ -104,13 +105,12 @@
   position: relative;
   margin-top: -30px;
   margin: 0 auto;
-
 }
 
 .starsOuter::before {
   content: "\2606 \2606 \2606 \2606 \2606";
   color: rgba(108, 108, 108, 0.314);
-  font-size: 50px;
+  font-size: 20px;
 }
 
 .starsInner {
@@ -126,4 +126,43 @@
   content: "\2605 \2605 \2605 \2605 \2605";
   color: #f8ce0b;
   font-size: 50px;
+}
+
+.stock {
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 85px;
+  height: 25px;
+  color: white;
+  background-color: #4caf50;
+  font-size: 0.75rem;
+  border-radius: 5px;
+}
+
+.pocoStock {
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 85px;
+  height: 25px;
+  color: white;
+  background-color: #f78717 !important;
+  font-size: 0.75rem;
+  border-radius: 5px;
+}
+
+.sin {
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 25px;
+  color: white;
+  background-color: #a0aec0;
+  font-size: 0.75rem;
+  border-radius: 5px;
 }
