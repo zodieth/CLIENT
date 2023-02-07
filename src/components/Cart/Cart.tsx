@@ -14,7 +14,6 @@ import ToggleColorMode from "../DarkMode/ToggleColorMode";
 function Cart() {
   const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.cart);
-  console.log(products);
 
   let total = products.cart.map((e: any) => {
     return e.price;

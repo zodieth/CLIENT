@@ -39,6 +39,7 @@ function NavBar() {
       } else {
         setUserName(user.nickname);
         setPicture(user.picture);
+        localStorage.setItem("email", user.email)
         const userId = user.sub;
         const userRolesResponse = await fetch(`https://dev-6d0rlv0acg7xdkxt.us.auth0.com/api/v2/users/${userId}/roles`, {
           method: "GET",
@@ -73,9 +74,6 @@ function NavBar() {
           <h1 className={style.h1Logo}> AllTech</h1>
         </Link>
       </div>
-      {/* <div>
-        <SearchBar />
-      </div> */}
       <div className={style.buttons}>
         <Link to="/cart" className={style.cartI}>
           <Button

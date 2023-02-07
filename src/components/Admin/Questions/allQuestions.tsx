@@ -29,7 +29,7 @@ import { putQuestion } from '../../../app/actionsCreators'
 import Swal from "sweetalert2";
 import { useState } from "react";
 
-export default function QuestionsAdmin() {
+export default function AllQuestionsAdmin() {
   const questionsStore = useAppSelector((state) => state.questions)
   const dispatch = useAppDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,9 +49,6 @@ export default function QuestionsAdmin() {
     setIsModalOpen(false);
     setQuestionId('');
   };
-
-  const unansweredQuestions = questionsStore.allQuestions
-  .filter((question:any) => !question.answer);
 
   const handleSubmit = () => {
     dispatch(putQuestion(questionId, { answer: answer }));
@@ -96,12 +93,12 @@ export default function QuestionsAdmin() {
             </Tr>
           </Thead>
           <Tbody>
-            { unansweredQuestions.map((question:any) => {
+            { questionsStore.allQuestions.map((question:any) => {
               return( 
                 <>
                   <Tr color="black" key={question._id}>
-                    <Td>{question.question}</Td>
-                    <Td>{question.answer}</Td>
+                    <Td>{question.question.substring(0,100)+"..."}</Td>
+                    <Td>{question.answer.substring(0,100)+"..."}</Td>
                     <LightMode><Td><Switch id='email-alerts' isChecked={question.active ? true : false} onChange={() => setActive(question._id, question.active)} /></Td> </LightMode>
                     <Td style={{ display: "flex" }}>
                       <LightMode>

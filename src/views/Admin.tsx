@@ -41,6 +41,7 @@ import {
   fetchProductsApi,
   fetchBrandApi,
   fetchCategoryApi,
+  fetchQuestionsApi
 } from "../app/actionsCreators";
 import { auth } from "../auth0.service";
 import ToggleColorMode from "../components/DarkMode/ToggleColorMode";
@@ -61,7 +62,8 @@ const LinkItems: Array<LinkItemProps> = [
     url: "/admin/categories",
   },
   { name: "Marcas", icon: FiStar, url: "/admin/brands" },
-  { name: "Preguntas", icon: FiHelpCircle, url: "/admin/questions" },
+  { name: "Todas las preguntas", icon: FiHelpCircle, url: "/admin/allQuestions" },
+  { name: "Preguntas sin contestar", icon: FiHelpCircle, url: "/admin/questions" },
   { name: "Usuarios", icon: FiSettings, url: "#" },
 ];
 
@@ -78,6 +80,7 @@ export default function SidebarWithHeader({
     dispatch(fetchProductsApi());
     dispatch(fetchBrandApi());
     dispatch(fetchCategoryApi());
+    dispatch(fetchQuestionsApi());
   }, [dispatch]);
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}> {/* el centro del panel */}
@@ -196,7 +199,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
   const navigate = useNavigate();
 
-  const accessToken = localStorage.getItem("accessToken");
+  /* const accessToken = localStorage.getItem("accessToken");
   const activeSession = accessToken ? true : false;
   const handleUser = async () => {
     await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
@@ -230,7 +233,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   useEffect(() => {
     if(!activeSession) navigate("/");
     handleUser();
-  }, [handleUser]);
+  }, [handleUser]); */
   return (
     <Flex /* devuelta es la barra donde esta la parte del administrador arriba */
       ml={{ base: 0, md: 60 }}
@@ -307,7 +310,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <MenuItem onClick={() => navigate("/user")}>Mi cuenta de usuario</MenuItem>
               <MenuDivider />
               <MenuItem onClick={() => navigate("/")}>Volver a la tienda</MenuItem>
-              <MenuItem onClick={handleLogout}>Salir</MenuItem>
+              {/* <MenuItem onClick={handleLogout}>Salir</MenuItem> */}
             </MenuList>
           </Menu>
         </Flex>

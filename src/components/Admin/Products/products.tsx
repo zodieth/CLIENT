@@ -11,12 +11,18 @@ import {
   TableContainer,
   Button, 
   Switch,
+  LightMode,
+  Input,
+  Spinner,
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import interfaceProduct from  "../../../features/products/interfaceProduct";
 import { HiOutlinePencilAlt } from "react-icons/hi";
 import { putProduct } from '../../../app/actionsCreators'
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useTable } from "react-table";
+import Swal from "sweetalert2";
 
 export default function ProductsAdmin() {
   const productsStore = useAppSelector((state) => state.products)
@@ -26,48 +32,147 @@ export default function ProductsAdmin() {
     dispatch(putProduct(id, {active: !active}))
   }
 
-  return (
-    <div className={style.container}>
-      <div className={style.header}>
-        <Link to="./create" className={style.btnPrimary}>Nuevo</Link>
-      </div>
-      <TableContainer>
-        <Table variant='simple'>
-          <TableCaption>Listado de categorías</TableCaption>
-          <Thead>
-            <Tr>
-              <Th>Nombre</Th>
-              <Th>Precio</Th>
-              <Th>Stock</Th>
-              <Th>Marca</Th>
-              <Th>Categoria</Th>
-              <Th>Activo</Th>
-              <Th>Acciones</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            { productsStore.allProducts.map((product:interfaceProduct) => {
-              return( 
-                  <Tr key={product._id}>
-                    <Td>{product.name}</Td>
-                    <Td>{product.price}</Td>
-                    <Td>{product.stock}</Td>
-                    <Td>{product.brand.name}</Td>
-                    <Td>{product.category.name}</Td>
-                    <Td><Switch id='email-alerts' isChecked={product.active ? true : false} onChange={() => setActive(product._id, product.active)} /></Td>
-                    <Td style={{ display: "flex" }}>
-                      <Button>
-                        <Link to={`/Admin/products/edit/${product._id}`}>
-                          <HiOutlinePencilAlt size={20}/>
-                        </Link>
-                      </Button>
-                    </Td>
-                  </Tr>
-                )
-            })}
-          </Tbody>
-        </Table>
-      </TableContainer>
-    </div>
+  const data:any = [];
+
+  productsStore.allProducts.map((product:interfaceProduct) => {
+    data.push({name: product.name, price: product.price, stock: product.stock, brand: product.brand?.name, category: product.category?.name, active: product, acciones: product._id})
+  });
+
+  const [searchTerm, setSearchTerm] = useState("")
+  const handleSearch = (e:any) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const columns = [
+    {
+      Header: "Nombre",
+      accessor: "name",
+    },
+    {
+      Header: "Precio",
+      accessor: "price",
+    },
+    {
+      Header: "Stock",
+      accessor: "stock",
+    },
+    {
+      Header: "Marca",
+      accessor: "brand",
+    },
+    {
+      Header: "Categoria",
+      accessor: "category",
+    },
+    {
+      Header: "Activo",
+      accessor: "active",
+    },
+    {
+      Header: "Acciones",
+      accessor: "acciones",
+    },
+  ];
+
+  const filteredData = data.filter((d:any) =>
+    d.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  function Table2({ columns, data }:any) {
+    // Use the state and functions returned from useTable to build your UI
+    const {
+      getTableProps,
+      getTableBodyProps,
+      headerGroups,
+      rows,
+      prepareRow,
+    } = useTable({
+      columns,
+      data,
+    })
+  
+    // Render the UI for your table
+    return (
+      <Table {...getTableProps()} variant='simple' key={Math.random()}>
+        <TableCaption>Listado de productos</TableCaption>
+        <Thead>
+          {headerGroups.map(headerGroup => (
+            <Tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => (
+                <Th {...column.getHeaderProps()}>{column.render('Header')}</Th>
+              ))}
+            </Tr>
+          ))}
+        </Thead>
+        <Tbody {...getTableBodyProps()}>
+          {rows.map((row, i) => {
+            prepareRow(row)
+            return (
+              <Tr {...row.getRowProps()} key={Math.random()}>
+                {row.cells.map(cell => {
+                  if(cell.column.Header === "Acciones"){
+                    return <Td key={Math.random()}><LightMode><Button><Link to={`/Admin/brands/edit/${cell.value}`}><HiOutlinePencilAlt size={20}/></Link></Button></LightMode></Td>
+                  } else if(cell.column.Header === "Activo"){
+                    return <Td key={Math.random()}><Switch id='email-alerts' isChecked={cell.value.active ? true : false} onChange={() => setActive(cell.value._id, cell.value.active)} /></Td>
+                  }else{
+                    return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>
+                  }
+                })}
+              </Tr>
+            )
+          })}
+        </Tbody>
+      </Table>
+    )
+  }
+
+  if(productsStore.isLoading){
+    return (
+      <Spinner
+        thickness='4px'
+        speed='0.65s'
+        emptyColor='gray.200'
+        color='blue.500'
+        size='xl'
+      />
+    )
+  }else if(productsStore.errMess){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Hubo un error inesperado, por favor intentelo mas tarde."
+    });
+  }else{
+    return (
+      <div className={style.container}>
+        <div className={style.header}>
+          <Link to="./create" className={style.btnPrimary}>Nuevo</Link>
+        </div>
+        <Input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearch}
+          placeholder="Buscar"
+        />
+        <TableContainer>
+          <Table2
+            data={filteredData}
+            columns={columns}
+          />
+        </TableContainer>
+      </div>
+    );
+  }
 }

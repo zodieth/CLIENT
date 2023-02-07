@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  fetchBrandApi,
-  fetchCategoryApi,
+  postQuestion,
   fetchProductsApi,
-  productsFilter,
 } from "../../app/actionsCreators";
 import Footer from "../../components/Footer/Footer";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -13,7 +11,7 @@ import interfaceProduct from "../../features/brands/interfaceBrand";
 import style from "./detail.module.css";
 import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
 import { TbSend } from "react-icons/tb";
-import { Button, LightMode } from "@chakra-ui/react";
+import { Button, LightMode, Textarea } from "@chakra-ui/react";
 import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import Swal from "sweetalert2";
 import NuevoCarrusel from "./NuevoCarrusel";
@@ -21,12 +19,12 @@ import NuevoCarrusel from "./NuevoCarrusel";
 function Detail(props: any) {
   const { name } = useParams();
   const products = useAppSelector((state: any) => state.products);
+  const [ question, setQuestion ] = useState("");
+  const dispatch = useAppDispatch();
 
   const findDetail = products?.allProducts.filter(
     (product: interfaceProduct) => product.name === name
   );
-
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchProductsApi());
@@ -95,6 +93,61 @@ function Detail(props: any) {
   };
   ///////////////////////////////////////////
 
+  const handleSubmitQuestion = () => {
+    const question = document.querySelector<HTMLInputElement>('#pregunta');
+    const email = localStorage.getItem("email")
+    if(question?.value.length !== 0){
+      try{
+        dispatch(postQuestion(email, findDetail[0]._id, question?.value));
+        createdAlert();
+        question!.value = "";
+      }catch (e){
+        createdAlertError("Algo salio mal, pongase en contacot con un administrador")
+      }
+    }else{
+      createdAlertError("Complete el campo pregunta antes de enviarla")
+    }
+  }
+
+  const createdAlert = () => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: "success",
+      title: "Pregunta enviada",
+    });
+  };
+
+  const createdAlertError = (mensaje:string) => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: "error",
+      title: "Oops...",
+      text: `${mensaje}`,
+    });
+  };
+
   return (
     <div>
       <div className={style.navBar}>
@@ -144,11 +197,8 @@ function Detail(props: any) {
                     </div>
                   </div>
                 </div>
-
                 <div className={style.right}>
-                  <div className={style.description}>{e.description}</div>
-
-                  
+                <div className={style.description}>{e.description}</div>
                 </div>
               </div>
 
@@ -157,14 +207,15 @@ function Detail(props: any) {
                   <div className={style.tituloPreguntas}>Preguntas de nuestros clientes</div>
                   {e.questions.length>0?  
                   (e.questions.map((q:any)=>{
-                    return(
-                      <div className={style.question}>
-                        <dl>
-                          <dt>{q.question}</dt>
-                          <dd>└─ {q.answer}</dd>
-                        </dl>
-                      </div>
-                    )
+                    if(q.active)
+                      return(
+                        <div className={style.question}>
+                          <dl>
+                            <dt>{q.question}</dt>
+                            <dd>└─ {q.answer}</dd>
+                          </dl>
+                        </div>
+                      )
                 })): (
                   <div className={style.question}>
                     Aún no hay preguntas sobre este producto, sé el primero
@@ -174,8 +225,8 @@ function Detail(props: any) {
                 <div className={style.rigth}>
                   <div className={style.tituloPreguntas}>Dejanos tu consulta:</div>
                   <div className={style.newQuestion}> 
-                    <textarea name="Pregunta" id="pregunta">Escribe tu pregunta aquí</textarea>
-                    <Button colorScheme="blue">
+                    <Textarea name="Pregunta" id="pregunta" placeholder="Escribe tu pregunta aquí" ></Textarea>
+                    <Button colorScheme="blue" onClick={handleSubmitQuestion}>
                       <h5>Enviar</h5>
                       <TbSend height={8} color={"white"}/>
                     </Button>
