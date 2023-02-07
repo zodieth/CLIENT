@@ -630,7 +630,7 @@ export const fetchQuestionsApi =
     dispatch(loadingQuestion());
     
     return axios
-      .post("http://localhost:3001/questions", {userMail, product, newQuestion})
+      .post("https://henry-pf-back.up.railway.app/questions", {userMail, product, newQuestion})
       .then((response) => {
         dispatch(addQuestion(response.data.question));
         dispatch(updateProduct(response.data.updatedProduct))
@@ -649,7 +649,7 @@ export const putQuestion =
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     return axios
-      .put("http://localhost:3001/question/" + id, question)
+      .put("https://henry-pf-back.up.railway.app/question/" + id, question)
       .then(
         (response) => {
           if (response.status) {
