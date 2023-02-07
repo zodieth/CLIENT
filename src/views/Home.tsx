@@ -28,21 +28,26 @@ function Home() {
     //loadScript();
   }, []);
 
-/*   function loadScript() {
+  /*   function loadScript() {
     var ldk = document.createElement('script'); ldk.type = 'text/javascript'; ldk.async = true; ldk.src = 'https://s.cliengo.com/weboptimizer/63d9c2f6c9293c0029564cc9/63d9c2fac9293c0029564ccc.js?platform=view_installation_code'; var s = document.getElementsByTagName('script')[0]; s.parentNode!.insertBefore(ldk, s);
   } */
   return (
     <div>
-        <div /* className={style.app} */>  {/* sacamos el estilo para que funcione el dark mode junto al archivo theme.js */}
-          <NavBar />
-          <Carousel />
-          <LightMode><Filter /></LightMode>
-          <Cards />
-          <CarouselDown />
-          <LightMode><Footer /></LightMode>
-        </div>
+      <div /* className={style.app} */>
+        {" "}
+        {/* sacamos el estilo para que funcione el dark mode junto al archivo theme.js */}
+        <NavBar />
+        <Carousel />
+        <LightMode>
+          <Filter />
+        </LightMode>
+        <Cards />
+        <CarouselDown />
+        <LightMode>
+          <Footer />
+        </LightMode>
+      </div>
     </div>
-    
   );
 }
 

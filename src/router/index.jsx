@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "../views/Home.tsx";
 import Cart from "../components/Cart/Cart";
-import User from "../views/User";
+import User from "../views/USER/User";
 import Admin from "../views/Admin";
 import SignUp from "../views/SignUp/SignUp";
 import SignIn from "../views/SignIn/SignIn";
@@ -20,6 +20,7 @@ import ProductsAdmin from "../components/Admin/Products/products";
 import EditProductAdmin from "../components/Admin/Products/editProduct";
 import PreguntasFrecuentes from "../views/PreguntasFrecuentes/PreguntasFrecuentes";
 import ComoComprar from "../views/ComoComprar/ComoComprar";
+import EditUser from "../views/USER/EditUser";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +36,11 @@ export const router = createBrowserRouter([
   {
     path: "/user",
     element: <User />,
+    exact: true,
+  },
+  {
+    path: "/user/perfil",
+    element: <User children={<EditUser />} />,
     exact: true,
   },
   {

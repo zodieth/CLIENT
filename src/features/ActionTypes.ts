@@ -27,3 +27,6 @@ export const CATEGORY_DELETE = "CATEGORY_DELETE";
 export const CATEGORY_UPDATE = "CATEGORY_UPDATE";
 
 export const GET_USER = "GET_USER";
+export const GET_USER_BY_EMAIL = "GET_USER_BY_EMAIL";
+export const PUT_USER = "PUT_USER";
+export const UPDATE_USER = "UPDATE_USER";

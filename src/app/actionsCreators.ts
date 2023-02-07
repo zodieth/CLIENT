@@ -3,6 +3,53 @@ import * as ActionTypes from "../features/ActionTypes";
 import { RootState } from "./store";
 import axios from "axios";
 
+export const updateUser = (value: any) => {
+  return {
+    type: ActionTypes.UPDATE_USER,
+    payload: value,
+  };
+};
+
+export const putUser =
+  (user: any, id: any): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    return axios
+      .put("https://henry-pf-back.up.railway.app/users/" + id, user)
+      .then(
+        (response) => {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .then((response) => {
+        dispatch(updateUser(response.data));
+      });
+  };
+
+export const getUser = (value: any) => {
+  return {
+    type: ActionTypes.GET_USER,
+    payload: value,
+  };
+};
+
+export const searchUserByEmail = (value: any) => async (dispatch: any) => {
+  const user = await axios.get(
+    `https://henry-pf-back.up.railway.app/useremail/${value}`
+  );
+
+  dispatch(getUser(user.data));
+};
+
 export const createProduct = (value: any) => {
   axios.post("https://henry-pf-back.up.railway.app/products", value);
 
@@ -17,13 +64,6 @@ export const sendProducts = (value: any) => {
 
   return {
     type: ActionTypes.CREATE_PRODUCT,
-    payload: value,
-  };
-};
-
-export const getUser = (value: any) => {
-  return {
-    type: ActionTypes.GET_USER,
     payload: value,
   };
 };
@@ -463,7 +503,7 @@ export const putBrand =
       .then(
         (response) => {
           if (response.status) {
-            return response
+            return response;
           } else {
             var error = new Error(
               "Error " + response.status + ": " + response.statusText
@@ -487,12 +527,10 @@ export const putBrand =
 //Product admin
 
 export const postProduct =
-  (
-    newProduct: any
-  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (newProduct: any): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     dispatch(productsLoading());
-    
+
     return axios
       .post("https://henry-pf-back.up.railway.app/products", newProduct)
       .then((response) => {
@@ -525,7 +563,7 @@ export const putProduct =
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     dispatch(productsLoading());
-    console.log(product)
+    console.log(product);
     return axios
       .put("https://henry-pf-back.up.railway.app/product/" + id, product)
       .then(
@@ -551,4 +589,3 @@ export const putProduct =
         dispatch(productsFailed(error.message));
       });
   };
-

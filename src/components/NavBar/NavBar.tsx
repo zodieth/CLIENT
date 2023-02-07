@@ -28,13 +28,13 @@ import {
 } from "../../auth0.config";
 import ToggleColorMode from "../DarkMode/ToggleColorMode";
 
-import { getUser } from "../../app/actionsCreators";
+import { searchUserByEmail } from "../../app/actionsCreators";
 
 function NavBar(props: any) {
   const dispatch = useAppDispatch();
 
-  function sendUser(name: any) {
-    dispatch(getUser(name));
+  function dispatchUser(value: any) {
+    dispatch(searchUserByEmail(value));
   }
 
   const [userName, setUserName] = useState("");
@@ -54,6 +54,10 @@ function NavBar(props: any) {
     });
   };
 
+  const userState = useAppSelector((state) => state.user);
+
+  // setUserName(useState.user.userName);
+
   const handleUser = async () => {
     await auth.client.userInfo(
       accessToken,
@@ -63,9 +67,13 @@ function NavBar(props: any) {
           // window.alert("La sesión ha expirado.");
           // await handleLogout();
         } else {
-          setUserName(user.nickname);
+          // setUserName(user.nickname);
           setPicture(user.picture);
+          dispatchUser(user.email);
+
           localStorage.setItem("email", user.email);
+          localStorage.setItem("user_id", userState.user._id);
+
           const userId = user.sub;
           const userRolesResponse = await fetch(
             `https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`,
@@ -81,6 +89,7 @@ function NavBar(props: any) {
             (role: { id: String; name: String; description: String }) =>
               role.name === "alltech-admin"
           );
+
           setIsAdmin(hasAdminRole);
         }
       }
@@ -89,6 +98,7 @@ function NavBar(props: any) {
 
   useEffect(() => {
     if (activeSession) {
+      setUserName(userState.user.userName);
       handleUser();
     }
   }, [handleUser]);
