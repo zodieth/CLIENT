@@ -1,36 +1,6 @@
-// import { Box, Button, useToast, useColorModeValue, IconButton, LightMode } from "@chakra-ui/react"
-// import { BiMailSend } from "react-icons/bi";
 
-// export default function MensajeMail() {
-//     const toast = useToast()
-
-//     return (
-//         <IconButton
-//                 bg={useColorModeValue("green.400", "green.800")}
-//                 color={useColorModeValue("white", "gray.800")}
-//                 _hover={{
-//                 bg: "green.600",
-//                         }}
-//                 aria-label="Subscribe"
-//                 icon={<BiMailSend />}        
-//                 onClick={() =>
-//                 toast({
-//                     title: 'Dirección de correo recibida.',
-//                     description: "¡Pronto recibiras descuentos!",
-//                     status: 'success',
-//                     duration: 6000,
-//                     isClosable: true,
-//                 })
-//                 }
-//             >
-//                 Send
-//       </IconButton>
-//     )
-//   }
-import { Box, Button,Input, useToast,IconButton,useColorModeValue } from "@chakra-ui/react"
-import { BiMailSend } from "react-icons/bi";
+import { Box,Flex, Button,Input, useToast,IconButton,useColorModeValue } from "@chakra-ui/react"
 import { useState, useEffect } from "react";
-import { useAppDispatch } from "../../hooks/hooks";
 import {footerEmail} from "../../app/actionsCreators"
 import {formData} from "./data"
 import style from "./footer.module.css";
@@ -99,8 +69,8 @@ export default function MensajeMail() {
 
 
     return (
-        <div className={style.input}>
-        <form onSubmit={handeleSubmit}>
+        <form  onSubmit={handeleSubmit}>
+            <Flex>
           <Input
           bg={useColorModeValue("white", "white")}
           onChange={(e) => handleOnChange(e)}
@@ -108,12 +78,14 @@ export default function MensajeMail() {
           type="text"
           name="email"
           placeholder="email"
-          width='sm'
+          width='280px'
+          required
+          display= 'flex'
         />
-        {/* <p>{errors.email}</p> */}
-        <Button bg={useColorModeValue("gray", "green")} type="submit" >
-            Enviar </Button>
+        <Button bg={useColorModeValue("green.400", "green.800")} type="submit" >
+            ✉</Button>
+        </Flex>
         </form>
-        </div>
+       
     )
 }
