@@ -122,14 +122,6 @@ export default function LargeWithNewsletter() {
           <Stack align={"flex-start"}>
             <ListHeader>¡Recibi descuentos y promociones!</ListHeader>
             <Stack direction={"row"}>
-              <Input
-                placeholder={"Ingrese email"}
-                bg={useColorModeValue("white", "white")}
-                border={0}
-                _focus={{
-                  bg: "white",
-                }}
-              /> 
               <MensajeMail/>
             </Stack>
           </Stack>
@@ -138,3 +130,5 @@ export default function LargeWithNewsletter() {
     </Box>
   );
 }
+
+

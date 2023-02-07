@@ -5,12 +5,21 @@ import axios from "axios";
 
 export const createProduct = (value: any) => {
   axios.post("https://henry-pf-back.up.railway.app/products", value);
-
   return {
     type: ActionTypes.CREATE_PRODUCT,
     payload: value,
   };
 };
+
+
+export const footerEmail = (value: any) => {
+  axios.post("http://localhost:3001/emails", value);
+  return {
+    type: ActionTypes.FOOTER_EMAIL,
+    payload: value,
+  };
+};
+
 
 export const addToCart = (value: any) => {
   return {
@@ -203,6 +212,7 @@ type Product = {
   count: number;
 };
 
+
 export const payMercadoPagoApi = (products: Product[]) => {
   return async (dispatch: any) => {
     try {
@@ -232,6 +242,7 @@ export const payMercadoPagoApi = (products: Product[]) => {
     }
   };
 };
+
 
 //Category admin
 
@@ -376,6 +387,7 @@ export const postBrand =
         dispatch(brandFailed(error.message));
       });
   };
+
 
 export const deleteBrand = (value: any) => {
   return {
