@@ -62,6 +62,7 @@ function NavBar(props: any) {
       } else {
         setUserName(user.nickname);
         setPicture(user.picture);
+        localStorage.setItem("email", user.email)
         const userId = user.sub;
         const userRolesResponse = await fetch(`https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`, {
           method: "GET",
@@ -92,9 +93,6 @@ function NavBar(props: any) {
           <h1 className={style.h1Logo}> AllTech</h1>
         </Link>
       </Box>
-      {/* <Box>
-        <SearchBar />
-      </Box> */}
       <Box className={style.buttons}>
         <ToggleColorMode />
         <Link to="/cart" className={style.cartI}>
