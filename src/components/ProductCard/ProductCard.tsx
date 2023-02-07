@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 function ProductCard(props: any) {
   const [favorites, setFavorites] = useState<any>("");
   let local = localStorage.getItem("favorites");
+  const dispatch = useAppDispatch();
   const starTotal = 5;
 
   const handleFavorite = () => {
@@ -51,7 +52,6 @@ function ProductCard(props: any) {
     return starPercentage;
   };
 
-  const dispatch = useAppDispatch();
   const addCart = (value: interfaceProduct) => {
     dispatch(addToCart(value));
   };

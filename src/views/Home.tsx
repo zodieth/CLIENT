@@ -25,7 +25,6 @@ function Home() {
     dispatch(fetchProductsApi());
     dispatch(fetchBrandApi());
     dispatch(fetchCategoryApi());
-    //loadScript();
   }, []);
 
   /*   function loadScript() {

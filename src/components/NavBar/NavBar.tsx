@@ -113,9 +113,6 @@ function NavBar(props: any) {
           <h1 className={style.h1Logo}> AllTech</h1>
         </Link>
       </Box>
-      {/* <Box>
-        <SearchBar />
-      </Box> */}
       <Box className={style.buttons}>
         <ToggleColorMode />
         <Link to="/cart" className={style.cartI}>
