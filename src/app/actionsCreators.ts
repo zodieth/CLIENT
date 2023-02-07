@@ -52,9 +52,16 @@ export const searchUserByEmail = (value: any) => async (dispatch: any) => {
 
 export const createProduct = (value: any) => {
   axios.post("https://henry-pf-back.up.railway.app/products", value);
-
   return {
     type: ActionTypes.CREATE_PRODUCT,
+    payload: value,
+  };
+};
+
+export const footerEmail = (value: any) => {
+  axios.post("http://localhost:3001/emails", value);
+  return {
+    type: ActionTypes.FOOTER_EMAIL,
     payload: value,
   };
 };
@@ -668,7 +675,7 @@ export const postQuestion =
     dispatch(loadingQuestion());
 
     return axios
-      .post("http://localhost:3001/questions", {
+      .post("https://henry-pf-back.up.railway.app/questions", {
         userMail,
         product,
         newQuestion,
@@ -691,7 +698,7 @@ export const putQuestion =
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     return axios
-      .put("http://localhost:3001/question/" + id, question)
+      .put("https://henry-pf-back.up.railway.app/question/" + id, question)
       .then(
         (response) => {
           if (response.status) {
