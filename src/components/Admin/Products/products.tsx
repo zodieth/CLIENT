@@ -3,7 +3,6 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -14,6 +13,9 @@ import {
   LightMode,
   Input,
   Spinner,
+  Card,
+  CardHeader,
+  CardBody
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import interfaceProduct from  "../../../features/products/interfaceProduct";
@@ -156,23 +158,27 @@ export default function ProductsAdmin() {
     });
   }else{
     return (
-      <div className={style.container}>
-        <div className={style.header}>
-          <Link to="./create" className={style.btnPrimary}>Nuevo</Link>
-        </div>
-        <Input
-          type="text"
-          value={searchTerm}
-          onChange={handleSearch}
-          placeholder="Buscar"
-        />
-        <TableContainer>
-          <Table2
-            data={filteredData}
-            columns={columns}
+      <Card>
+        <CardHeader>
+          <div className={style.header}>
+            <Link to="./create" className={style.btnPrimary}>Nuevo</Link>
+          </div>
+          <Input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearch}
+            placeholder="Buscar"
           />
-        </TableContainer>
-      </div>
+        </CardHeader>
+        <CardBody>
+          <TableContainer>
+            <Table2
+              data={filteredData}
+              columns={columns}
+            />
+          </TableContainer>
+        </CardBody>
+      </Card>
     );
   }
 }

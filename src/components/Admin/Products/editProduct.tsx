@@ -1,5 +1,5 @@
 import style from "./products.module.css";
-import { Input, Select, Textarea } from "@chakra-ui/react";
+import { Box, Input, Select, Textarea, useColorModeValue } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import interfaceCategory from  "../../../features/categories/interfaceCategory";
 import interfaceBrand from  "../../../features/brands/interfaceBrand";
@@ -49,10 +49,10 @@ const GrabCursor = ({ urls, setImageUrls }: Props) => {
   };
 
   return (
-    <div style={{ width: '400px', marginLeft: '100px', overflow: "hidden", zIndex: "1" }}>
+    <Box style={{ width: '400px', marginLeft: '100px', overflow: "hidden", zIndex: "1" }}>
       <Swiper {...params}>
         {urls.map((url, index) => (
-          <div key={index}><div key={index} style={{ position: 'relative' }}>
+          <Box key={index}><Box key={index} style={{ position: 'relative' }}>
             <button
               style={{ position: 'absolute', top: "-1px", right: "5px" }}
               onClick={() => handleClose(index)}
@@ -60,10 +60,10 @@ const GrabCursor = ({ urls, setImageUrls }: Props) => {
               <CloseIcon color="red"/>
             </button>
             <img src={url}></img>
-          </div></div>
+          </Box></Box>
         ))}
       </Swiper>
-    </div>
+    </Box>
   )
 };
 
@@ -181,9 +181,9 @@ export default function EditProductAdmin() {
   }
 
   return (
-    <div className={style.container}>
+    <Box bg={useColorModeValue("white", "whiteAlpha.100")} className={style.container}>
       <form className={style.container} onSubmit={handleSubmit}>
-      <div className={style.groupInputs}>
+      <Box className={style.groupInputs}>
         <label>Nombre</label>
         <Input
           onChange={(e) => handleChange(e)}
@@ -193,9 +193,9 @@ export default function EditProductAdmin() {
           placeholder="Nombre del producto"
           width='sm'
         />
-      </div>
+      </Box>
 
-      <div className={style.groupInputs}>
+      <Box className={style.groupInputs}>
         <label>Descripción</label>
         <Input
           width='sm'
@@ -205,9 +205,9 @@ export default function EditProductAdmin() {
           value={inputs.description}
           name="description"
         />
-      </div>
+      </Box>
 
-      <div className={style.groupInputs}>
+      <Box className={style.groupInputs}>
         <label>Precio (US$)</label>
         <Input
           width='sm'
@@ -217,9 +217,9 @@ export default function EditProductAdmin() {
           value={inputs.price}
           name="price"
         />
-      </div>
+      </Box>
 
-      <div className={style.groupInputs}>
+      <Box className={style.groupInputs}>
         <label>Stock</label>
         <Input
           width='sm'
@@ -229,16 +229,16 @@ export default function EditProductAdmin() {
           value={inputs.stock}
           name="stock"
         />
-      </div>
+      </Box>
 
-      <div className={style.groupInputs}>
+      <Box className={style.groupInputs}>
         <label>Imagen</label>
         <CloudinaryUploadWidget onSuccess={handleImageUpload}/>
-      </div>
+      </Box>
 
       <GrabCursor urls={imageUrls} setImageUrls={setImageUrls}/>
 
-      <div className={style.groupInputs}>
+      <Box className={style.groupInputs}>
         <label>Marca</label>
         <Select
             name='brand'
@@ -250,9 +250,9 @@ export default function EditProductAdmin() {
                 return <option key={brand._id} value={brand._id}>{brand.name}</option>
               })}
           </Select>
-      </div>
+      </Box>
 
-      <div className={style.groupInputs}>
+      <Box className={style.groupInputs}>
         <label>Categoria</label>
         <Select
           name='category'
@@ -264,15 +264,15 @@ export default function EditProductAdmin() {
               return <option key={category._id} value={category._id}>{category.name}</option>
             })}
         </Select>
-      </div>
+      </Box>
 
       <hr className={style.hrLineDashed} />
 
-      <div className={style.groupButtons}>
+      <Box className={style.groupButtons}>
         <a href="#" onClick={() => window.history.back()} className={style.btnWhite}>Cancelar</a>
         <button className={style.btnPrimary}>Guardar</button>
-      </div>
+      </Box>
     </form>
-    </div>
+    </Box>
   );
 }

@@ -7,29 +7,31 @@
 }
 
 .componentsPhotos {
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   height: fit-content;
   width: 400px;
-  background-color: #fff;
+  /* background-color: #fff; */
   border-radius: 10px;
   flex-wrap: wrap;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-  color: rgb(65, 65, 65);
-  border: 1px solid #e2e2e2;
+  /* color: rgb(65, 65, 65); */
+  border: 1px solid #8f8f8f;
   
 }
 
 .totalContainer {
+  
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 100px;
-  width: 330px;
-  background-color: #fff;
-  color: rgb(65, 65, 65);
-  border: 1px solid #e2e2e2;
+  width: 300%;
+  /* background-color: #fff; */
+  /* color: rgb(65, 65, 65); */
+  border: 1px solid #8f8f8f;
 }
 
 .subContainerTotal {
@@ -37,7 +39,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 2rem;
+  width: 200px;
 }
 
 .totalContainer {
@@ -45,10 +47,11 @@
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  margin-right: 2rem;
+  
 }
 
 .total {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,8 +63,8 @@
 }
 
 .box {
-  height: 120px;
-
+  height: 170px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,13 +87,13 @@
   height: 175px;
   margin: 0.5rem;
   width: 400px;
-  background-color: #fff;
+  /* background-color: #fff; */
   font-size: 20px;
-  color: rgb(65, 65, 65);
+  /* color: rgb(65, 65, 65); */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #e2e2e2;
+  border: 1px solid #8f8f8f;
   
 }
 

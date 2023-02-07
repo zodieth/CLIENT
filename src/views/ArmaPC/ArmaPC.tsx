@@ -154,7 +154,7 @@ function ArmaPC() {
   return (
     <Box >
       <div className={style.nav}>
-      <NavBar /> <ToggleColorMode /> {/* boton dark mode */}
+      <NavBar />
       </div>
       <Box className={style.build}>
         <Box className={style.componentsPhotos}>
@@ -238,9 +238,9 @@ function ArmaPC() {
           <Box className={style.totalContainer}>
             <Box className={style.subContainerTotal}>
               <Link to="/cart">
-                <Button onClick={() => [addToCartAlert()]}>
-                  <HiShoppingCart />
-                </Button>
+              <LightMode><Button color="gray" onClick={() => [addToCartAlert()]}>
+                  <HiShoppingCart  color="black"/>
+                </Button></LightMode>
               </Link>
 
               <Box>

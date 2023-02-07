@@ -3,7 +3,6 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -13,9 +12,11 @@ import {
   Switch,
   LightMode,
   Box,
-  useColorModeValue,
   Input,
-  Spinner,
+  Spinner, 
+  Card,
+  CardHeader,
+  CardBody
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import interfaceCategory from  "../../../features/categories/interfaceCategory";
@@ -152,23 +153,27 @@ export default function CategoriesAdmin() {
     });
   }else{
     return (
-      <div className={style.container}>
-        <Box className={style.header}>
-          <Link to="./create" className={style.btnPrimary}>Nuevo</Link>
-        </Box>
-        <Input
-          type="text"
-          value={searchTerm}
-          onChange={handleSearch}
-          placeholder="Buscar"
-        />
-        <TableContainer>
-          <Table2
-            data={filteredData}
-            columns={columns}
+      <Card>
+        <CardHeader>
+          <Box className={style.header}>
+            <Link to="./create" className={style.btnPrimary}>Nuevo</Link>
+          </Box>
+          <Input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearch}
+            placeholder="Buscar"
           />
-        </TableContainer>
-      </div>
+        </CardHeader>
+        <CardBody>
+          <TableContainer>
+            <Table2
+              data={filteredData}
+              columns={columns}
+            />
+          </TableContainer>
+        </CardBody>
+      </Card>
     );
   }
 }

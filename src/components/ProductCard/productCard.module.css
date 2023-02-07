@@ -55,8 +55,8 @@
 
 .card:hover {
   background-position: right center;
-  transform: scale(1.03);
-  box-shadow: 10px 10px 20px #ffffff, -10px -10px 20px #ffffff;
+  transform: scale(1.02);
+  box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #bebebe;
 }
 
 .imgBx {

@@ -31,3 +31,5 @@ export const QUESTION_ADD = "QUESTION_ADD";
 export const QUESTION_LOADING = "QUESTION_LOADING";
 export const QUESTION_FAILED = "QUESTION_FAILED";
 export const QUESTION_UPDATE = "QUESTION_UPDATE";
+
+export const GET_USER = "GET_USER";

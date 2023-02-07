@@ -12,6 +12,22 @@ export const createProduct = (value: any) => {
   };
 };
 
+export const sendProducts = (value: any) => {
+  axios.post("https://henry-pf-back.up.railway.app/sale", value);
+
+  return {
+    type: ActionTypes.CREATE_PRODUCT,
+    payload: value,
+  };
+};
+
+export const getUser = (value: any) => {
+  return {
+    type: ActionTypes.GET_USER,
+    payload: value,
+  };
+};
+
 export const addToCart = (value: any) => {
   return {
     type: ActionTypes.ADD_TO_CART,
@@ -84,7 +100,7 @@ export const fetchProductsApi =
     dispatch(productsLoading());
 
     return await axios
-      .get("http://localhost:3001/products")
+      .get("https://henry-pf-back.up.railway.app/products")
       .then(
         function (response) {
           if (response.data.length) return response;
@@ -478,7 +494,7 @@ export const postProduct =
     dispatch(productsLoading());
     
     return axios
-      .post("http://localhost:3001/products", newProduct)
+      .post("https://henry-pf-back.up.railway.app/products", newProduct)
       .then((response) => {
         dispatch(addProduct(response.data));
       })
@@ -517,7 +533,7 @@ export const putProduct =
     dispatch(productsLoading());
     console.log(product)
     return axios
-      .put("http://localhost:3001/product/" + id, product)
+      .put("https://henry-pf-back.up.railway.app/product/" + id, product)
       .then(
         (response) => {
           if (response.status) {

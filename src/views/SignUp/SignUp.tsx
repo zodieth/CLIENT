@@ -18,13 +18,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { auth } from "../../auth0.service";
+import { 
+  API_SERVER_URL,
+  AUTH0_REALM } from "../../auth0.config";
 import style from "./SignUp.module.css"
+import { error } from "console";
+import { Password } from "@mui/icons-material";
 
 export default function SignupCard() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -33,10 +37,79 @@ export default function SignupCard() {
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [zip, setZip] = useState("");
+  const [userNameError, setUserNameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [phoneNumberError, setPhoneNumberError] = useState("");
+  const [provinceError, setProvinceError] = useState("");
+  const [cityError, setCityError] = useState("");
+  const [addressError, setAddressError] = useState("");
+  const [zipError, setZipError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [allowSignUp, setAllowSignUp] = useState(false);
 
   const navigate = useNavigate();
-
+  const emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  const phonePattern = /^\d{8,}$/;
+  const validateUserData = () => {
+    if(userName.length < 5) {
+      setUserNameError("El nombre de usuario debe tener al menos cinco caracteres.");
+    } else setUserNameError("");
+    if(password.length < 8) {
+      setPasswordError("La contraseña debe tener al menos ocho caracteres.");
+    } else setPasswordError("");
+    if(password !== confirmPassword) {
+      setConfirmPasswordError("Ambos valores deben coincidir.");
+    } else setConfirmPasswordError("");
+    if(firstName.length < 2) {
+      setFirstNameError("Ingresa tu nombre.");
+    } else setFirstNameError("");
+    if(lastName.length < 4) {
+      setLastNameError("Ingresa tu apellido.");
+    } else setLastNameError("");
+    if(!emailPattern.test(email)) {
+      setEmailError("Ingresa un correo electrónico válido");
+    } else setEmailError("");
+    if(!phonePattern.test(phoneNumber)) {
+      setPhoneNumberError("Ingresa un número telefónico válido.");
+    } else setPhoneNumberError("");
+    if(province.length < 1) {
+      setProvinceError("Selecciona tu provincia.");
+    } else setProvinceError("");
+    if(city.length < 3) {
+      setCityError("Ingresa tu ciudad.");
+    } else setCityError("");
+    if(address.length < 5) {
+      setAddressError("Ingresa tu dirección.");
+    } else setAddressError("");
+    if(zip.length < 4) {
+      setZipError("Ingresa un código postal válido.");
+    } else setZipError("");
+  };
+  const checkErrors = () => {
+    const errors = [
+      userNameError,
+      passwordError,
+      confirmPasswordError,
+      firstNameError,
+      lastNameError,
+      userNameError,
+      emailError,
+      phoneNumberError,
+      provinceError,
+      cityError,
+      addressError,
+      zipError];
+    const someErrors = errors.some(error => error !== "");
+    if(someErrors) {
+      setAllowSignUp(false);
+    } else {
+      setAllowSignUp(true);
+    };
+  };
   const handleUserCreation = async (
     province : String,
     city : String,
@@ -49,7 +122,7 @@ export default function SignupCard() {
     email : String,
     // accessToken : String
     ) => {
-    const locationResponse = await fetch(`http://localhost:3001/location`, {
+    const locationResponse = await fetch(`${API_SERVER_URL}/location`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -64,7 +137,7 @@ export default function SignupCard() {
       });
       const locationDB = await locationResponse.json();
       const locationId = locationDB._id;
-      const userResponse = await fetch(`http://localhost:3001/user`, {
+      const userResponse = await fetch(`${API_SERVER_URL}/user`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -103,6 +176,7 @@ export default function SignupCard() {
       };
   };
   const handleSignUp = async () => {
+    if(!allowSignUp) return window.alert("Algunos de los datos ingresados NO son válidos.");
     const successfulUserCreation = await handleUserCreation(
       province,
       city,
@@ -119,10 +193,9 @@ export default function SignupCard() {
       auth.signup({
         email: email,
         password: password,
-        connection: "Username-Password-Authentication"
+        connection: AUTH0_REALM
       }, async (error : Auth0Error | null, result : any) => {
         if(error) {
-          //OJO, debe haber validación de datos en tiempo real en concordancia con los modelos y la configuración de Auth0. La validación en las rutas del servidor sólo se usará para efectos de determinar si ya existe un documento con el mismo valor en cierto campo.
           window.alert("El proceso de registro no ha sido exitoso. Por favor, intenta más tarde.");
         } else {
           window.alert("Bienvenido a AllTech. Revisa tu correo electrónico, recuerda que debes verificar tu cuenta antes de ingresar.");
@@ -132,14 +205,10 @@ export default function SignupCard() {
       });
     };
   };
-
   useEffect(() => {
-    if(password === confirmPassword && password.length > 9) {
-      setAllowSignUp(true);
-    } else {
-      setAllowSignUp(false);
-    };
-  }, [password, confirmPassword]);
+    validateUserData();
+    checkErrors();
+  }, [userName, password, confirmPassword, firstName, lastName, email, phoneNumber, province, city, address, zip]);
   return (
     <Flex
       minH={"100vh"}
@@ -165,9 +234,10 @@ export default function SignupCard() {
           <Stack spacing={4}>
           <FormControl id="email" isRequired>
               <FormLabel className={style.largo}>Nombre de usuario</FormLabel>
-              <Input type="text" value={userName}
+              <Input type="text"  value={userName}
                                   onChange={e => setUserName(e.target.value)}/>
             </FormControl>
+            <p>{userNameError}</p>
             <HStack>
               <Box>
                 <FormControl id="password" isRequired>
@@ -180,6 +250,7 @@ export default function SignupCard() {
                         </InputRightElement>
                     </InputGroup>
                 </FormControl>
+                <p>{passwordError}</p>
               </Box>
               <Box>
                 <FormControl id="password" isRequired>
@@ -192,13 +263,14 @@ export default function SignupCard() {
                         <Button
                           variant={"ghost"}
                           onClick={() =>
-                            setShowPassword((showPassword) => !showPassword)
+                            setShowPassword(showPassword => !showPassword)
                           }>
                           {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                         </Button>
                         </InputRightElement>
                     </InputGroup>
                 </FormControl>
+                <p>{confirmPasswordError}</p>
               </Box>
             </HStack>
             <HStack>
@@ -209,6 +281,7 @@ export default function SignupCard() {
                           value={firstName}
                           onChange={e => setFirstName(e.target.value)}/>
                 </FormControl>
+                <p>{firstNameError}</p>
               </Box>
               <Box>
                 <FormControl id="lastName" isRequired>
@@ -217,6 +290,7 @@ export default function SignupCard() {
                           value={lastName}
                           onChange={e => setLastName(e.target.value)}/>
                 </FormControl>
+                <p>{lastNameError}</p>
               </Box>
             </HStack>
             <HStack>
@@ -227,6 +301,7 @@ export default function SignupCard() {
                           value={email}
                           onChange={e => setEmail(e.target.value)}/>
                 </FormControl>
+                <p>{emailError}</p>
               </Box>
               <Box>
                 <FormControl id="email" isRequired>
@@ -235,6 +310,7 @@ export default function SignupCard() {
                           value={phoneNumber}
                           onChange={e => setPhoneNumber(e.target.value)}/>
                 </FormControl>
+                <p>{phoneNumberError}</p>
               </Box>
             </HStack>
             <HStack>
@@ -270,6 +346,7 @@ export default function SignupCard() {
                     <option value="Tucumán">Tucumán</option>
                   </Select>
                 </FormControl>
+                <p>{provinceError}</p>
               </Box>
               <Box>
                 <FormControl id="email" isRequired>
@@ -278,6 +355,7 @@ export default function SignupCard() {
                           value={city}
                           onChange={e => setCity(e.target.value)}/>
                 </FormControl>
+                <p>{cityError}</p>
               </Box>
             </HStack>
             <HStack>
@@ -288,6 +366,7 @@ export default function SignupCard() {
                           value={address}
                           onChange={e => setAddress(e.target.value)}/>
                 </FormControl>
+                <p>{addressError}</p>
               </Box>
               <Box>
                 <FormControl id="email" isRequired>
@@ -296,6 +375,7 @@ export default function SignupCard() {
                           value={zip}
                           onChange={e => setZip(e.target.value)}/>
                   </FormControl>
+                  <p>{zipError}</p>
               </Box>
             </HStack>
             <Stack spacing={10} pt={2}>
@@ -307,7 +387,6 @@ export default function SignupCard() {
                 _hover={{
                   bg: "blue.500",
                 }}
-                disabled={!allowSignUp}
                 onClick={handleSignUp}
               >
                 Crear cuenta

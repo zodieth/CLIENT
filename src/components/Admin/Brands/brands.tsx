@@ -13,12 +13,15 @@ import {
   Switch,
   LightMode,
   Input,
-  Spinner 
+  Spinner, 
+  Card,
+  CardHeader,
+  CardBody
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import interfaceBrand from  "../../../features/brands/interfaceBrand";
-import { HiTrash, HiOutlinePencilAlt } from "react-icons/hi";
-import { deleteBrandApi, putBrand } from '../../../app/actionsCreators'
+import { HiOutlinePencilAlt } from "react-icons/hi";
+import { putBrand } from '../../../app/actionsCreators'
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { useTable, usePagination } from 'react-table'
@@ -140,24 +143,27 @@ export default function BrandsAdmin() {
     });
   }else{
     return (
-      <div className={style.container}>
-        <div className={style.header}>
+      <Card>
+        <CardHeader>
+          <div className={style.header}>
           <Link to="./create" className={style.btnPrimary}>Nuevo</Link>
-        </div>
+          </div>
         <Input
           type="text"
           value={searchTerm}
           onChange={handleSearch}
           placeholder="Buscar"
         />
+        </CardHeader>
+        <CardBody>
         <TableContainer>
           <Table2
             data={filteredData}
             columns={columns}
           />
         </TableContainer>
-
-      </div>
+        </CardBody>
+      </Card>
     );
   }
 }
