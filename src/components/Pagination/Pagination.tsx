@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import StylePagination from './Pagination.module.css';
 
 export default function Pagination(props:any) {
@@ -37,11 +38,9 @@ export default function Pagination(props:any) {
   };
 
   return (
-    <div className={StylePagination.pagination} style={{ marginTop: "25px", width: "100%" }}>
-      <span>
-        Página {props.page} de {props.total}
-      </span><br/>
+    <Box className={StylePagination.pagination}  color="Gray" borderColor="Gray" style={{ marginTop: "25px", width: "100%" }}>
+      <br/>
       { getPages() }
-    </div>
+    </Box>
   );
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "./navBar.module.css";
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdComputer } from "react-icons/md";
@@ -16,10 +16,17 @@ import {
   MenuDivider,
   Stack,
   Center,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { auth } from "../../auth0.service";
-import { AUTH_MANAGEMENT_API_ACCESS_TOKEN } from "../../auth0.config";
+import { 
+  AUTH0_CALLBACK_URL,
+  AUTH0_CLIENT_ID,
+  AUTH0_DOMAIN,
+  AUTH0_MANAGEMENT_API_ACCESS_TOKEN } from "../../auth0.config";
+  import ToggleColorMode from "../DarkMode/ToggleColorMode";
+
 import { getUser } from "../../app/actionsCreators";
 
 function NavBar(props: any) {
@@ -38,62 +45,58 @@ function NavBar(props: any) {
 
   const accessToken = localStorage.getItem("accessToken");
   const activeSession = accessToken ? true : false;
-  const handleUser = async () => {
-    await auth.client.userInfo(
-      accessToken,
-      async (error: Auth0Error | null, user: Auth0UserProfile) => {
-        if (error) {
-          console.log("Error: ", error);
-          //Para disimular la limitación en la tasa de peticiones, se puede desloguear al usuario cuando se excede dicho límite.
-        } else {
-          setUserName(user.nickname);
-          setPicture(user.picture);
-          sendUser(userName);
-          const userId = user.sub;
-          const userRolesResponse = await fetch(
-            `https://dev-6d0rlv0acg7xdkxt.us.auth0.com/api/v2/users/${userId}/roles`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${AUTH_MANAGEMENT_API_ACCESS_TOKEN}`,
-              },
-            }
-          );
-          const userRoles = await userRolesResponse.json();
-          const hasAdminRole = userRoles.some(
-            (role: { id: String; name: String; description: String }) =>
-              role.name === "alltech-admin"
-          );
-          setIsAdmin(hasAdminRole);
-        }
-      }
-    );
-  };
   const handleLogout = async () => {
     localStorage.removeItem("accessToken");
     await auth.logout({
-      returnTo: window.location.origin,
-      clientID: "2EHZJm086BzkgwY5HXmPeK5UnbHegBXl",
+      returnTo: AUTH0_CALLBACK_URL,
+      clientID: AUTH0_CLIENT_ID
     });
+  };
+  
+  const handleUser = async () => {
+    await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
+      if(error) {
+        console.log("Error: ", error);
+        // window.alert("La sesión ha expirado.");
+        // await handleLogout();
+      } else {
+        setUserName(user.nickname);
+        setPicture(user.picture);
+        const userId = user.sub;
+        const userRolesResponse = await fetch(`https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${AUTH0_MANAGEMENT_API_ACCESS_TOKEN}`
+          }
+        });
+        const userRoles = await userRolesResponse.json();
+        const hasAdminRole = userRoles.some((role : { id : String, name : String, description : String }) => role.name === "alltech-admin");
+        setIsAdmin(hasAdminRole);
+      };
+    })
   };
 
   useEffect(() => {
-    handleUser();
-  }, []);
+    if(activeSession) {
+      handleUser();
+    };
+  }, [handleUser]);
+
   return (
-    <div className={style.navBar}>
-      <div className={style.logo}>
+    <Box className={style.navBar}>
+      <Box className={style.logo}>
         <Link to="/">
-          <HamburgerIcon boxSize={8} color="black" />
+          <HamburgerIcon boxSize={8} color="Gray" />
         </Link>
-        <Link to="/">
+        <Link to="/" >
           <h1 className={style.h1Logo}> AllTech</h1>
         </Link>
-      </div>
-      {/* <div>
+      </Box>
+      {/* <Box>
         <SearchBar />
-      </div> */}
-      <div className={style.buttons}>
+      </Box> */}
+      <Box className={style.buttons}>
+        <ToggleColorMode />
         <Link to="/cart" className={style.cartI}>
           <Button
             leftIcon={<FaShoppingCart />}
@@ -116,7 +119,7 @@ function NavBar(props: any) {
         </Link>
 
         {activeSession ? (
-          <div className={style.avatar_login}>
+          <Box className={style.avatar_login}>
             <Button
               rightIcon={<FiLogIn />}
               className={style.button}
@@ -138,7 +141,7 @@ function NavBar(props: any) {
                 >
                   <Avatar size={"sm"} src={picture} />
                 </MenuButton>
-                <MenuList alignItems={"center"} style={{ color: "#495057" }}>
+                <MenuList  alignItems={"center"}>
                   <br />
                   <Center>
                     <Avatar size={"2xl"} src={picture} />
@@ -149,19 +152,13 @@ function NavBar(props: any) {
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem onClick={() => navigate("/user")}>
-                    Mi cuenta de usuario
-                  </MenuItem>
-                  {isAdmin ? (
-                    <MenuItem onClick={() => navigate("/admin")}>
-                      Mi cuenta de administrador
-                    </MenuItem>
-                  ) : null}
+                  <MenuItem   onClick={() => navigate("/user")}>Mi cuenta de usuario</MenuItem>
+                  {isAdmin ? <MenuItem onClick={() => navigate("/admin")}>Mi cuenta de administrador</MenuItem> : null}
                   <MenuItem onClick={handleLogout}>Salir</MenuItem>
                 </MenuList>
               </Menu>
             </Stack>
-          </div>
+          </Box>
         ) : (
           <Link to="/signin">
             <Button
@@ -174,8 +171,8 @@ function NavBar(props: any) {
             </Button>
           </Link>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

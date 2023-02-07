@@ -1,6 +1,6 @@
 import { useState } from "react";
 import style from "./cartCard.module.css";
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { HiMinus, HiOutlinePlusSm } from "react-icons/hi";
 import { useAppDispatch } from "../../hooks/hooks";
 import { deleteFromCart } from "../../app/actionsCreators";
@@ -21,13 +21,13 @@ function CartCard(props: any) {
   let [total, setTotal] = useState(props.price);
 
   return (
-    <div className={style.container}>
-      <div className={style.card}>
-        <div className={style.left}>
+    <Box className={style.container}>
+      <Box className={style.card}>
+        <Box className={style.left}>
           <img className={style.img} src={props.img} alt="" />
-          <div className={style.productName}>{props.name}</div>
-          <div className={style.right}>
-            <div className={style.counter}>
+          <Box className={style.productName}>{props.name}</Box>
+          <Box className={style.right}>
+            <Box className={style.counter}>
               <Button
                 onClick={() =>
                   quantity <= 1
@@ -53,8 +53,8 @@ function CartCard(props: any) {
               >
                 <HiOutlinePlusSm />
               </Button>
-              <div className={style.price_Delete}>
-                <div className={style.price}> US$ {total}</div>
+              <Box className={style.price_Delete}>
+                <Box className={style.price}> US$ {total}</Box>
                 <Button
                   colorScheme="red"
                   height={8}
@@ -63,12 +63,12 @@ function CartCard(props: any) {
                 >
                   x
                 </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 

@@ -29,9 +29,9 @@ input {
 .hrLineDashed{
   margin: 10px 0px !important;
   padding-top: 10px;
-  border-top: 1px dashed #e7eaec;
-  color: #ffffff;
-  background-color: #ffffff;
+  border-top: 1px solid #6969696b;
+  /* color: #ffffff; */
+  /* background-color: #ffffff; */
   height: 1px;
   margin: 20px 0;
 }
@@ -77,8 +77,8 @@ input {
 }
 
 .btnWhite {
-  color: inherit;
-  background: white;
+  color: gray;
+  /* background: white; */
   border: 1px solid #cfd1d2;
 
   display: inline-block;

@@ -1,13 +1,15 @@
 export default interface interfaceProduct {
-  name: String,
-  description: String,
-  price: Number,
-  images: [String],
+  _id: string,
+  name: string,
+  description: string,
+  price: number,
+  stock: number,
+  images: [string],
   category: {
-    name: String
+    name: string
   },
   brand: {
-    name: String
+    name: string
   },
   active: Boolean
 }

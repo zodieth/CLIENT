@@ -1,5 +1,5 @@
 import style from "./brand.module.css"
-import { Input } from "@chakra-ui/react";
+import { Box, Input, useColorModeValue } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { useEffect, useState } from "react";
 import { putBrand } from "../../../app/actionsCreators"
@@ -100,10 +100,10 @@ export default function EditBrandAdmin() {
   }
 
   return (
-    <div className={style.container}>
+    <Box bg={useColorModeValue("white", "whiteAlpha.100")} className={style.container}>
       <form id="createBrand" onSubmit={handleSubmit}>
         <input type="hidden" value="{categorySelected?.id}" />
-        <div className={style.groupInputs}>
+        <Box className={style.groupInputs}>
           <label>Nombre</label>
           <Input 
             type='text'
@@ -114,15 +114,15 @@ export default function EditBrandAdmin() {
             value={inputs.name}
           />
           <p >{errors.name}</p>
-        </div>
+        </Box>
 
         <hr className={style.hrLineDashed}/>
         
-        <div className={style.groupButtons}>
+        <Box className={style.groupButtons}>
           <a href="#" onClick={() => window.history.back()} className={style.btnWhite}>Cancelar</a>
           <button type="submit" className={style.btnPrimary}>Guardar</button>
-        </div>
+        </Box>
       </form>
-    </div>
+    </Box>
   );
 }
