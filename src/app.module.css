@@ -16,12 +16,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.borde{
+.borde {
   border-color: black;
   position: fixed;
-top: 10px;
-transform: translateY(10px);
-background-color: #fff;
+  top: 10px;
+  transform: translateY(10px);
+  background-color: #fff;
 }
 
 .slick-slider {
