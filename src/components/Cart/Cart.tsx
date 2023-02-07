@@ -12,7 +12,6 @@ import Footer from "../Footer/Footer";
 import { sendProducts } from "../../app/actionsCreators";
 import ToggleColorMode from "../DarkMode/ToggleColorMode";
 
-
 function Cart() {
   const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.cart);
@@ -60,25 +59,22 @@ function Cart() {
       </div>
 
       {/* <SubNav /> */}
-      <Box 
-            color="Gray"
-            borderColor="Gray"
-            >
+      <Box color="Gray" borderColor="Gray">
         {products.cart.length ? (
           products.cart.map((e: any) => {
             return (
-              <Box key={e.name} >
-                <Box >
-                <CartCard  
+              <Box key={e.name}>
+                <Box>
+                  <CartCard
                     key={e.name}
                     totalCompra={totalCompra}
                     setTotalCompra={setTotalCompra}
                     name={e.name}
                     price={e.price}
                     img={e.img}
-                  /> 
-                </Box> 
-              </Box> 
+                  />
+                </Box>
+              </Box>
             );
           })
         ) : (
@@ -92,46 +88,46 @@ function Cart() {
           </Box>
         )}
         {products.cart.length ? (
-          <LightMode><Box  className={style.container_finish}>
-            <Box className={style.finish}>
-              <Box   className={style.total}>
-              <LightMode><Box>TOTAL</Box></LightMode>
-                <Box>US$ {totalCompra}</Box>
-              </Box>
-              {submitDisappear === true ? (
-                <Box 
-                color="Gray"
-                borderColor="Gray">
-                  {" "}
-                  <Button  
-                    color="Gray"
-                    borderColor="Gray"
-                    className={style.btn_finish}
-                    onClick={() => [
-                      pay(),
-                      setSubmitButton(true),
-                      setInterval(() => {
-                        setSubmitDisappear(false);
-                      }, 1000),
-                    ]}
-                    isLoading={submitButton}
-                  >
-                    Finalizar Compra
-                  </Button>
+          <LightMode>
+            <Box className={style.container_finish}>
+              <Box className={style.finish}>
+                <Box className={style.total}>
+                  <LightMode>
+                    <Box>TOTAL</Box>
+                  </LightMode>
+                  <Box>US$ {totalCompra}</Box>
                 </Box>
-              ) : (
-                ""
-              )}
-
-              <form
-                onClick={() => [sendToBack(compra), console.log(compra)]}
-                className={style.mpPay}
-                id="pagar"
-                method="GET"
-              ></form>
-            </div>
-          </div>
-
+                {submitDisappear === true ? (
+                  <Box color="Gray" borderColor="Gray">
+                    {" "}
+                    <Button
+                      color="Gray"
+                      borderColor="Gray"
+                      className={style.btn_finish}
+                      onClick={() => [
+                        pay(),
+                        setSubmitButton(true),
+                        setInterval(() => {
+                          setSubmitDisappear(false);
+                        }, 1000),
+                      ]}
+                      isLoading={submitButton}
+                    >
+                      Finalizar Compra
+                    </Button>
+                  </Box>
+                ) : (
+                  ""
+                )}
+                <form
+                  onClick={() => [sendToBack(compra), console.log(compra)]}
+                  className={style.mpPay}
+                  id="pagar"
+                  method="GET"
+                ></form>
+              </Box>
+            </Box>{" "}
+          </LightMode>
         ) : (
           ""
         )}
@@ -141,7 +137,7 @@ function Cart() {
           <Footer />
         </LightMode>
       </div>
-    </Box> 
+    </Box>
   );
 }
 
