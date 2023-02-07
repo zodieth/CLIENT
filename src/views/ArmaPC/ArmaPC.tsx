@@ -1,4 +1,6 @@
 import style from "./armado.module.css";
+import { HiShoppingCart } from "react-icons/hi";
+
 import NavBar from "../../components/NavBar/NavBar";
 import { useState } from "react";
 import cpu from "./armapcImages/cpu2.png";
@@ -12,7 +14,7 @@ import gabinete from "./armapcImages/gabo1.png";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { fetchProductsApi } from "../../app/actionsCreators";
 import { useEffect } from "react";
-import { Divider, LightMode } from "@chakra-ui/react";
+import { Box, Divider, LightMode } from "@chakra-ui/react";
 import interfaceProduct from "../../features/products/interfaceProduct";
 import { Button } from "@chakra-ui/react";
 import { addToCart } from "../../app/actionsCreators";
@@ -20,6 +22,7 @@ import Card from "./Card";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
+import ToggleColorMode from "../../components/DarkMode/ToggleColorMode";
 
 function ArmaPC() {
   const [procesadorImg, setProcesadorImg] = useState(cpu);
@@ -77,16 +80,16 @@ function ArmaPC() {
     (product: interfaceProduct) => product.category?.name === "Procesadores"
   );
 
-  const procesadorDescription = procesador.map((e: any) => e.description);
-
   const [motherCards, setMotherCards] = useState(false);
   const mothers = products.allProducts.filter(
     (product: interfaceProduct) => product.category?.name === "Motherboards"
   );
 
-  const socket = mothers.filter(
-    (m: interfaceProduct) => m.description === "Socket LGA1700"
-  );
+  // const procesadorDescription = procesador.map((e: any) => e.description);
+
+  // const socket = mothers.filter(
+  //   (m: interfaceProduct) => m.description === "Socket LGA1700"
+  // );
 
   const [coolerCards, setCoolerCards] = useState(false);
   const coolers = products.allProducts.filter(
@@ -149,108 +152,110 @@ function ArmaPC() {
   };
 
   return (
-    <div className={style.armado}>
+    <Box >
+      <div className={style.nav}>
       <NavBar />
-      <div className={style.build}>
-        <div className={style.componentsPhotos}>
+      </div>
+      <Box className={style.build}>
+        <Box className={style.componentsPhotos}>
           {/* --------------------------------------------- */}
-          <div className={style.box}>
+          <Box className={style.box}>
             <img
               className={style.photoComponent}
               src={componentsImg.procesador}
               alt="procesador"
             />
-            <div className={style.componentName}>
+            <Box className={style.componentName}>
               {componentName.procesador}
-            </div>
-          </div>
+            </Box>
+          </Box>
           {/* --------------------------------------------- */}
-          <div className={style.box}>
+          <Box className={style.box}>
             <img
               className={style.photoComponent}
               src={componentsImg.motherboard}
               alt="motherboard"
             />
-            <div className={style.componentName}>
+            <Box className={style.componentName}>
               {componentName.motherboard}
-            </div>
-          </div>
+            </Box>
+          </Box>
           {/* ------------------------------------ */}
-          <div className={style.box}>
+          <Box className={style.box}>
             <img
               className={style.photoComponent}
               src={componentsImg.cooler}
               alt="cooler"
             />
-            <div className={style.componentName}>{componentName.cooler}</div>
-          </div>
+            <Box className={style.componentName}>{componentName.cooler}</Box>
+          </Box>
           {/* ------------------------------------------ */}
-          <div className={style.box}>
+          <Box className={style.box}>
             <img
               className={style.photoComponent}
               src={componentsImg.ram}
               alt="ram"
             />
-            <div className={style.componentName}>{componentName.ram}</div>
-          </div>
+            <Box className={style.componentName}>{componentName.ram}</Box>
+          </Box>
           {/* ------------------------------------------ */}
-          <div className={style.box}>
+          <Box className={style.box}>
             <img
               className={style.photoComponent}
               src={componentsImg.gpu}
               alt="gpu"
             />
-            <div className={style.componentName}>{componentName.gpu}</div>
-          </div>
+            <Box className={style.componentName}>{componentName.gpu}</Box>
+          </Box>
           {/* --------------------------------------------------  */}
-          <div className={style.box}>
+          <Box className={style.box}>
             <img
               className={style.photoComponent}
               src={componentsImg.disk}
               alt="disk"
             />
-            <div className={style.componentName}>{componentName.disk}</div>
-          </div>
+            <Box className={style.componentName}>{componentName.disk}</Box>
+          </Box>
           {/* --------------------------------------------------  */}
-          <div className={style.box}>
+          <Box className={style.box}>
             <img
               className={style.photoComponent}
               src={componentsImg.power}
               alt="power"
             />
-            <div className={style.componentName}>{componentName.power}</div>
-          </div>
+            <Box className={style.componentName}>{componentName.power}</Box>
+          </Box>
           {/* --------------------------------------------------  */}
-          <div className={style.box}>
+          <Box className={style.box}>
             <img
               className={style.photoComponent}
               src={componentsImg.gabinete}
               alt="gabinete"
             />
-            <div className={style.componentName}>{componentName.gabinete}</div>
-          </div>
+            <Box className={style.componentName}>{componentName.gabinete}</Box>
+          </Box>
           {/* ---------------------------------------------------------- */}
-          <div className={style.totalContainer}>
-            <div className={style.subContainerTotal}>
+          <Box className={style.totalContainer}>
+            <Box className={style.subContainerTotal}>
               <Link to="/cart">
-                <Button onClick={() => [addToCartAlert()]}>
-                  Agregar al Carrito
-                </Button>
+              <LightMode><Button color="gray" onClick={() => [addToCartAlert()]}>
+                  <HiShoppingCart  color="black"/>
+                </Button></LightMode>
               </Link>
 
-              <div>
-                <div className={style.total}>TOTAL: ${total}</div>
-              </div>
-            </div>
-          </div>
+              <Box>
+                <Box className={style.total}>TOTAL: US$ {total}</Box>
+              </Box>
+            </Box>
+          </Box>
           {/* -------------------------------------------- */}
-        </div>
+        </Box>
         {/* --------------------------PROCESADOR---------------------------------------*/}
         {procesadorCards === true ? (
-          <div className={style.cardsProducts}>
+          <Box className={style.cardsProducts}>
             {procesador.map((e: any, index: any) => {
               return (
-                <div
+                <Box
                   key={index}
                   onClick={() => [
                     setComponentsImg({
@@ -281,21 +286,21 @@ function ArmaPC() {
                     setMotherCards(true),
                   ]}
                 >
-                  <Card img={e.images[0]} name={e.name} price={e.price} />
-                </div>
+                  <Card  img={e.images[0]} name={e.name} price={e.price} />
+                </Box>
               );
             })}
-          </div>
+          </Box>
         ) : (
           ""
         )}
         {/* -------------------------------------------------------------------------- */}
         {/* ------------------------------MOTHERBOARD-------------------------------- */}
         {motherCards === true ? (
-          <div className={style.cardsProducts}>
-            {socket.map((e: any, index: any) => {
+          <Box className={style.cardsProducts}>
+            {mothers.map((e: any, index: any) => {
               return (
-                <div
+                <Box
                   key={index}
                   onClick={() => [
                     setComponentsImg({
@@ -326,21 +331,21 @@ function ArmaPC() {
                     setCoolerCards(true),
                   ]}
                 >
-                  <Card img={e.images[0]} name={e.name} price={e.price} />
-                </div>
+                <LightMode> <Card img={e.images[0]} name={e.name} price={e.price} /> </LightMode>
+                </Box>
               );
             })}
-          </div>
+          </Box>
         ) : (
           ""
         )}
         {/* --------------------------------------------------------------------------- */}
         {/* ------------------------------------COOLERS---------------------------------*/}
         {coolerCards === true ? (
-          <div className={style.cardsProducts}>
+          <Box className={style.cardsProducts}>
             {coolers.map((e: any, index: any) => {
               return (
-                <div
+                <Box
                   key={index}
                   onClick={() => [
                     setComponentsImg({
@@ -372,20 +377,20 @@ function ArmaPC() {
                   ]}
                 >
                   <Card img={e.images[0]} name={e.name} price={e.price} />
-                </div>
+                </Box>
               );
             })}
-          </div>
+          </Box>
         ) : (
           ""
         )}
         {/* ------------------------------------------------------------------------------------- */}
         {/* -----------------------------------RAM--------------------------------------------- */}
         {ramCards === true ? (
-          <div className={style.cardsProducts}>
+          <Box className={style.cardsProducts}>
             {ram.map((e: any, index: any) => {
               return (
-                <div
+                <Box
                   key={index}
                   onClick={() => [
                     setComponentsImg({
@@ -417,20 +422,20 @@ function ArmaPC() {
                   ]}
                 >
                   <Card img={e.images[0]} name={e.name} price={e.price} />
-                </div>
+                </Box>
               );
             })}
-          </div>
+          </Box>
         ) : (
           ""
         )}
         {/* -----------------------------------------------------------------------------------------------*/}
         {/* -------------------------------------GPU-------------------------------------------- */}
         {gpuCards === true ? (
-          <div className={style.cardsProducts}>
+          <Box className={style.cardsProducts}>
             {gpu.map((e: any, index: any) => {
               return (
-                <div
+                <Box
                   key={index}
                   onClick={() => [
                     setComponentsImg({
@@ -462,20 +467,20 @@ function ArmaPC() {
                   ]}
                 >
                   <Card img={e.images[0]} name={e.name} price={e.price} />
-                </div>
+                </Box>
               );
             })}
-          </div>
+          </Box>
         ) : (
           ""
         )}
         {/* ------------------------------------------------------------------------------------------------- */}
         {/* ------------------------------------------DISK--------------------------------------------------- */}
         {diskCards === true ? (
-          <div className={style.cardsProducts}>
+          <Box className={style.cardsProducts}>
             {disk.map((e: any, index: any) => {
               return (
-                <div
+                <Box
                   key={index}
                   onClick={() => [
                     setComponentsImg({
@@ -507,20 +512,20 @@ function ArmaPC() {
                   ]}
                 >
                   <Card img={e.images[0]} name={e.name} price={e.price} />
-                </div>
+                </Box>
               );
             })}
-          </div>
+          </Box>
         ) : (
           ""
         )}
         {/* ------------------------------------------------------------------------------------------------------ */}
         {/* ---------------------------------------------FUENTE------------------------------------------------------ */}
         {powerCards === true ? (
-          <div className={style.cardsProducts}>
+          <Box className={style.cardsProducts}>
             {power.map((e: any, index: any) => {
               return (
-                <div
+                <Box
                   key={index}
                   onClick={() => [
                     setComponentsImg({
@@ -552,20 +557,20 @@ function ArmaPC() {
                   ]}
                 >
                   <Card img={e.images[0]} name={e.name} price={e.price} />
-                </div>
+                </Box>
               );
             })}
-          </div>
+          </Box>
         ) : (
           ""
         )}
         {/* ----------------------------------------------------------------------------- */}
         {/* --------------------------------------GABINETES------------------------------------------ */}
         {gabineteCards === true ? (
-          <div className={style.cardsProducts}>
+          <Box className={style.cardsProducts}>
             {gabinetes.map((e: any, index: any) => {
               return (
-                <div
+                <Box
                   key={index}
                   onClick={() => [
                     setComponentsImg({
@@ -596,18 +601,18 @@ function ArmaPC() {
                   ]}
                 >
                   <Card img={e.images[0]} name={e.name} price={e.price} />
-                </div>
+                </Box>
               );
             })}
-          </div>
+          </Box>
         ) : (
           ""
         )}
-      </div>
-      <div className={style.footer}>
+      </Box>
+      <Box className={style.footer}>
       <LightMode><Footer /></LightMode>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
