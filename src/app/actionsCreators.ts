@@ -12,6 +12,22 @@ export const createProduct = (value: any) => {
   };
 };
 
+export const sendProducts = (value: any) => {
+  axios.post("https://henry-pf-back.up.railway.app/sale", value);
+
+  return {
+    type: ActionTypes.CREATE_PRODUCT,
+    payload: value,
+  };
+};
+
+export const getUser = (value: any) => {
+  return {
+    type: ActionTypes.GET_USER,
+    payload: value,
+  };
+};
+
 export const addToCart = (value: any) => {
   return {
     type: ActionTypes.ADD_TO_CART,

@@ -73,7 +73,6 @@ export default function SidebarWithHeader({
 }: {
   children: ReactNode;
 }) {
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
 
@@ -237,6 +236,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     } else {
       handleUser();
     };
+
   }, [handleUser]);
   return (
     <Flex /* devuelta es la barra donde esta la parte del administrador arriba */
@@ -284,12 +284,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               _focus={{ boxShadow: "none" }}
             >
               <HStack>
-                <Avatar
-                  size={"sm"}
-                  src={
-                    picture
-                  }
-                />
+                <Avatar size={"sm"} src={picture} />
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
@@ -310,10 +305,16 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem onClick={() => navigate("/cart")}>Mi carrito de compras</MenuItem>
-              <MenuItem onClick={() => navigate("/user")}>Mi cuenta de usuario</MenuItem>
+              <MenuItem onClick={() => navigate("/cart")}>
+                Mi carrito de compras
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/user")}>
+                Mi cuenta de usuario
+              </MenuItem>
               <MenuDivider />
-              <MenuItem onClick={() => navigate("/")}>Volver a la tienda</MenuItem>
+              <MenuItem onClick={() => navigate("/")}>
+                Volver a la tienda
+              </MenuItem>
               <MenuItem onClick={handleLogout}>Salir</MenuItem>
             </MenuList>
           </Menu>

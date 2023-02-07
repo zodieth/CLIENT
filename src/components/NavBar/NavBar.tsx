@@ -18,7 +18,7 @@ import {
   Center,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { auth } from "../../auth0.service";
 import { 
   AUTH0_CALLBACK_URL,
@@ -27,7 +27,15 @@ import {
   AUTH0_MANAGEMENT_API_ACCESS_TOKEN } from "../../auth0.config";
   import ToggleColorMode from "../DarkMode/ToggleColorMode";
 
-function NavBar() {
+import { getUser } from "../../app/actionsCreators";
+
+function NavBar(props: any) {
+  const dispatch = useAppDispatch();
+
+  function sendUser(name: any) {
+    dispatch(getUser(name));
+  }
+
   const [userName, setUserName] = useState("");
   const [picture, setPicture] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
@@ -44,6 +52,7 @@ function NavBar() {
       clientID: AUTH0_CLIENT_ID
     });
   };
+  
   const handleUser = async () => {
     await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
       if(error) {
@@ -72,6 +81,7 @@ function NavBar() {
       handleUser();
     };
   }, [handleUser]);
+
   return (
     <Box className={style.navBar}>
       <Box className={style.logo}>
