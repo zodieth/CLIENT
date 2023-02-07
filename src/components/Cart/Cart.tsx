@@ -16,14 +16,7 @@ function Cart() {
   const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.cart);
 
-  const user = useAppSelector((state) => state.user);
-
-  const compra = {
-    user: "parralucas",
-    products: products.cart,
-  };
-
-  console.log(compra);
+  const user = localStorage.email;
 
   let total = products.cart.map((e: any) => {
     return e.price;
@@ -32,6 +25,12 @@ function Cart() {
   const [totalCompra, setTotalCompra] = useState(
     total.reduce((a: any, b: any) => a + b, 0)
   );
+
+  const compra = {
+    user,
+    products: products.cart,
+    totalCompra,
+  };
 
   const pay = async () => {
     let productos = products.cart;

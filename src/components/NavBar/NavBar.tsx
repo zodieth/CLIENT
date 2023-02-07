@@ -20,12 +20,13 @@ import {
 } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { auth } from "../../auth0.service";
-import { 
+import {
   AUTH0_CALLBACK_URL,
   AUTH0_CLIENT_ID,
   AUTH0_DOMAIN,
-  AUTH0_MANAGEMENT_API_ACCESS_TOKEN } from "../../auth0.config";
-  import ToggleColorMode from "../DarkMode/ToggleColorMode";
+  AUTH0_MANAGEMENT_API_ACCESS_TOKEN,
+} from "../../auth0.config";
+import ToggleColorMode from "../DarkMode/ToggleColorMode";
 
 import { getUser } from "../../app/actionsCreators";
 
@@ -49,10 +50,10 @@ function NavBar(props: any) {
     localStorage.removeItem("accessToken");
     await auth.logout({
       returnTo: AUTH0_CALLBACK_URL,
-      clientID: AUTH0_CLIENT_ID
+      clientID: AUTH0_CLIENT_ID,
     });
   };
-  
+
   const handleUser = async () => {
     await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
       if(error) {
@@ -78,9 +79,9 @@ function NavBar(props: any) {
   };
 
   useEffect(() => {
-    if(activeSession) {
+    if (activeSession) {
       handleUser();
-    };
+    }
   }, [handleUser]);
 
   return (
@@ -89,7 +90,7 @@ function NavBar(props: any) {
         <Link to="/">
           <HamburgerIcon boxSize={8} color="Gray" />
         </Link>
-        <Link to="/" >
+        <Link to="/">
           <h1 className={style.h1Logo}> AllTech</h1>
         </Link>
       </Box>
@@ -139,7 +140,7 @@ function NavBar(props: any) {
                 >
                   <Avatar size={"sm"} src={picture} />
                 </MenuButton>
-                <MenuList  alignItems={"center"}>
+                <MenuList alignItems={"center"}>
                   <br />
                   <Center>
                     <Avatar size={"2xl"} src={picture} />
@@ -150,8 +151,14 @@ function NavBar(props: any) {
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem   onClick={() => navigate("/user")}>Mi cuenta de usuario</MenuItem>
-                  {isAdmin ? <MenuItem onClick={() => navigate("/admin")}>Mi cuenta de administrador</MenuItem> : null}
+                  <MenuItem onClick={() => navigate("/user")}>
+                    Mi cuenta de usuario
+                  </MenuItem>
+                  {isAdmin ? (
+                    <MenuItem onClick={() => navigate("/admin")}>
+                      Mi cuenta de administrador
+                    </MenuItem>
+                  ) : null}
                   <MenuItem onClick={handleLogout}>Salir</MenuItem>
                 </MenuList>
               </Menu>
