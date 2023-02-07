@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import interfaceBrand from  "../../features/brands/interfaceBrand";
 import interfaceCategory from  "../../features/categories/interfaceCategory";
 import { productsFilter } from "../../app/actionsCreators";
-import { Input } from "@chakra-ui/react";
+import { Input, Flex } from "@chakra-ui/react";
 
 function Filter() {
   const dispatch = useAppDispatch();
@@ -51,9 +51,9 @@ function Filter() {
           </Select>
           </div>
           
-        <div className={style.options}> {/* Minimo - Maximo */}
+        <Flex className={style.options}> {/* Minimo - Maximo */}
           <Input className={styleSearchBar.input}  color="Gray" borderColor="Gray" style={{ width: "auto" }} type="number" id="min" placeholder="Mínimo" pattern="^[0-9]+([,.][0-9]+)?$" onChange={handleSearch}/> - <Input className={styleSearchBar.input} color="Gray" borderColor="Gray"  style={{ width: "auto" }} type="number" id="max" placeholder="Máximo" pattern="^[0-9]+([,.][0-9]+)?$" onChange={handleSearch}/>
-        </div>
+        </Flex>
         <div className={style.options}>
           <Select
             className={style.select}

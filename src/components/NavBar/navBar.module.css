@@ -32,6 +32,7 @@ a {
   align-items: center;
   justify-content: center;
   margin-left: 4rem;
+  
 }
 
 .select {
@@ -58,6 +59,7 @@ a {
 }
 .h1Logo {
   margin-left: 1rem;
+  width: 180px;
   color: gray;
   display: flex;
   align-items: center;

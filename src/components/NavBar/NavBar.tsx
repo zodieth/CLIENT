@@ -72,7 +72,7 @@ function NavBar() {
           <HamburgerIcon boxSize={8} color="Gray" />
         </Link>
         <Link to="/" >
-          <h1 className={style.h1Logo}> AllTech</h1>
+          <h1 className={style.h1Logo}> <img src="https://res.cloudinary.com/dy5msftwe/image/upload/v1675614765/Products/logo_jvrcny.png"/></h1>
         </Link>
       </Box>
       {/* <Box>
