@@ -13,7 +13,7 @@ export const createProduct = (value: any) => {
 };
 
 export const sendProducts = (value: any) => {
-  axios.post("http://localhost:3001/sale", value);
+  axios.post("https://henry-pf-back.up.railway.app/sale", value);
 
   return {
     type: ActionTypes.CREATE_PRODUCT,
