@@ -32,6 +32,7 @@ import {
   FiMenu,
   FiBell,
   FiChevronDown,
+  FiHelpCircle
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
@@ -40,6 +41,7 @@ import {
   fetchProductsApi,
   fetchBrandApi,
   fetchCategoryApi,
+  fetchQuestionsApi
 } from "../app/actionsCreators";
 import { auth } from "../auth0.service";
 import {
@@ -65,6 +67,8 @@ const LinkItems: Array<LinkItemProps> = [
     url: "/admin/categories",
   },
   { name: "Marcas", icon: FiStar, url: "/admin/brands" },
+  { name: "Todas las preguntas", icon: FiHelpCircle, url: "/admin/allQuestions" },
+  { name: "Preguntas sin contestar", icon: FiHelpCircle, url: "/admin/questions" },
   { name: "Usuarios", icon: FiSettings, url: "#" },
 ];
 
@@ -73,7 +77,6 @@ export default function SidebarWithHeader({
 }: {
   children: ReactNode;
 }) {
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
 
@@ -81,6 +84,7 @@ export default function SidebarWithHeader({
     dispatch(fetchProductsApi());
     dispatch(fetchBrandApi());
     dispatch(fetchCategoryApi());
+    dispatch(fetchQuestionsApi());
   }, [dispatch]);
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}> {/* el centro del panel */}
@@ -236,6 +240,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     } else {
       handleUser();
     };
+
   }, [handleUser]);
   return (
     <Flex /* devuelta es la barra donde esta la parte del administrador arriba */
@@ -283,12 +288,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               _focus={{ boxShadow: "none" }}
             >
               <HStack>
-                <Avatar
-                  size={"sm"}
-                  src={
-                    picture
-                  }
-                />
+                <Avatar size={"sm"} src={picture} />
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
@@ -309,10 +309,16 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem onClick={() => navigate("/cart")}>Mi carrito de compras</MenuItem>
-              <MenuItem onClick={() => navigate("/user")}>Mi cuenta de usuario</MenuItem>
+              <MenuItem onClick={() => navigate("/cart")}>
+                Mi carrito de compras
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/user")}>
+                Mi cuenta de usuario
+              </MenuItem>
               <MenuDivider />
-              <MenuItem onClick={() => navigate("/")}>Volver a la tienda</MenuItem>
+              <MenuItem onClick={() => navigate("/")}>
+                Volver a la tienda
+              </MenuItem>
               <MenuItem onClick={handleLogout}>Salir</MenuItem>
             </MenuList>
           </Menu>

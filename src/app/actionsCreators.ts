@@ -12,6 +12,22 @@ export const createProduct = (value: any) => {
   };
 };
 
+export const sendProducts = (value: any) => {
+  axios.post("https://henry-pf-back.up.railway.app/sale", value);
+
+  return {
+    type: ActionTypes.CREATE_PRODUCT,
+    payload: value,
+  };
+};
+
+export const getUser = (value: any) => {
+  return {
+    type: ActionTypes.GET_USER,
+    payload: value,
+  };
+};
+
 export const addToCart = (value: any) => {
   return {
     type: ActionTypes.ADD_TO_CART,
@@ -502,6 +518,12 @@ export const updateProduct = (value: any) => {
   };
 };
 
+export const updateProducts = () => {
+  return {
+    type: "",
+  };
+};
+
 export const putProduct =
   (
     id: string,
@@ -536,3 +558,117 @@ export const putProduct =
       });
   };
 
+// Questions
+
+export const updateQuestion = (value: any) => {
+  return {
+    type: ActionTypes.QUESTION_UPDATE,
+    payload: value,
+  };
+};
+
+export const loadingQuestion = () => {
+  return {
+    type: ActionTypes.QUESTION_LOADING,
+  };
+};
+
+export const failedQuestion = (value: any) => {
+  return {
+    type: ActionTypes.QUESTION_FAILED,
+    payload: value,
+  };
+};
+
+export const addQuestions = (value: any) => {
+  return {
+    type: ActionTypes.QUESTIONS_ADD,
+    payload: value,
+  };
+};
+
+export const addQuestion = (value: any) => {
+  return {
+    type: ActionTypes.QUESTION_ADD,
+    payload: value,
+  };
+};
+
+export const fetchQuestionsApi =
+  (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+    dispatch(categoryLoading());
+
+    return await axios
+      .get("https://henry-pf-back.up.railway.app/questions")
+      .then(
+        function (response) {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        function (error) {
+          var errMess = new Error(error.message);
+          throw errMess;
+        }
+      )
+      .then((questions) => dispatch(addQuestions(questions.data)))
+      .catch((error) => dispatch(categoryFailed(error.message)));
+  };
+
+  export const postQuestion =
+  (
+    userMail: any,
+    product: any,
+    newQuestion: any
+  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    dispatch(loadingQuestion());
+    
+    return axios
+      .post("https://henry-pf-back.up.railway.app/questions", {userMail, product, newQuestion})
+      .then((response) => {
+        dispatch(addQuestion(response.data.question));
+        dispatch(updateProduct(response.data.updatedProduct))
+        return true
+      })
+      .catch((error) => {
+        console.log("Post question", error.message);
+        dispatch(failedQuestion(error.message));
+      });
+  };
+
+export const putQuestion =
+  (
+    id: string,
+    question: any
+  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    return axios
+      .put("https://henry-pf-back.up.railway.app/question/" + id, question)
+      .then(
+        (response) => {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .then((response) => {
+        dispatch(updateQuestion(response.data));
+      })
+      .catch((error) => {
+        console.log("PUT question", error.message);
+      });
+  };
