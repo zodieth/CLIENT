@@ -4,7 +4,7 @@ import interfaceProduct from "./interfaceProduct";
 export const Products = (
   state = {
     isLoading: true,
-    errMess: null,
+    errMess: null, 
     productsFilter: [],
     allProducts: [],
   },
@@ -149,6 +149,7 @@ export const Products = (
           return product;
         }),
       };
+
     default:
       return state;
   }

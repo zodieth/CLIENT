@@ -20,6 +20,8 @@ import ProductsAdmin from "../components/Admin/Products/products";
 import EditProductAdmin from "../components/Admin/Products/editProduct";
 import PreguntasFrecuentes from "../views/PreguntasFrecuentes/PreguntasFrecuentes";
 import ComoComprar from "../views/ComoComprar/ComoComprar";
+import QuestionsAdmin from "../components/Admin/Questions/questions";
+import AllQuestionsAdmin from "../components/Admin/Questions/allQuestions";
 
 export const router = createBrowserRouter([
   {
@@ -133,6 +135,16 @@ export const router = createBrowserRouter([
   {
     path: "/comocomprar",
     element: <ComoComprar />,
+    exact: true,
+  },
+  {
+    path: "/Admin/questions",
+    element: <Admin children={<QuestionsAdmin />} />,
+    exact: true,
+  },
+  {
+    path: "/Admin/allQuestions",
+    element: <Admin children={<AllQuestionsAdmin />} />,
     exact: true,
   },
 ]);
