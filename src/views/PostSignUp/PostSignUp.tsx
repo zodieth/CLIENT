@@ -248,6 +248,7 @@ export default function SignupCard() {
               <Input type="text" value={userName}
                                   onChange={e => setUserName(e.target.value)}/>
             </FormControl>
+            {userNameError}
             <HStack>
               <Box>
                 <FormControl id="email" isRequired>
@@ -256,6 +257,7 @@ export default function SignupCard() {
                           value={phoneNumber}
                           onChange={e => setPhoneNumber(e.target.value)}/>
                 </FormControl>
+                {phoneNumberError}
               </Box>
             </HStack>
             <HStack>
@@ -291,6 +293,7 @@ export default function SignupCard() {
                     <option value="Tucumán">Tucumán</option>
                   </Select>
                 </FormControl>
+                {provinceError}
               </Box>
               <Box>
                 <FormControl id="email" isRequired>
@@ -299,6 +302,7 @@ export default function SignupCard() {
                           value={city}
                           onChange={e => setCity(e.target.value)}/>
                 </FormControl>
+                {cityError}
               </Box>
             </HStack>
             <HStack>
@@ -310,6 +314,7 @@ export default function SignupCard() {
                           onChange={e => setAddress(e.target.value)}/>
                 </FormControl>
               </Box>
+              {addressError}
               <Box>
                 <FormControl id="email" isRequired>
                   <FormLabel className={style.largo}>Código Postal</FormLabel>
@@ -317,6 +322,7 @@ export default function SignupCard() {
                           value={zip}
                           onChange={e => setZip(e.target.value)}/>
                   </FormControl>
+                  {zipError}
               </Box>
             </HStack>
             <Stack spacing={10} pt={2}>

@@ -102,8 +102,7 @@ export default function SidebarWithHeader({
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      {/* mobilenav */}
-      {/* <MobileNav  onOpen={onOpen} /> */} {/* panel de arriba donde esta el admin */} {/* comentar para que no te saque de la pag, esto sacara la barra de administrador tambien */}
+      <MobileNav  onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
