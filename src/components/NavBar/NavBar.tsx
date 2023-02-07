@@ -55,36 +55,27 @@ function NavBar(props: any) {
   };
 
   const handleUser = async () => {
-    await auth.client.userInfo(
-      accessToken,
-      async (error: Auth0Error | null, user: Auth0UserProfile) => {
-        if (error) {
-          console.log("Error: ", error);
-          // window.alert("La sesión ha expirado.");
-          // await handleLogout();
-        } else {
-          setUserName(user.nickname);
-          setPicture(user.picture);
-          localStorage.setItem("email", user.email);
-          const userId = user.sub;
-          const userRolesResponse = await fetch(
-            `https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${AUTH0_MANAGEMENT_API_ACCESS_TOKEN}`,
-              },
-            }
-          );
-          const userRoles = await userRolesResponse.json();
-          const hasAdminRole = userRoles.some(
-            (role: { id: String; name: String; description: String }) =>
-              role.name === "alltech-admin"
-          );
-          setIsAdmin(hasAdminRole);
-        }
-      }
-    );
+    await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
+      if(error) {
+        console.log("Error: ", error);
+        // window.alert("La sesión ha expirado.");
+        // await handleLogout();
+      } else {
+        setUserName(user.nickname);
+        setPicture(user.picture);
+        localStorage.setItem("email", user.email)
+        const userId = user.sub;
+        const userRolesResponse = await fetch(`https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${AUTH0_MANAGEMENT_API_ACCESS_TOKEN}`
+          }
+        });
+        const userRoles = await userRolesResponse.json();
+        const hasAdminRole = userRoles.some((role : { id : String, name : String, description : String }) => role.name === "alltech-admin");
+        setIsAdmin(hasAdminRole);
+      };
+    })
   };
 
   useEffect(() => {
@@ -103,9 +94,6 @@ function NavBar(props: any) {
           <h1 className={style.h1Logo}> AllTech</h1>
         </Link>
       </Box>
-      {/* <Box>
-        <SearchBar />
-      </Box> */}
       <Box className={style.buttons}>
         <ToggleColorMode />
         <Link to="/cart" className={style.cartI}>

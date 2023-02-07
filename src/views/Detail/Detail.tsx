@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  fetchBrandApi,
-  fetchCategoryApi,
+  postQuestion,
   fetchProductsApi,
-  productsFilter,
 } from "../../app/actionsCreators";
 import Footer from "../../components/Footer/Footer";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -22,12 +20,12 @@ import ToggleColorMode from "../../components/DarkMode/ToggleColorMode";
 function Detail(props: any) {
   const { name } = useParams();
   const products = useAppSelector((state: any) => state.products);
+  const [ question, setQuestion ] = useState("");
+  const dispatch = useAppDispatch();
 
   const findDetail = products?.allProducts.filter(
     (product: interfaceProduct) => product.name === name
   );
-
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchProductsApi());
@@ -95,6 +93,61 @@ function Detail(props: any) {
     return starPercentage;
   };
   ///////////////////////////////////////////
+
+  const handleSubmitQuestion = () => {
+    const question = document.querySelector<HTMLInputElement>('#pregunta');
+    const email = localStorage.getItem("email")
+    if(question?.value.length !== 0){
+      try{
+        dispatch(postQuestion(email, findDetail[0]._id, question?.value));
+        createdAlert();
+        question!.value = "";
+      }catch (e){
+        createdAlertError("Algo salio mal, pongase en contacot con un administrador")
+      }
+    }else{
+      createdAlertError("Complete el campo pregunta antes de enviarla")
+    }
+  }
+
+  const createdAlert = () => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: "success",
+      title: "Pregunta enviada",
+    });
+  };
+
+  const createdAlertError = (mensaje:string) => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: "error",
+      title: "Oops...",
+      text: `${mensaje}`,
+    });
+  };
 
   return (
     <Box>
@@ -176,7 +229,7 @@ function Detail(props: any) {
                   <Box className={style.tituloPreguntas}>Dejanos tu consulta:</Box>
                   <Box className={style.newQuestion}> 
                     <Textarea name="Pregunta" id="pregunta" placeholder="Escribe tu pregunta aquí"></Textarea>
-                    <Button colorScheme="blue">
+                    <Button colorScheme="blue" onClick={handleSubmitQuestion}>
                       <h5>Enviar</h5>
                       <TbSend height={8} color={"white"}/>
                     </Button>
