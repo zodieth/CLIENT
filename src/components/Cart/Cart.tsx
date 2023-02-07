@@ -16,7 +16,10 @@ function Cart() {
   const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.cart);
 
-  const user = localStorage.email;
+  const usuario = useAppSelector((state) => state.user);
+  console.log(usuario);
+
+  const userEmail = localStorage.email;
 
   let total = products.cart.map((e: any) => {
     return e.price;
@@ -27,7 +30,7 @@ function Cart() {
   );
 
   const compra = {
-    user,
+    userEmail,
     products: products.cart,
     totalCompra,
   };

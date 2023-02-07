@@ -34,3 +34,6 @@ export const QUESTION_FAILED = "QUESTION_FAILED";
 export const QUESTION_UPDATE = "QUESTION_UPDATE";
 
 export const GET_USER = "GET_USER";
+export const GET_USER_BY_EMAIL = "GET_USER_BY_EMAIL";
+export const PUT_USER = "PUT_USER";
+export const UPDATE_USER = "UPDATE_USER";
