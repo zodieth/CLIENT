@@ -2,7 +2,6 @@ import {
   Box,
   chakra,
   Container,
-  Link,
   SimpleGrid,
   Stack,
   Text,
@@ -16,12 +15,11 @@ import { ReactNode } from "react";
 import { BiMailSend } from "react-icons/bi";
 import style from "./footer.module.css";
 import MensajeMail from "./MensajeMail";
+import { Link } from "react-router-dom";
 
-
-const  myFunction = () =>{
+const myFunction = () => {
   alert("¡Dirección de correo recibido, pronto recibiras descuentos!");
-}
-
+};
 
 const Logo = (props: any) => {
   return (
@@ -85,11 +83,7 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
 
 export default function LargeWithNewsletter() {
   return (
-    
-    <Box
-      className={style.box}
-      color={useColorModeValue("black", "white")}
-    > 
+    <Box className={style.box} color={useColorModeValue("black", "white")}>
       <Container as={Stack} maxW={"6xl"} py={10}>
         <SimpleGrid
           templateColumns={{ sm: "1fr 1fr", md: "2fr 1fr 1fr 2fr" }}
@@ -99,25 +93,26 @@ export default function LargeWithNewsletter() {
             <Box>
               <Logo color={useColorModeValue("gray.700", "white")} />
             </Box>
-            <Text fontSize={"sm"}>© 2023 AllTech. Todos los derechos reservados</Text>
+            <Text fontSize={"sm"}>
+              © 2023 AllTech. Todos los derechos reservados
+            </Text>
           </Stack>
-          
+
           <Stack align={"flex-start"}>
             <ListHeader>Nosotros</ListHeader>
-            <Link href={"#"}>Sobre nosotros</Link>
-            <Link href={"#"}>Envíos y entregas</Link>
-            <Link href={"#"}>Políticas de garantías</Link>
-            <Link href={"#"}>Cambios y devoluciones</Link>
-            <Link href={"#"}>Testimonios</Link>
+            <Link to="">Sobre nosotros</Link>
+            <Link to="">Envíos y entregas</Link>
+            <Link to="">Políticas de garantías</Link>
+            <Link to="">Cambios y devoluciones</Link>
+            <Link to="">Testimonios</Link>
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>Soporte</ListHeader>
-            <Link href={"#"}>Cómo comprar</Link>
-            <Link href={"#"}>Preguntas Frecuentes</Link>
-            <Link href={"#"}>Contáctenos</Link>
-            <Link href={"#"}>Términos y condiciones</Link>    
-            <Link href={"#"}>Políticas de privacidad</Link>
-            
+            <Link to="/comocomprar">Cómo comprar</Link>
+            <Link to="/preguntas">Preguntas Frecuentes</Link>
+            <Link to="">Contáctenos</Link>
+            <Link to="">Términos y condiciones</Link>
+            <Link to="">Políticas de privacidad</Link>
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>¡Recibi descuentos y promociones!</ListHeader>

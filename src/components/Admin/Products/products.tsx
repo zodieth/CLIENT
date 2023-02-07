@@ -1,157 +1,75 @@
-import style from "./products.module.css";
-import { Input, Select } from "@chakra-ui/react";
-import { useState } from "react";
-import { formData } from "./types";
-import { createProduct } from "../../../app/actionsCreators";
-import Swal from "sweetalert2";
-import { useAppSelector } from "../../../app/hooks";
-import interfaceCategory from  "../../../features/categories/interfaceCategory";
-import interfaceBrand from  "../../../features/brands/interfaceBrand";
-import CloudinaryUploadWidget from "../../Cloudinary/CloudinaryUploadWidget";
+import style from "./products.module.css"
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+  Button, 
+  Switch,
+  Box,
+  useColorModeValue,
+} from '@chakra-ui/react'
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import interfaceProduct from  "../../../features/products/interfaceProduct";
+import { HiOutlinePencilAlt } from "react-icons/hi";
+import { putProduct } from '../../../app/actionsCreators'
+import { Link } from "react-router-dom";
 
-interface FormState {
-  inputValues: formData;
-}
+export default function ProductsAdmin() {
+  const productsStore = useAppSelector((state) => state.products)
+  const dispatch = useAppDispatch();
 
-export default function ProductAdmin() {
-  const Store = useAppSelector((state) => state)
-  const [inputProducts, setInputValues] = useState<FormState["inputValues"]>({
-    name: "",
-    description: "",
-    price: 0.0,
-    images: [],
-    category: "",
-    brand: "",
-  });
+  const setActive = (id:string, active:Boolean) => {
+    dispatch(putProduct(id, {active: !active}))
+  }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    if((document.getElementById('images') as HTMLInputElement).value !== ""){
-      let img = (document.getElementById('images') as HTMLInputElement).value;
-      (document.getElementById('images') as HTMLInputElement).value = "";
-      if(!inputProducts.images.find((image) => image === img)){
-        setInputValues({
-          ...inputProducts,
-          'images': inputProducts.images.concat(img),
-        });
-      }
-    }else{
-      setInputValues({
-        ...inputProducts,
-        [e.target.name]: e.target.value,
-      });
-    }
-  };
-
-  const handeleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    createProduct(inputProducts);
-    createdAlert();
-    setInputValues({
-      name: "",
-      description: "",
-      price: 0.0,
-      images: [],
-      category: "",
-      brand: "",
-    });
-  };
-
-  const createdAlert = () => {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener("mouseenter", Swal.stopTimer);
-        toast.addEventListener("mouseleave", Swal.resumeTimer);
-      },
-    });
-
-    Toast.fire({
-      icon: "success",
-      title: "Creado Correctamente",
-    });
-  };
   return (
-    <form className={style.container} onSubmit={handeleSubmit}>
-      <div className={style.groupInputs}>
-        <label>Nombre</label>
-        <Input
-          onChange={(e) => handleChange(e)}
-          value={inputProducts.name}
-          type="text"
-          name="name"
-          placeholder="Nombre del producto"
-          width='sm'
-        />
-      </div>
-      <div className={style.groupInputs}>
-        <label>Descripción</label>
-        <Input
-          width='sm'
-          type="text"
-          placeholder="Descripción del producto"
-          onChange={(e) => handleChange(e)}
-          value={inputProducts.description}
-          name="description"
-        />
-      </div>
-      <div className={style.groupInputs}>
-        <label>Precio (US$)</label>
-        <Input
-          width='sm'
-          type="number"
-          placeholder="Precio del producto"
-          onChange={(e) => handleChange(e)}
-          value={inputProducts.price}
-          name="price"
-        />
-      </div>
-      <div className={style.groupInputs}>
-        <label>Imagen</label>
-        <CloudinaryUploadWidget  />
-        <Input
-          id="images"
-          width='sm'
-          type="hidden"
-          placeholder="Imagen del producto"
-          name="images"
-        />
-      </div>
-      <div className={style.groupInputs}>
-        <label>Marca</label>
-        <Select
-            name='brand'
-            onChange={(e) => handleChange(e)}
-            placeholder="Marca del producto"
-            value={inputProducts.brand}
-            width='sm' >
-            { Store.brands.allBrands.map((brand:interfaceBrand) => {
-                return <option key={brand._id} value={brand._id}>{brand.name}</option>
-              })}
-          </Select>
-      </div>
-      <div className={style.groupInputs}>
-        <label>Categoria</label>
-        <Select
-          name='category'
-          onChange={(e) => handleChange(e)}
-          placeholder="Categoría del producto"
-          value={inputProducts.category}
-          width='sm' >
-          { Store.categories.allCategories.map((category:interfaceCategory) => {
-              return <option key={category._id} value={category._id}>{category.name}</option>
+    <Box bg={useColorModeValue("white", "whiteAlpha.100")} className={style.container}>
+      <Box className={style.header}>
+        <Link to="./create" className={style.btnPrimary}>Nuevo</Link>
+      </Box>
+      <TableContainer>
+        <Table variant='simple'>
+          <TableCaption>Listado de productos</TableCaption>
+          <Thead>
+            <Tr>
+              <Th>Nombre</Th>
+              <Th>Precio</Th>
+              <Th>Stock</Th>
+              <Th>Marca</Th>
+              <Th>Categoria</Th>
+              <Th>Activo</Th>
+              <Th>Acciones</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            { productsStore.allProducts.map((product:interfaceProduct) => {
+              return( 
+                  <Tr key={product._id}>
+                    <Td>{product.name}</Td>
+                    <Td>{product.price}</Td>
+                    <Td>{product.stock}</Td>
+                    <Td>{product.brand.name}</Td>
+                    <Td>{product.category.name}</Td>
+                    <Td><Switch id='email-alerts' isChecked={product.active ? true : false} onChange={() => setActive(product._id, product.active)} /></Td>
+                    <Td style={{ display: "flex" }}>
+                      <Button>
+                        <Link to={`/Admin/products/edit/${product._id}`}>
+                          <HiOutlinePencilAlt size={20}/>
+                        </Link>
+                      </Button>
+                    </Td>
+                  </Tr>
+                )
             })}
-        </Select>
-      </div>
-      <img id="uploadedimage" src=""></img>
-      <hr className={style.hrLineDashed} />
-      <div className={style.groupButtons}>
-        <button className={style.btnWhite}>Cancelar</button>
-        <button className={style.btnPrimary}>Crear</button>
-      </div>
-    </form>
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 }

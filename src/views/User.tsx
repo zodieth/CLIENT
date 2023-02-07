@@ -41,9 +41,10 @@ import {
   fetchBrandApi,
   fetchCategoryApi,
 } from "../app/actionsCreators";
-import { useAuth0 } from "@auth0/auth0-react";
-import { ManagementClient } from "auth0";
 import { auth } from "../auth0.service";
+import { AUTH_MANAGEMENT_API_ACCESS_TOKEN } from "../auth0.config";
+import ToggleColorMode from "../components/DarkMode/ToggleColorMode";
+import DarkModeAdmin from "../components/DarkMode/DarkModeAdmin";
 
 interface LinkItemProps {
   name: string;
@@ -91,7 +92,7 @@ export default function SidebarWithHeader({
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
+      {/* <MobileNav onOpen={onOpen} /> */} {/* comentar para que no te saque de la pag, esto sacara la barra de administrador tambien */}
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
@@ -115,7 +116,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       pos="fixed"
       h="full"
       {...rest}
-    >
+    > <DarkModeAdmin /> {/* boton modo noche */}
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Link href="/admin">
           <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
@@ -189,21 +190,30 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
+  const activeSession = accessToken ? true : false;
   const handleUser = async () => {
     await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
       if(error) {
         console.log("Error: ", error);
+        navigate("/");
       } else {
+        const userId = user.sub;
+        const userRolesResponse = await fetch(`https://dev-6d0rlv0acg7xdkxt.us.auth0.com/api/v2/users/${userId}/roles`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${AUTH_MANAGEMENT_API_ACCESS_TOKEN}`
+          }
+        });
+        const userRoles = await userRolesResponse.json();
+        const hasAdminRole = userRoles.some((role : { id : String, name : String, description : String }) => role.name === "alltech-admin");
+        setIsAdmin(hasAdminRole);
         setUserName(user.nickname);
         setPicture(user.picture);
-        //Aquí se accede al rol del usuario
       };
     })
   };
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("scope");
-    localStorage.removeItem("state");
     auth.logout({
       returnTo: window.location.origin,
       clientID: "2EHZJm086BzkgwY5HXmPeK5UnbHegBXl"
@@ -211,8 +221,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   };
 
   useEffect(() => {
+    if(!activeSession) navigate("/");
     handleUser();
-  }, [userName, picture]);
+  }, [handleUser]);
   return (
     <Flex
       ml={{ base: 0, md: 60 }}

@@ -1,5 +1,5 @@
 import style from "./brand.module.css"
-import { Input } from "@chakra-ui/react";
+import { Box, Input, useColorModeValue } from "@chakra-ui/react";
 import { useAppDispatch } from "../../../app/hooks";
 import { useState } from "react";
 import { postBrand } from "../../../app/actionsCreators"
@@ -81,9 +81,9 @@ export default function CreateBrandAdmin() {
   }
 
   return (
-    <div className={style.container}>
+    <Box bg={useColorModeValue("white", "whiteAlpha.100")} className={style.container}>
       <form id="createActivity" onSubmit={handleSubmit}>
-        <div className={style.groupInputs}>
+        <Box className={style.groupInputs}>
           <label>Nombre</label>
           <Input 
             type='text'
@@ -94,15 +94,15 @@ export default function CreateBrandAdmin() {
             value={inputs.name}
           />
           <p >{errors.name}</p>
-        </div>
+        </Box>
         
         <hr className={style.hrLineDashed}/>
         
-        <div className={style.groupButtons}>
+        <Box className={style.groupButtons}>
           <a href="#" onClick={() => window.history.back()} className={style.btnWhite}>Cancelar</a>
           <button type="submit" className={style.btnPrimary}>Crear</button>
-        </div>
+        </Box>
       </form>
-    </div>
+    </Box>
   );
 }

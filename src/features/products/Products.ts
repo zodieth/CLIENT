@@ -11,13 +11,22 @@ export const Products = (
   action: any
 ) => {
   switch (action.type) {
-    case ActionTypes.PRODUCT_ADD:
+    case ActionTypes.PRODUCTS_ADD:
       return {
         ...state,
         isLoading: false,
         errMess: null,
         productsFilter: action.payload,
         allProducts: action.payload,
+      };
+
+    case ActionTypes.PRODUCT_ADD:
+      return {
+        ...state,
+        isLoading: false,
+        errMess: null,
+        productsFilter: action.payload,
+        allProducts: state.allProducts.concat(action.payload),
       };
 
     case ActionTypes.PRODUCT_LOADING:
@@ -129,6 +138,17 @@ export const Products = (
         productsFilter: filterCost,
       };
 
+    case ActionTypes.PRODUCT_UPDATE:
+      return {
+        ...state,
+        isLoading: false,
+        errMess: null,
+        allProducts: state.allProducts.map((product:interfaceProduct) => {
+          if(product._id === action.payload._id)
+            return action.payload;
+          return product;
+        }),
+      };
     default:
       return state;
   }

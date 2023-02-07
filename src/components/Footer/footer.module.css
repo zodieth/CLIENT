@@ -1,7 +1,13 @@
 .box {
   width: 100%;
-  background-image: linear-gradient(to bottom, #c3c3cb, #bdbdc3, #b7b6ba, #b0b0b2, #aaaaaa);
-
+  background-image: linear-gradient(
+    to bottom,
+    #c3c3cb,
+    #bdbdc3,
+    #b7b6ba,
+    #b0b0b2,
+    #aaaaaa
+  );
 }
 
 .input {
@@ -12,7 +18,7 @@
 .box1 {
   width: 100%;
   height: 80px;
-  
+
   display: flex;
   align-items: center;
   justify-content: space-between;
