@@ -16,6 +16,10 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { auth } from "../../auth0.service";
+import { 
+  AUTH0_REALM,
+  AUTH0_CALLBACK_URL,
+  AUTH0_RESPONSE_TYPE } from "../../auth0.config";
 import style from "./SignIn.module.css"
 
 export default function SimpleCard() {
@@ -26,9 +30,9 @@ export default function SimpleCard() {
     auth.login({
       email: email,
       password: password,
-      realm: "Username-Password-Authentication",
-      redirectUri: `${window.location.origin}/postlogin`,
-      responseType: "token"
+      realm: AUTH0_REALM,
+      redirectUri: `${AUTH0_CALLBACK_URL}/postlogin`,
+      responseType: AUTH0_RESPONSE_TYPE
     }, (error, result) => {
       if(error) {
         console.log("Error: ", error);
@@ -43,8 +47,8 @@ export default function SimpleCard() {
   const handleGoogleLogin = () => {
     auth.authorize({
       connection: "google-oauth2",
-      redirectUri: `${window.location.origin}/postsignup`,
-      responseType: "token"
+      redirectUri: `${AUTH0_CALLBACK_URL}/postsignup`,
+      responseType: AUTH0_RESPONSE_TYPE
     }, (error, result) => {
       if(error) {
         console.log("Error: ", error);

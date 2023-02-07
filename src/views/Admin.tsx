@@ -42,8 +42,12 @@ import {
   fetchCategoryApi,
 } from "../app/actionsCreators";
 import { auth } from "../auth0.service";
+import {
+  AUTH0_CALLBACK_URL,
+  AUTH0_CLIENT_ID,
+  AUTH0_DOMAIN,
+  AUTH0_MANAGEMENT_API_ACCESS_TOKEN } from "../auth0.config";
 import ToggleColorMode from "../components/DarkMode/ToggleColorMode";
-import { AUTH_MANAGEMENT_API_ACCESS_TOKEN } from "../auth0.config";
 import DarkModeAdmin from "../components/DarkMode/DarkModeAdmin";
 
 interface LinkItemProps {
@@ -197,17 +201,25 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
   const accessToken = localStorage.getItem("accessToken");
   const activeSession = accessToken ? true : false;
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    auth.logout({
+      returnTo: AUTH0_CALLBACK_URL,
+      clientID: AUTH0_CLIENT_ID
+    });
+  };
   const handleUser = async () => {
     await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
       if(error) {
         console.log("Error: ", error);
-        navigate("/");
+        // window.alert("La sesión ha expirado.");
+        // handleLogout();
       } else {
         const userId = user.sub;
-        const userRolesResponse = await fetch(`https://dev-6d0rlv0acg7xdkxt.us.auth0.com/api/v2/users/${userId}/roles`, {
+        const userRolesResponse = await fetch(`https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${AUTH_MANAGEMENT_API_ACCESS_TOKEN}`
+            Authorization: `Bearer ${AUTH0_MANAGEMENT_API_ACCESS_TOKEN}`
           }
         });
         const userRoles = await userRolesResponse.json();
@@ -218,17 +230,13 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       };
     })
   };
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    auth.logout({
-      returnTo: window.location.origin,
-      clientID: "2EHZJm086BzkgwY5HXmPeK5UnbHegBXl"
-    });
-  };
 
   useEffect(() => {
-    if(!activeSession) navigate("/");
-    handleUser();
+    if(!activeSession) {
+      navigate("/");
+    } else {
+      handleUser();
+    };
   }, [handleUser]);
   return (
     <Flex /* devuelta es la barra donde esta la parte del administrador arriba */
