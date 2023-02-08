@@ -23,8 +23,12 @@ import ComoComprar from "../views/ComoComprar/ComoComprar";
 import EditUser from "../views/USER/EditUser";
 import QuestionsAdmin from "../components/Admin/Questions/questions";
 import AllQuestionsAdmin from "../components/Admin/Questions/allQuestions";
+
+import Reclamos from "../views/USER/Reclamos";
+
 import SalesAdmin from "../components/Admin/Sales/sales";
 import GraphicsAdmin from "../components/Admin/Graphics/graphics";
+
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +49,11 @@ export const router = createBrowserRouter([
   {
     path: "/user/perfil",
     element: <User children={<EditUser />} />,
+    exact: true,
+  },
+  {
+    path: "/user/reclamos",
+    element: <User children={<Reclamos />} />,
     exact: true,
   },
   {

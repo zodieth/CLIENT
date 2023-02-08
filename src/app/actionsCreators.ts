@@ -3,6 +3,42 @@ import * as ActionTypes from "../features/ActionTypes";
 import { RootState } from "./store";
 import axios from "axios";
 
+export const postClaim = (value: any) => {
+  axios.post("https://henry-pf-back.up.railway.app/claims", value);
+  return {
+    type: ActionTypes.POST_CLAIM,
+    payload: value,
+  };
+};
+
+export const setSales = (value: any) => {
+  return {
+    type: ActionTypes.GET_SALES,
+    payload: value,
+  };
+};
+
+export const getSales = () => async (dispatch: any) => {
+  return await axios
+    .get("https://henry-pf-back.up.railway.app/sale")
+    .then(
+      function (response) {
+        if (response.data.length) return response;
+        else {
+          var error = new Error(
+            "Error " + response.status + ": " + response.statusText
+          );
+          throw error;
+        }
+      },
+      function (error) {
+        var errMess = new Error(error.message);
+        throw errMess;
+      }
+    )
+    .then((data) => dispatch(setSales(data.data)));
+};
+
 export const updateUser = (value: any) => {
   return {
     type: ActionTypes.UPDATE_USER,

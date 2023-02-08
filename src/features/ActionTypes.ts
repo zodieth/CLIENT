@@ -38,8 +38,14 @@ export const GET_USER_BY_EMAIL = "GET_USER_BY_EMAIL";
 export const PUT_USER = "PUT_USER";
 export const UPDATE_USER = "UPDATE_USER";
 
+
+export const GET_SALES = "GET_SALES";
+
+export const POST_CLAIM = "POST_CLAIM";
+
 export const SALES_ADD = "SALES_ADD";
 export const SALE_ADD = "SALE_ADD";
 export const SALE_LOADING = "SALE_LOADING";
 export const SALE_FAILED = "SALE_FAILED";
 export const SALE_UPDATE = "SALE_UPDATE";
+

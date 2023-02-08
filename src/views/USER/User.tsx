@@ -10,7 +10,6 @@ import {
   VStack,
   Icon,
   useColorModeValue,
-  Link,
   Drawer,
   DrawerContent,
   Text,
@@ -49,6 +48,7 @@ import {
 import ToggleColorMode from "../../components/DarkMode/ToggleColorMode";
 import DarkModeAdmin from "../../components/DarkMode/DarkModeAdmin";
 import { useAppSelector } from "../../hooks/hooks";
+import { Link } from "react-router-dom";
 
 interface LinkItemProps {
   name: string;
@@ -59,11 +59,11 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, url: "/" },
   { name: "Perfil", icon: FiTrendingUp, url: "/user/perfil" },
-  // {
-  //   name: "Categorias",
-  //   icon: FiCompass,
-  //   url: "/admin/categories",
-  // },
+  {
+    name: "Reclamos",
+    icon: FiCompass,
+    url: "/user/reclamos",
+  },
   // { name: "Marcas", icon: FiStar, url: "/admin/brands" },
   // { name: "Usuarios", icon: FiSettings, url: "#" },
 ];
@@ -125,7 +125,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       {" "}
       <DarkModeAdmin /> {/* boton modo noche */}
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Link href="/admin">
+        <Link to="/admin">
           <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
             Logo
           </Text>
@@ -152,9 +152,9 @@ interface NavItemProps extends FlexProps {
 const NavItem = ({ icon, children, url, ...rest }: NavItemProps) => {
   return (
     <Link
-      href={url}
+      to={url}
       style={{ textDecoration: "none" }}
-      _focus={{ boxShadow: "none" }}
+      // _focus={{ boxShadow: "none" }}
     >
       <Flex
         align="center"
