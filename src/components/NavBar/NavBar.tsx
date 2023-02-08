@@ -71,7 +71,7 @@ function NavBar(props: any) {
           dispatchUser(user.email);
 
           localStorage.setItem("email", user.email);
-          localStorage.setItem("user_id", userState.user._id);
+          // localStorage.setItem("id", userState.user._id);
 
           const userId = user.sub;
           const userRolesResponse = await fetch(

@@ -37,3 +37,7 @@ export const GET_USER = "GET_USER";
 export const GET_USER_BY_EMAIL = "GET_USER_BY_EMAIL";
 export const PUT_USER = "PUT_USER";
 export const UPDATE_USER = "UPDATE_USER";
+
+export const GET_SALES = "GET_SALES";
+
+export const POST_CLAIM = "POST_CLAIM";
