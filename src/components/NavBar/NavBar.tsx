@@ -18,25 +18,12 @@ import {
   Center,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { useAppSelector } from "../../hooks/hooks";
 import { auth } from "../../auth0.service";
-import {
-  AUTH0_CALLBACK_URL,
-  AUTH0_CLIENT_ID,
-  AUTH0_DOMAIN,
-  AUTH0_MANAGEMENT_API_ACCESS_TOKEN,
-} from "../../auth0.config";
+import { AUTH_MANAGEMENT_API_ACCESS_TOKEN } from "../../auth0.config";
 import ToggleColorMode from "../DarkMode/ToggleColorMode";
 
-import { getUser } from "../../app/actionsCreators";
-
-function NavBar(props: any) {
-  const dispatch = useAppDispatch();
-
-  function sendUser(name: any) {
-    dispatch(getUser(name));
-  }
-
+function NavBar() {
   const [userName, setUserName] = useState("");
   const [picture, setPicture] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
@@ -46,29 +33,19 @@ function NavBar(props: any) {
 
   const accessToken = localStorage.getItem("accessToken");
   const activeSession = accessToken ? true : false;
-  const handleLogout = async () => {
-    localStorage.removeItem("accessToken");
-    await auth.logout({
-      returnTo: AUTH0_CALLBACK_URL,
-      clientID: AUTH0_CLIENT_ID,
-    });
-  };
-
   const handleUser = async () => {
     await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
       if(error) {
         console.log("Error: ", error);
-        // window.alert("La sesión ha expirado.");
-        // await handleLogout();
+        //Para disimular la limitación en la tasa de peticiones, se puede desloguear al usuario cuando se excede dicho límite.
       } else {
         setUserName(user.nickname);
         setPicture(user.picture);
-        localStorage.setItem("email", user.email)
         const userId = user.sub;
-        const userRolesResponse = await fetch(`https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`, {
+        const userRolesResponse = await fetch(`https://dev-6d0rlv0acg7xdkxt.us.auth0.com/api/v2/users/${userId}/roles`, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${AUTH0_MANAGEMENT_API_ACCESS_TOKEN}`
+            Authorization: `Bearer ${AUTH_MANAGEMENT_API_ACCESS_TOKEN}`
           }
         });
         const userRoles = await userRolesResponse.json();
@@ -77,13 +54,17 @@ function NavBar(props: any) {
       };
     })
   };
+  const handleLogout = async () => {
+    localStorage.removeItem("accessToken");
+    await auth.logout({
+      returnTo: window.location.origin,
+      clientID: "2EHZJm086BzkgwY5HXmPeK5UnbHegBXl"
+    });
+  };
 
   useEffect(() => {
-    if (activeSession) {
-      handleUser();
-    }
+    handleUser();
   }, [handleUser]);
-
   return (
     <Box className={style.navBar}>
       <Box className={style.logo}>
@@ -91,9 +72,12 @@ function NavBar(props: any) {
           <HamburgerIcon boxSize={8} color="Gray" />
         </Link>
         <Link to="/" >
-          <h1 className={style.h1Logo}> <img src="https://res.cloudinary.com/dy5msftwe/image/upload/v1675614765/Products/logo_jvrcny.png"/></h1>
+          <h1 className={style.h1Logo}> AllTech</h1>
         </Link>
       </Box>
+      {/* <Box>
+        <SearchBar />
+      </Box> */}
       <Box className={style.buttons}>
         <ToggleColorMode />
         <Link to="/cart" className={style.cartI}>
@@ -140,7 +124,7 @@ function NavBar(props: any) {
                 >
                   <Avatar size={"sm"} src={picture} />
                 </MenuButton>
-                <MenuList alignItems={"center"}>
+                <MenuList  alignItems={"center"}>
                   <br />
                   <Center>
                     <Avatar size={"2xl"} src={picture} />
@@ -151,14 +135,8 @@ function NavBar(props: any) {
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem onClick={() => navigate("/user")}>
-                    Mi cuenta de usuario
-                  </MenuItem>
-                  {isAdmin ? (
-                    <MenuItem onClick={() => navigate("/admin")}>
-                      Mi cuenta de administrador
-                    </MenuItem>
-                  ) : null}
+                  <MenuItem   onClick={() => navigate("/user")}>Mi cuenta de usuario</MenuItem>
+                  {isAdmin ? <MenuItem onClick={() => navigate("/admin")}>Mi cuenta de administrador</MenuItem> : null}
                   <MenuItem onClick={handleLogout}>Salir</MenuItem>
                 </MenuList>
               </Menu>
