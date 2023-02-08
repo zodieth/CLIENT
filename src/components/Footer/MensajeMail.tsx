@@ -77,7 +77,7 @@ export default function MensajeMail() {
           value={inputEmail.email}
           type="text"
           name="email"
-          placeholder="email"
+          placeholder="Ingrese un e-mail"
           width='280px'
           required
           display= 'flex'

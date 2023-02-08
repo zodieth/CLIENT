@@ -51,19 +51,23 @@ a {
 }
 
 .logo {
-  display: flex;
+/*   display: flex;
   flex-direction: row;
   margin: 0;
   margin-left: 3rem;
-  font-size: 1.25rem;
+  font-size: 1.25rem; */
 }
 .h1Logo {
+  flex-direction: row;
   margin-left: 1rem;
-  width: 180px;
+  width: 400px;
   color: gray;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  /* margin: 0; */
+  margin-left: 2rem;
+  margin-bottom: 2rem;
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
 }
 
 .button {
