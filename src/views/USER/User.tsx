@@ -48,6 +48,7 @@ import {
 } from "../../auth0.config";
 import ToggleColorMode from "../../components/DarkMode/ToggleColorMode";
 import DarkModeAdmin from "../../components/DarkMode/DarkModeAdmin";
+import { useAppSelector } from "../../hooks/hooks";
 
 interface LinkItemProps {
   name: string;
@@ -75,11 +76,6 @@ export default function SidebarWithHeader({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(fetchProductsApi());
-    dispatch(fetchBrandApi());
-    dispatch(fetchCategoryApi());
-  }, [dispatch]);
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       {" "}
@@ -194,6 +190,8 @@ interface MobileProps extends FlexProps {
 }
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const userState = useAppSelector((state) => state.user);
+
   const [userName, setUserName] = useState("");
   const [picture, setPicture] = useState("");
 
@@ -227,12 +225,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               },
             }
           );
-          const userRoles = await userRolesResponse.json();
-          const hasAdminRole = userRoles.some(
-            (role: { id: String; name: String; description: String }) =>
-              role.name === "alltech-admin"
-          );
-          if (!hasAdminRole) navigate("/");
+
           setUserName(user.nickname);
           setPicture(user.picture);
         }
@@ -301,9 +294,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">{userName}</Text>
+                  <Text fontSize="sm">{userState.user.userName}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Administrador
+                    {userState.user.userName}
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
