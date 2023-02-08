@@ -67,7 +67,7 @@ export const createProduct = (value: any) => {
 };
 
 export const footerEmail = (value: any) => {
-  axios.post("http://localhost:3001/emails", value);
+  axios.post("https://henry-pf-back.up.railway.app/emails", value);
   return {
     type: ActionTypes.FOOTER_EMAIL,
     payload: value,

@@ -22,8 +22,11 @@ export default function Reclamos() {
     sale: "",
     issue: "",
     description: "",
-    user: userState.user._id,
+    user: "",
+    email: "",
   });
+
+  console.log(inputs);
 
   useEffect(() => {
     dispatch(fetchSalesApi());
@@ -50,6 +53,8 @@ export default function Reclamos() {
     if (inputs.description.length < 10) {
       setErrors(true);
     } else if (!inputs.user.length) {
+      setErrors(true);
+    } else if (!inputs.email.length) {
       setErrors(true);
     } else {
       dispatch(postClaim(inputs));
@@ -94,7 +99,7 @@ export default function Reclamos() {
               return (
                 <option key={e._id} value={e._id}>
                   {e.products.map((e) => {
-                    return <option>{e.product.name}</option>;
+                    return <option key={e._id}>{e.product.name}</option>;
                   })}
                 </option>
               );
@@ -126,6 +131,21 @@ export default function Reclamos() {
           {errors && inputs.description < 10 ? (
             <div className={style.errorMsj}>
               La descripcción debe tener al menos 10 caracteres
+            </div>
+          ) : (
+            ""
+          )}
+        </Box>
+        <Box className={style.groupInputs}>
+          <label>Email</label>
+          <input
+            name="email"
+            placeholder="Email"
+            onChange={(e) => [handleChange(e)]}
+          ></input>
+          {errors && !inputs.email ? (
+            <div className={style.errorMsj}>
+              Debe completar el campo de Email
             </div>
           ) : (
             ""
