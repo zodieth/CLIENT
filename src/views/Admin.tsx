@@ -43,15 +43,15 @@ import {
   fetchBrandApi,
   fetchCategoryApi,
   fetchQuestionsApi,
-  fetchSalesApi,
-  fetchUsersApi
+  fetchSalesApi
 } from "../app/actionsCreators";
 import { auth } from "../auth0.service";
 import {
   AUTH0_CALLBACK_URL,
   AUTH0_CLIENT_ID,
   AUTH0_DOMAIN,
-  AUTH0_MANAGEMENT_API_ACCESS_TOKEN } from "../auth0.config";
+  AUTH0_MANAGEMENT_API_ACCESS_TOKEN,
+} from "../auth0.config";
 import ToggleColorMode from "../components/DarkMode/ToggleColorMode";
 import DarkModeAdmin from "../components/DarkMode/DarkModeAdmin";
 
@@ -69,7 +69,6 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "Todas las preguntas", icon: FiHelpCircle, url: "/admin/allQuestions" },
   { name: "Preguntas sin contestar", icon: FiHelpCircle, url: "/admin/questions" },
   { name: "Ventas", icon: FiShoppingCart, url: "/admin/sales" },
-  { name: "Usuarios", icon: FiUsers, url: "/admin/users" },
 ];
 
 export default function SidebarWithHeader({
@@ -79,6 +78,7 @@ export default function SidebarWithHeader({
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
+  const [renderDashboard, setRenderDashboard] = useState(false);
 
   useEffect(() => {
     dispatch(fetchProductsApi());
@@ -86,16 +86,16 @@ export default function SidebarWithHeader({
     dispatch(fetchCategoryApi());
     dispatch(fetchQuestionsApi());
     dispatch(fetchSalesApi());
-    dispatch(fetchUsersApi());
   }, [dispatch]);
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}> {/* el centro del panel */}
-      
-      <SidebarContent  /* menu de la izquierda */
+    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+      {" "}
+      {/* el centro del panel */}
+      {renderDashboard ? <SidebarContent  /* menu de la izquierda */
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
-      />
-      <Drawer 
+      /> : null}
+      {renderDashboard ? <Drawer 
         autoFocus={false}
         isOpen={isOpen}
         placement="left"
@@ -107,11 +107,11 @@ export default function SidebarWithHeader({
         <DrawerContent>
           <SidebarContent onClose={onClose} />
         </DrawerContent>
-      </Drawer>
+      </Drawer> : null}
       <MobileNav  onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
+      {renderDashboard ? <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
-      </Box>
+      </Box> : null}
     </Box>
   );
 }
@@ -123,7 +123,7 @@ interface SidebarProps extends BoxProps {
 //formacion del menu de la izquierda
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
-    <Box  /* Menu de la izquierda y sus caracteristicas */
+    <Box /* Menu de la izquierda y sus caracteristicas */
       transition="3s ease"
       bg={useColorModeValue("white", "gray.900")}
       borderRight="1px"
@@ -132,11 +132,13 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       pos="fixed"
       h="full"
       {...rest}
-    > <DarkModeAdmin /> {/* boton modo noche */}
+    >
+      {" "}
+      <DarkModeAdmin /> {/* boton modo noche */}
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Link href="/admin">
+        <Link href="/">
           <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-            Logo
+            AllTech
           </Text>
         </Link>
 
@@ -207,18 +209,17 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const accessToken = localStorage.getItem("accessToken");
   const activeSession = accessToken ? true : false;
   const handleLogout = () => {
+    localStorage.removeItem("email");
     localStorage.removeItem("accessToken");
     auth.logout({
       returnTo: AUTH0_CALLBACK_URL,
-      clientID: AUTH0_CLIENT_ID
+      clientID: AUTH0_CLIENT_ID,
     });
   };
   const handleUser = async () => {
     await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
       if(error) {
         console.log("Error: ", error);
-        // window.alert("La sesión ha expirado.");
-        // handleLogout();
       } else {
         const userId = user.sub;
         const userRolesResponse = await fetch(`https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`, {
@@ -237,13 +238,13 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   };
 
   useEffect(() => {
-    if(!activeSession) {
+    if (!activeSession) {
       navigate("/");
     } else {
       handleUser();
     };
 
-  }, [handleUser]);
+  }, []);
   return (
     <Flex /* devuelta es la barra donde esta la parte del administrador arriba */
       ml={{ base: 0, md: 60 }}
@@ -273,8 +274,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         Logo
       </Text>
 
-      <HStack spacing={{ base: "0", md: "6" }}> {/* seccion chiquita donde esta la parte del administrador */}
+      <HStack spacing={{ base: "0", md: "6" }}>
         {" "}
+        {/* seccion chiquita donde esta la parte del administrador */}{" "}
         {/* Arriba a la derecha */}
         <IconButton
           size="lg"
@@ -321,7 +323,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <MenuItem onClick={() => navigate("/")}>
                 Volver a la tienda
               </MenuItem>
-              <MenuItem onClick={handleLogout}>Salir</MenuItem>
+              <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

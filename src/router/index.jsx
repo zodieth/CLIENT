@@ -23,9 +23,12 @@ import ComoComprar from "../views/ComoComprar/ComoComprar";
 import EditUser from "../views/USER/EditUser";
 import QuestionsAdmin from "../components/Admin/Questions/questions";
 import AllQuestionsAdmin from "../components/Admin/Questions/allQuestions";
+import ResetPassword from "../views/SignIn/ResetPassword";
+import Reclamos from "../views/USER/Reclamos";
 import SalesAdmin from "../components/Admin/Sales/sales";
 import GraphicsAdmin from "../components/Admin/Graphics/graphics";
 import UsersAdmin from "../components/Admin/Users/users";
+
 
 export const router = createBrowserRouter([
   {
@@ -49,6 +52,11 @@ export const router = createBrowserRouter([
     exact: true,
   },
   {
+    path: "/user/reclamos",
+    element: <User children={<Reclamos />} />,
+    exact: true,
+  },
+  {
     path: "/admin",
     element: <Admin children={<GraphicsAdmin/>}/>,
     exact: true,
@@ -61,6 +69,11 @@ export const router = createBrowserRouter([
   {
     path: "/signin",
     element: <SignIn />,
+    exact: true,
+  },
+  {
+    path: "/resetpassword",
+    element: <ResetPassword />,
     exact: true,
   },
   {

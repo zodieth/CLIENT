@@ -18,12 +18,17 @@ import Swal from "sweetalert2";
 import NuevoCarrusel from "./NuevoCarrusel";
 import ToggleColorMode from "../../components/DarkMode/ToggleColorMode";
 import StarRating from "./StarRating";
+import { auth } from "../../auth0.service";
+import { AUTH0_CLIENT_ID, 
+  AUTH0_CALLBACK_URL } from "../../auth0.config";
 
 function Detail(props: any) {
   const { name } = useParams();
   const products = useAppSelector((state: any) => state.products);
   const salesStore = useAppSelector((state: any) => state.sales);
   const userStore = useAppSelector((state: any) => state.user);
+  const [ question, setQuestion ] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dispatch = useAppDispatch();
   const findDetail = products?.allProducts.filter(
     (product: interfaceProduct) => product.name === name
@@ -152,6 +157,47 @@ function Detail(props: any) {
     });
   };
 
+  const accessToken = localStorage.getItem("accessToken");
+  const activeSession = accessToken ? true : false;
+  const handleLogout = async () => {
+    localStorage.removeItem("email");
+    localStorage.removeItem("accessToken");
+    await auth.logout({
+      returnTo: AUTH0_CALLBACK_URL,
+      clientID: AUTH0_CLIENT_ID
+    });
+  };
+
+  const handleUser = async () => {
+    await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
+      if(error) {
+        console.log("Error: ", error);
+      } else {
+        setIsLoggedIn(true);
+        if(!isLoggedIn) handleLogout();
+      };
+    });
+  };
+
+  const handleLoginReminder = () => {
+    const Toast = Swal.mixin({
+      toast: false,
+      position: "center",
+      showConfirmButton: true
+    });
+    Toast.fire({
+      icon: "info",
+      title: "Ten en cuenta...",
+      text: "Para hacer una pregunta, debes iniciar sesión o registrarte. Haz click en 'Ingresar' en la esquina superior derecha de la ventana."
+    });
+  };
+
+  useEffect(() => {
+    if (activeSession) {
+      handleUser();
+    };
+  }, []);
+
   return (
     <Box>
       <Box className={style.navBar}>
@@ -261,7 +307,7 @@ function Detail(props: any) {
                   <Box className={style.tituloPreguntas}>Dejanos tu consulta:</Box>
                   <Box className={style.newQuestion}> 
                     <Textarea name="Pregunta" id="pregunta" placeholder="Escribe tu pregunta aquí"></Textarea>
-                    <Button colorScheme="blue" onClick={handleSubmitQuestion}>
+                    <Button colorScheme="blue" onClick={isLoggedIn ? handleSubmitQuestion : handleLoginReminder}>
                       <h5>Enviar</h5>
                       <TbSend height={8} color={"white"}/>
                     </Button>

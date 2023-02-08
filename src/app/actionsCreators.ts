@@ -3,6 +3,14 @@ import * as ActionTypes from "../features/ActionTypes";
 import { RootState } from "./store";
 import axios from "axios";
 
+export const postClaim = (value: any) => {
+  axios.post("https://henry-pf-back.up.railway.app/claims", value);
+  return {
+    type: ActionTypes.POST_CLAIM,
+    payload: value,
+  };
+};
+
 export const updateUser = (value: any) => {
   return {
     type: ActionTypes.USER_UPDATE,
@@ -90,7 +98,6 @@ export const addCountCart = (productName: string) => {
 };
 
 export const removeCountCart = (productName: string, count: number) => {
-  console.log(count);
   return {
     type: ActionTypes.REMOVE_COUNT,
     payload: { productName, count },
@@ -813,6 +820,7 @@ export const putQuestion =
         console.log("PUT sale", error.message);
       });
   };
+
 
 //USERS
 
