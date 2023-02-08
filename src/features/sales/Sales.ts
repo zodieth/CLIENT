@@ -3,7 +3,7 @@ import * as ActionTypes from "../ActionTypes";
 export const Sales = (
   state = {
     isLoading: true,
-    errMess: null, 
+    errMess: null,
     allSales: [],
   },
   action: any
@@ -44,9 +44,8 @@ export const Sales = (
         ...state,
         isLoading: false,
         errMess: null,
-        allSales: state.allSales.map((sale:any) => {
-          if(sale._id === action.payload._id)
-            return action.payload;
+        allSales: state.allSales.map((sale: any) => {
+          if (sale._id === action.payload._id) return action.payload;
           return sale;
         }),
       };

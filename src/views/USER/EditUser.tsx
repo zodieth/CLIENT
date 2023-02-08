@@ -19,35 +19,20 @@ import { redirect, useParams } from "react-router-dom";
 import { CloseIcon } from "@chakra-ui/icons";
 import { searchUserByEmail } from "../../app/actionsCreators";
 
-// export function validate(inputs: any) {
-//   let errors = {
-//     username: "",
-//   };
-//   let regularExpresion = /^[A-Z]+$/i;
-
-//   if (!inputs.username) errors.username = "The name is required";
-//   if (inputs.name.length < 3 || inputs.username.length > 15)
-//     errors.username = "The name must have between 3 and 14 characters";
-//   if (!regularExpresion.test(inputs.username)) errors.username = "Only letters";
-
-//   return errors;
-// }
-
 export default function EditUser() {
   useEffect(() => {
     dispatch(searchUserByEmail(localStorage.getItem("email")));
   }, []);
 
   const dispatch = useAppDispatch();
-  // const userState = useAppSelector((state) => state.user);
 
   const [inputs, setInputs] = useState({
     username: "",
+    id: "",
   });
+  const userState = useAppSelector((state) => state.user);
 
-  const [errors, setErrors] = useState({
-    username: "",
-  });
+  const [errors, setErrors] = useState(false);
 
   function handleChange(e: any) {
     setInputs({
@@ -55,20 +40,21 @@ export default function EditUser() {
       [e.target.name]: e.target.value,
     });
   }
-
-  // console.log(localStorage.getItem("user_id"), "IDDDDDDDDDDDDDDDD");
+  console.log(inputs);
 
   function handleSubmit(e: any) {
     e.preventDefault();
-    if (errors.username !== "") {
-      alert("You must correct the mistakes");
+    if (inputs.username.length < 5) {
+      setErrors(true);
+    } else if (!inputs.id.length) {
+      setErrors(true);
     } else {
       dispatch(
         putUser(
           {
             userName: inputs.username,
           },
-          localStorage.getItem("user_id")
+          inputs.id
         )
       );
 
@@ -89,9 +75,7 @@ export default function EditUser() {
         title: "Agregado Correctamente",
       });
 
-      setErrors({
-        username: "",
-      });
+      setErrors(false);
 
       window.history.back();
     }
@@ -104,7 +88,24 @@ export default function EditUser() {
     >
       <form className={style.container} onSubmit={handleSubmit}>
         <Box className={style.groupInputs}>
-          <label>Username</label>
+          <label>Usuario anterior</label>
+          <select name="id" onChange={(e) => handleChange(e)}>
+            <option value="usuario">usuario</option>
+            <option value={userState.user._id}>
+              {userState.user.userName}
+            </option>
+          </select>
+          {(errors && !inputs.id) || (errors && inputs.id === "usuario") ? (
+            <div className={style.errorMsj}>
+              Debe seleccionar el usuario anterior
+            </div>
+          ) : (
+            ""
+          )}
+        </Box>
+
+        <Box className={style.groupInputs}>
+          <label>Nuevo usuario</label>
           <Input
             onChange={(e) => handleChange(e)}
             value={inputs.username}
@@ -113,6 +114,13 @@ export default function EditUser() {
             placeholder="Username"
             width="sm"
           />
+          {errors && inputs.username.length < 5 ? (
+            <div className={style.errorMsj}>
+              Debe contener al menos 5 caracteres
+            </div>
+          ) : (
+            ""
+          )}
         </Box>
 
         <hr className={style.hrLineDashed} />

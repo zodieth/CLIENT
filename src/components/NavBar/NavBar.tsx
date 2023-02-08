@@ -72,7 +72,7 @@ function NavBar(props: any) {
         setIsLoggedIn(true);
         dispatchUser(user.email);
         localStorage.setItem("email", user.email);
-        localStorage.setItem("user_id", userState.user._id);
+        // localStorage.setItem("user_id", userState.user._id);
         const userId = user.sub;
         const userRolesResponse = await fetch(`https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`, {
           method: "GET",

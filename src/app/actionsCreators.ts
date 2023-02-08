@@ -3,6 +3,14 @@ import * as ActionTypes from "../features/ActionTypes";
 import { RootState } from "./store";
 import axios from "axios";
 
+export const postClaim = (value: any) => {
+  axios.post("https://henry-pf-back.up.railway.app/claims", value);
+  return {
+    type: ActionTypes.POST_CLAIM,
+    payload: value,
+  };
+};
+
 export const updateUser = (value: any) => {
   return {
     type: ActionTypes.UPDATE_USER,
@@ -722,48 +730,48 @@ export const putQuestion =
       });
   };
 
-  //Ventas
+//Ventas
 
-  export const updateSale = (value: any) => {
-    return {
-      type: ActionTypes.SALE_UPDATE,
-      payload: value,
-    };
+export const updateSale = (value: any) => {
+  return {
+    type: ActionTypes.SALE_UPDATE,
+    payload: value,
   };
-  
-  export const loadingSale = () => {
-    return {
-      type: ActionTypes.SALE_LOADING,
-    };
-  };
-  
-  export const failedSale = (value: any) => {
-    return {
-      type: ActionTypes.SALE_FAILED,
-      payload: value,
-    };
-  };
-  
-  export const addSales = (value: any) => {
-    return {
-      type: ActionTypes.SALES_ADD,
-      payload: value,
-    };
-  };
-  
-  export const addSale = (value: any) => {
-    return {
-      type: ActionTypes.SALE_ADD,
-      payload: value,
-    };
-  };
+};
 
-  export const fetchSalesApi =
+export const loadingSale = () => {
+  return {
+    type: ActionTypes.SALE_LOADING,
+  };
+};
+
+export const failedSale = (value: any) => {
+  return {
+    type: ActionTypes.SALE_FAILED,
+    payload: value,
+  };
+};
+
+export const addSales = (value: any) => {
+  return {
+    type: ActionTypes.SALES_ADD,
+    payload: value,
+  };
+};
+
+export const addSale = (value: any) => {
+  return {
+    type: ActionTypes.SALE_ADD,
+    payload: value,
+  };
+};
+
+export const fetchSalesApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(loadingSale());
 
     return await axios
-      .get("http://localhost:3001/sale")
+      .get("https://henry-pf-back.up.railway.app/sale")
       .then(
         function (response) {
           if (response.status) {
@@ -784,14 +792,11 @@ export const putQuestion =
       .catch((error) => dispatch(failedSale(error.message)));
   };
 
-  export const putSale =
-  (
-    id: string,
-    sale: any
-  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+export const putSale =
+  (id: string, sale: any): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     return axios
-      .put("http://localhost:3001/sale/" + id, sale)
+      .put("https://henry-pf-back.up.railway.app/sale/" + id, sale)
       .then(
         (response) => {
           if (response.status) {
