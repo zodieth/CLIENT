@@ -42,3 +42,9 @@ body {
 .slick-next:before {
   color: black;
 }
+
+@media print {
+  #imprimir {
+    display: none;
+  }
+}

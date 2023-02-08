@@ -24,17 +24,31 @@ import {
   ModalFooter
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { ImEye, ImTruck } from "react-icons/im"
+import { ImEye, ImTruck } from "react-icons/im";
+import { BiBarcodeReader } from "react-icons/bi";
+import { AiFillPrinter } from "react-icons/ai";
 import { putSale } from '../../../app/actionsCreators'
 import Swal from "sweetalert2";
 import { useTable, usePagination } from 'react-table'
 import { useState } from "react";
+import Barcode from 'react-barcode';
 
 export default function SalesAdmin() {
   const salesStore = useAppSelector((state) => state.sales)
   const dispatch = useAppDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [saleId, setSaleId] = useState('');
+  const [showModalBarCode, setShowModalBarCode] = useState(false);
+  const [selectedSale, setSelectedSale] = useState<any>({});
+
+  const handleOpenBarCodeModal = (sale: any) => {
+    setSelectedSale(sale);
+    setShowModalBarCode(true);
+  };
+
+  const handleCloseBarCodeModal = () => {
+    setShowModalBarCode(false);
+  };
 
   const setActive = (id:string, active:Boolean) => {
     dispatch(putSale(id, {active: !active}))
@@ -53,7 +67,7 @@ export default function SalesAdmin() {
   const data:any = [];
 
   salesStore.allSales.map((sale:any) => {
-    data.push({name: sale._id, status: sale.status, count: sale.products.length, total: sale.total, active: sale, send: sale, details: sale._id})
+    data.push({name: sale._id, status: sale.status, count: sale.products.length, total: sale.total, active: sale, code:sale, send: sale, details: sale._id})
   });
 
   const [searchTerm, setSearchTerm] = useState("")
@@ -81,6 +95,10 @@ export default function SalesAdmin() {
     {
       Header: "Activo",
       accessor: "active",
+    },
+    {
+      Header: "Codigo de Envio",
+      accessor: "code",
     },
     {
       Header: "Enviar",
@@ -141,6 +159,8 @@ export default function SalesAdmin() {
                     return <Td key={Math.random()}><Switch id='email-alerts' isChecked={cell.value.active ? true : false} onChange={() => setActive(cell.value._id, cell.value.active)} /></Td>
                   } else if(cell.column.Header === "Estado"){
                     return <Td {...cell.getCellProps()}>{cell.value  === "ordered" ? "Ordenado" : cell.value  === "shipped"  ? "Enviado" : cell.value  === "claim"  ? "Reclamado" : cell.value  === "closed"  ? "Cerrado" : ""}</Td>
+                  } else if(cell.column.Header === "Codigo de Envio"){
+                    return <Td {...cell.getCellProps()}><LightMode><Button isDisabled={cell.value.status === 'shipped'} colorScheme='blue' onClick={() => handleOpenBarCodeModal(cell.value)}><BiBarcodeReader size={20}/></Button></LightMode></Td>
                   }else{
                     return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>
                   }
@@ -184,7 +204,33 @@ export default function SalesAdmin() {
   }else{
     return (
       <Card>
-        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <Modal
+          isOpen={showModalBarCode}
+          onClose={handleCloseBarCodeModal}
+          size={"xl"}
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader><h2>Código de barras de la venta</h2></ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              {(selectedSale._id) ? 
+                <>
+                  <Barcode
+                    value={`${selectedSale._id}`}  width={1}
+                  />
+                  <p>Nombre: {selectedSale.user.firstName} {selectedSale.user.lastName}</p>
+                  <p>Teléfono: {selectedSale.user.phoneNumber}</p>
+                  <p>Dirección: {selectedSale.user.location.address} - {selectedSale.user.location.province} - {selectedSale.user.location.city}</p>
+                  <Button id="imprimir" rightIcon={<AiFillPrinter />} onClick={() => window.print()}>Imprimir</Button>
+                </>
+                : ""
+              }
+              
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+        <Modal isOpen={isModalOpen} size={"xl"} onClose={handleCloseModal}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Detalle de la compra #{saleId}</ModalHeader>
