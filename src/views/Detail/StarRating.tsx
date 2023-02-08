@@ -31,6 +31,8 @@ const StarRating = (product: any) => {
 
   const handleSaveReview = () => {
     dispatch(saveReview(description, product.product, rating));
+    setDescription("");
+    setIsModalOpen(false);
   };
 
   const handleChange = (e: any) => {

@@ -85,14 +85,14 @@ function Detail(props: any) {
     review: number;
   };
 
-  const startPercentage = () => {
-    let total = 100;
-    props.reviews?.forEach(function (a: review) {
+  const startPercentage = (product: any) => {
+    let total = 0;
+    product.reviews.forEach(function (a: review) {
       total += a.review;
     });
-    const percentage = total / props.reviews?.length;
+    const percentage = total / product.reviews.length;
     const starPercentage = ((percentage ? percentage : 0 / 100) / 5) * 100;
-
+    
     return starPercentage;
   };
   ///////////////////////////////////////////
@@ -194,22 +194,38 @@ function Detail(props: any) {
                   <Box className={style.calificacion}>
                     {
                     userStore.user ? 
-                      salesStore.allSales.map((sale: any) => 
-                        (sale.user._id === userStore.user._id) ?
-                          <StarRating product={e._id}/>
-                        : 
-                        <Box className={style.starsOuter}>
-                          <Box
-                            className={style.starsInner}
-                            style={{ width: `${startPercentage()}%` }}
-                          ></Box>
-                        </Box>
-                      )
+                    salesStore.allSales.length > 0 ?
+                    (
+                      <>
+                        {
+                          salesStore.allSales.some((sale: any) => 
+                            (sale.user._id === userStore.user._id && sale.products.some((product: any) => 
+                              product.product._id === e._id
+                            ))
+                          ) ?
+                            <StarRating product={e._id}/>
+                          : 
+                            <Box className={style.starsOuter}>
+                              <Box
+                                className={style.starsInner}
+                                style={{ width: `${startPercentage(e)}%` }}
+                              ></Box>
+                            </Box>
+                        }
+                      </>
+                    )
+                  :
+                    <Box className={style.starsOuter}>
+                      <Box
+                        className={style.starsInner}
+                        style={{ width: `${startPercentage(e)}%` }}
+                      ></Box>
+                    </Box>
                     : 
                       <Box className={style.starsOuter}>
                         <Box
                           className={style.starsInner}
-                          style={{ width: `${startPercentage()}%` }}
+                          style={{ width: `${startPercentage(e)}%` }}
                         ></Box>
                       </Box>
                     }

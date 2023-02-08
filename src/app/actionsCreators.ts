@@ -880,8 +880,7 @@ export const fetchUsersApi =
         rating,
       })
       .then((response) => {
-        dispatch(addQuestion(response.data.question));
-        dispatch(updateProduct(response.data.updatedProduct));
+        dispatch(updateProduct(response.data));
         return true;
       })
       .catch((error) => {
