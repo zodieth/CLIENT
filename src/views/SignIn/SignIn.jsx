@@ -203,9 +203,9 @@ export default function SimpleCard() {
                 </Button>
               </Link>
 
-              <Stack classname={style.olvido}
+              <Stack className={style.olvido}
               onClick={() => navigate("/resetpassword")}>
-                <Link  style={{ color: blue }} color={"blue.400"}
+                <Link  style={{ color: "blue" }} color={"blue.400"}
                 >¿Olvidaste tu contraseña?</Link>
               </Stack>
 

@@ -16,7 +16,8 @@ import {
   AUTH0_REALM,
   AUTH0_DOMAIN,
   AUTH0_CLIENT_ID } from "../../auth0.config";
-import style from "./SignIn.module.css"
+import style from "./SignIn.module.css";
+import Swal from "sweetalert2";
 
 export default function SimpleCard() {
   const [email, setEmail] = useState("");
