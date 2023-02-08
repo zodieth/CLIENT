@@ -11,6 +11,10 @@ import { payMercadoPagoApi } from "../../app/actionsCreators";
 import Footer from "../Footer/Footer";
 import { sendProducts } from "../../app/actionsCreators";
 import ToggleColorMode from "../DarkMode/ToggleColorMode";
+import { auth } from "../../auth0.service";
+import { AUTH0_CLIENT_ID, 
+         AUTH0_CALLBACK_URL } from "../../auth0.config";
+import Swal from "sweetalert2";
 
 function Cart() {
   const dispatch = useAppDispatch();
@@ -49,10 +53,52 @@ function Cart() {
 
   const [submitButton, setSubmitButton] = useState(false);
   const [submitDisappear, setSubmitDisappear] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   function sendToBack(value: any) {
     dispatch(sendProducts(value));
   }
+
+  const accessToken = localStorage.getItem("accessToken");
+  const activeSession = accessToken ? true : false;
+  const handleLogout = async () => {
+    localStorage.removeItem("email");
+    localStorage.removeItem("accessToken");
+    await auth.logout({
+      returnTo: AUTH0_CALLBACK_URL,
+      clientID: AUTH0_CLIENT_ID
+    });
+  };
+
+  const handleUser = async () => {
+    await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
+      if(error) {
+        console.log("Error: ", error);
+      } else {
+        setIsLoggedIn(true);
+        if(!isLoggedIn) handleLogout();
+      };
+    });
+  };
+
+  const handleLoginReminder = () => {
+    const Toast = Swal.mixin({
+      toast: false,
+      position: "center",
+      showConfirmButton: true
+    });
+    Toast.fire({
+      icon: "info",
+      title: "Ten en cuenta...",
+      text: "Para continuar con tu compra, debes iniciar sesión o registrarte. Haz click en 'Ingresar' en la esquina superior derecha de la ventana."
+    });
+  };
+
+  useEffect(() => {
+    if (activeSession) {
+      handleUser();
+    };
+  }, []);
 
   return (
     <Box className={style.cart}>
@@ -106,13 +152,13 @@ function Cart() {
                       color="Gray"
                       borderColor="Gray"
                       className={style.btn_finish}
-                      onClick={() => [
+                      onClick={isLoggedIn ? () => [
                         pay(),
                         setSubmitButton(true),
                         setInterval(() => {
                           setSubmitDisappear(false);
                         }, 1000),
-                      ]}
+                      ] : handleLoginReminder}
                       isLoading={submitButton}
                     >
                       Finalizar Compra
