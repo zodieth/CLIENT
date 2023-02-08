@@ -33,17 +33,18 @@ function Cards() {
           <Box className={style.error}></Box>
         ) : products ? (
           productsPagination.map((e) => {
-            return (
-              <ProductCard
-                name={e.name}
-                key={e.name}
-                price={e.price}
-                img={e.images[0]}
-                reviews={e.reviews}
-                count={1}
-                stock={e.stock}
-              />
-            );
+            if(e.active)
+              return (
+                <ProductCard
+                  name={e.name}
+                  key={e.name}
+                  price={e.price}
+                  img={e.images[0]}
+                  reviews={e.reviews}
+                  count={1}
+                  stock={e.stock}
+                />
+              );
           })
         ) : (
           ""

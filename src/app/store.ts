@@ -18,6 +18,7 @@ export const store = configureStore({
     brands: Brands,
     categories: Categories,
     questions: Questions,
+    sales: Sales,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(thunk).concat(logger),
