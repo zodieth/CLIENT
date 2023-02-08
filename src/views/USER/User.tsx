@@ -126,9 +126,9 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       {" "}
       <DarkModeAdmin /> {/* boton modo noche */}
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Link to="/admin">
+        <Link to="/">
           <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-            Logo
+            AllTech
           </Text>
         </Link>
 
@@ -267,7 +267,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         fontFamily="monospace"
         fontWeight="bold"
       >
-        Logo
+        AllTech
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
