@@ -144,7 +144,7 @@ export default function Reclamos() {
               {userState.user.userName}
             </option>
           </select>
-          {(errors && !inputs.user) || inputs.user === "usuario" ? (
+          {(errors && !inputs.user) || (errors && inputs.user === "usuario") ? (
             <div className={style.errorMsj}>Debe seleccionar el usuario</div>
           ) : (
             ""

@@ -95,7 +95,7 @@ export default function EditUser() {
               {userState.user.userName}
             </option>
           </select>
-          {(errors && !inputs.id) || inputs.id === "usuario" ? (
+          {(errors && !inputs.id) || (errors && inputs.id === "usuario") ? (
             <div className={style.errorMsj}>
               Debe seleccionar el usuario anterior
             </div>
