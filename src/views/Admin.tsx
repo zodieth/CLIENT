@@ -79,21 +79,25 @@ export default function SidebarWithHeader({
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
+  const [renderDashboard, setRenderDashboard] = useState(false);
 
   useEffect(() => {
     dispatch(fetchProductsApi());
     dispatch(fetchBrandApi());
     dispatch(fetchCategoryApi());
     dispatch(fetchQuestionsApi());
+    setTimeout(() => {
+      setRenderDashboard(true);
+    }, 4000);
   }, [dispatch]);
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}> {/* el centro del panel */}
       
-      <SidebarContent  /* menu de la izquierda */
+      {renderDashboard ? <SidebarContent  /* menu de la izquierda */
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
-      />
-      <Drawer 
+      /> : null}
+      {renderDashboard ? <Drawer 
         autoFocus={false}
         isOpen={isOpen}
         placement="left"
@@ -105,11 +109,11 @@ export default function SidebarWithHeader({
         <DrawerContent>
           <SidebarContent onClose={onClose} />
         </DrawerContent>
-      </Drawer>
+      </Drawer> : null}
       <MobileNav  onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
+      {renderDashboard ? <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
-      </Box>
+      </Box> : null}
     </Box>
   );
 }
@@ -205,6 +209,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const accessToken = localStorage.getItem("accessToken");
   const activeSession = accessToken ? true : false;
   const handleLogout = () => {
+    localStorage.removeItem("email");
     localStorage.removeItem("accessToken");
     auth.logout({
       returnTo: AUTH0_CALLBACK_URL,
@@ -215,8 +220,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
       if(error) {
         console.log("Error: ", error);
-        // window.alert("La sesión ha expirado.");
-        // handleLogout();
       } else {
         const userId = user.sub;
         const userRolesResponse = await fetch(`https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`, {
@@ -241,7 +244,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       handleUser();
     };
 
-  }, [handleUser]);
+  }, []);
   return (
     <Flex /* devuelta es la barra donde esta la parte del administrador arriba */
       ml={{ base: 0, md: 60 }}
@@ -319,7 +322,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <MenuItem onClick={() => navigate("/")}>
                 Volver a la tienda
               </MenuItem>
-              <MenuItem onClick={handleLogout}>Salir</MenuItem>
+              <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

@@ -23,6 +23,7 @@ import {
   AUTH0_CLIENT_ID,
   API_SERVER_URL } from "../../auth0.config";
 import style from "./PostSignUp.module.css"
+import Swal from "sweetalert2";
 
 export default function SignupCard() {
   const [renderForm, setRenderForm] = useState(false);
@@ -84,6 +85,7 @@ export default function SignupCard() {
   };
 
   const handleLogout = async () => {
+    localStorage.removeItem("email");
     localStorage.removeItem("accessToken");
     await auth.logout({
       returnTo: `${AUTH0_CALLBACK_URL}/signin`,
@@ -97,8 +99,6 @@ export default function SignupCard() {
     }, async (error : Auth0ParseHashError | null, result : Auth0DecodedHash | null) => {
       if(error) {
         console.log("Error: ", error);
-        // window.alert("El proceso de autenticación no ha sido exitoso. Por favor, intenta más tarde.");
-        // navigate("/");
       } else {
         const { accessToken } = result;
         localStorage.setItem("accessToken", accessToken);
@@ -106,7 +106,16 @@ export default function SignupCard() {
           await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
             if(error) {
               console.log("Error: ", error);
-              window.alert("El proceso de autenticación no ha sido exitoso. Por favor, intenta más tarde.")
+              const Toast = Swal.mixin({
+                toast: false,
+                position: "center",
+                showConfirmButton: true
+              });
+              Toast.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "El proceso de autenticación no ha sido exitoso. Por favor, intenta más tarde."
+              });
               await handleLogout();
             } else {
               const userExistsResponse = await fetch(`${API_SERVER_URL}/user/${user.email}`, {
@@ -182,9 +191,27 @@ export default function SignupCard() {
           return error.param === "phoneNumber";
         });
         if(userNameExists) {
-          window.alert("Ya existe una cuenta con el nombre de usuario ingresado.");
+          const Toast = Swal.mixin({
+            toast: false,
+            position: "center",
+            showConfirmButton: true
+          });
+          Toast.fire({
+            icon: "warning",
+            title: "Atención...",
+            text: "Ya existe una cuenta con el nombre de usuario ingresado."
+          });
         } else if(phoneNumberExists) {
-          window.alert("Ya existe una cuenta con el número telefónico ingresado.");
+          const Toast = Swal.mixin({
+            toast: false,
+            position: "center",
+            showConfirmButton: true
+          });
+          Toast.fire({
+            icon: "warning",
+            title: "Atención...",
+            text: "Ya existe una cuenta con el número telefónico ingresado."
+          });
         };
         return false;
       } else {
@@ -192,7 +219,18 @@ export default function SignupCard() {
       };
   };
   const handleSignUp = async () => {
-    if(!allowSignUp) return window.alert("Algunos de los datos ingresados NO son válidos.");
+    if(!allowSignUp) {
+      const Toast = Swal.mixin({
+        toast: false,
+        position: "center",
+        showConfirmButton: true
+      });
+      return Toast.fire({
+        icon: "warning",
+        title: "Atención...",
+        text: "Algunos de los datos ingresados NO son válidos."
+      });
+    };
     const successfulUserCreater = await handleUserCreation(
       province,
       city,
@@ -206,7 +244,16 @@ export default function SignupCard() {
       // accessToken
     );
     if(successfulUserCreater) {
-      window.alert("Bienvenido a AllTech. Serás redirigido a nuestra tienda.");
+      const Toast = Swal.mixin({
+        toast: false,
+        position: "center",
+        showConfirmButton: true
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Enhorabuena...",
+        text: "Bienvenido a AllTech. Serás redirigido a nuestra tienda."
+      });
       navigate("/");
     };
   };
@@ -215,7 +262,7 @@ export default function SignupCard() {
     if(location.hash) {
       handleHash(location.hash);
     };
-  }, [location]);
+  }, []);
   useEffect(() => {
     validateUserData();
     checkErrors();

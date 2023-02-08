@@ -22,6 +22,7 @@ import PreguntasFrecuentes from "../views/PreguntasFrecuentes/PreguntasFrecuente
 import ComoComprar from "../views/ComoComprar/ComoComprar";
 import QuestionsAdmin from "../components/Admin/Questions/questions";
 import AllQuestionsAdmin from "../components/Admin/Questions/allQuestions";
+import ResetPassword from "../views/SignIn/ResetPassword";
 
 export const router = createBrowserRouter([
   {
@@ -52,6 +53,11 @@ export const router = createBrowserRouter([
   {
     path: "/signin",
     element: <SignIn />,
+    exact: true,
+  },
+  {
+    path: "/resetpassword",
+    element: <ResetPassword />,
     exact: true,
   },
   {
