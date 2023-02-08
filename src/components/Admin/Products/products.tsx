@@ -1,62 +1,144 @@
-import style from "./products.module.css";
-import { Input, Select } from "@chakra-ui/react";
+import style from "./products.module.css"
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+  Button, 
+  Switch,
+  LightMode,
+  Input,
+  Spinner,
+  Card,
+  CardHeader,
+  CardBody
+} from '@chakra-ui/react'
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import interfaceProduct from  "../../../features/products/interfaceProduct";
+import { HiOutlinePencilAlt } from "react-icons/hi";
+import { putProduct } from '../../../app/actionsCreators'
+import { Link } from "react-router-dom";
 import { useState } from "react";
-import { formData } from "./types";
-import { createProduct } from "../../../app/actionsCreators";
+import { useTable } from "react-table";
 import Swal from "sweetalert2";
-import { useAppSelector } from "../../../app/hooks";
-import interfaceCategory from  "../../../features/categories/interfaceCategory";
-import interfaceBrand from  "../../../features/brands/interfaceBrand";
-import CloudinaryUploadWidget from "../../Cloudinary/CloudinaryUploadWidget";
 
-interface FormState {
-  inputValues: formData;
-}
+export default function ProductsAdmin() {
+  const productsStore = useAppSelector((state) => state.products)
+  const dispatch = useAppDispatch();
 
-export default function ProductAdmin() {
-  const Store = useAppSelector((state) => state)
-  const [inputProducts, setInputValues] = useState<FormState["inputValues"]>({
-    name: "",
-    description: "",
-    price: 0.0,
-    images: [],
-    category: "",
-    brand: "",
+  const setActive = (id:string, active:Boolean) => {
+    dispatch(putProduct(id, {active: !active}))
+  }
+
+  const data:any = [];
+
+  productsStore.allProducts.map((product:interfaceProduct) => {
+    data.push({name: product.name, price: product.price, stock: product.stock, brand: product.brand?.name, category: product.category?.name, active: product, acciones: product._id})
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    if((document.getElementById('images') as HTMLInputElement).value !== ""){
-      let img = (document.getElementById('images') as HTMLInputElement).value;
-      (document.getElementById('images') as HTMLInputElement).value = "";
-      if(!inputProducts.images.find((image) => image === img)){
-        setInputValues({
-          ...inputProducts,
-          'images': inputProducts.images.concat(img),
-        });
-      }
-    }else{
-      setInputValues({
-        ...inputProducts,
-        [e.target.name]: e.target.value,
-      });
-    }
+  const [searchTerm, setSearchTerm] = useState("")
+  const handleSearch = (e:any) => {
+    setSearchTerm(e.target.value);
   };
 
-  const handeleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    createProduct(inputProducts);
-    createdAlert();
-    setInputValues({
-      name: "",
-      description: "",
-      price: 0.0,
-      images: [],
-      category: "",
-      brand: "",
-    });
-  };
+  const columns = [
+    {
+      Header: "Nombre",
+      accessor: "name",
+    },
+    {
+      Header: "Precio",
+      accessor: "price",
+    },
+    {
+      Header: "Stock",
+      accessor: "stock",
+    },
+    {
+      Header: "Marca",
+      accessor: "brand",
+    },
+    {
+      Header: "Categoria",
+      accessor: "category",
+    },
+    {
+      Header: "Activo",
+      accessor: "active",
+    },
+    {
+      Header: "Acciones",
+      accessor: "acciones",
+    },
+  ];
 
-  const createdAlert = () => {
+  const filteredData = data.filter((d:any) =>
+    d.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  function Table2({ columns, data }:any) {
+    // Use the state and functions returned from useTable to build your UI
+    const {
+      getTableProps,
+      getTableBodyProps,
+      headerGroups,
+      rows,
+      prepareRow,
+    } = useTable({
+      columns,
+      data,
+    })
+  
+    // Render the UI for your table
+    return (
+      <Table {...getTableProps()} variant='simple' key={Math.random()}>
+        <TableCaption>Listado de productos</TableCaption>
+        <Thead>
+          {headerGroups.map(headerGroup => (
+            <Tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => (
+                <Th {...column.getHeaderProps()}>{column.render('Header')}</Th>
+              ))}
+            </Tr>
+          ))}
+        </Thead>
+        <Tbody {...getTableBodyProps()}>
+          {rows.map((row, i) => {
+            prepareRow(row)
+            return (
+              <Tr {...row.getRowProps()} key={Math.random()}>
+                {row.cells.map(cell => {
+                  if(cell.column.Header === "Acciones"){
+                    return <Td key={Math.random()}><LightMode><Button><Link to={`/Admin/brands/edit/${cell.value}`}><HiOutlinePencilAlt size={20}/></Link></Button></LightMode></Td>
+                  } else if(cell.column.Header === "Activo"){
+                    return <Td key={Math.random()}><Switch id='email-alerts' isChecked={cell.value.active ? true : false} onChange={() => setActive(cell.value._id, cell.value.active)} /></Td>
+                  }else{
+                    return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>
+                  }
+                })}
+              </Tr>
+            )
+          })}
+        </Tbody>
+      </Table>
+    )
+  }
+
+  if(productsStore.isLoading){
+    return (
+      <Spinner
+        thickness='4px'
+        speed='0.65s'
+        emptyColor='gray.200'
+        color='blue.500'
+        size='xl'
+      />
+    )
+  }else if(productsStore.errMess){
     const Toast = Swal.mixin({
       toast: true,
       position: "top-end",
@@ -70,88 +152,33 @@ export default function ProductAdmin() {
     });
 
     Toast.fire({
-      icon: "success",
-      title: "Creado Correctamente",
+      icon: "error",
+      title: "Oops...",
+      text: "Hubo un error inesperado, por favor intentelo mas tarde."
     });
-  };
-  return (
-    <form className={style.container} onSubmit={handeleSubmit}>
-      <div className={style.groupInputs}>
-        <label>Nombre</label>
-        <Input
-          onChange={(e) => handleChange(e)}
-          value={inputProducts.name}
-          type="text"
-          name="name"
-          placeholder="Nombre del producto"
-          width='sm'
-        />
-      </div>
-      <div className={style.groupInputs}>
-        <label>Descripción</label>
-        <Input
-          width='sm'
-          type="text"
-          placeholder="Descripción del producto"
-          onChange={(e) => handleChange(e)}
-          value={inputProducts.description}
-          name="description"
-        />
-      </div>
-      <div className={style.groupInputs}>
-        <label>Precio (US$)</label>
-        <Input
-          width='sm'
-          type="number"
-          placeholder="Precio del producto"
-          onChange={(e) => handleChange(e)}
-          value={inputProducts.price}
-          name="price"
-        />
-      </div>
-      <div className={style.groupInputs}>
-        <label>Imagen</label>
-        <CloudinaryUploadWidget  />
-        <Input
-          id="images"
-          width='sm'
-          type="hidden"
-          placeholder="Imagen del producto"
-          name="images"
-        />
-      </div>
-      <div className={style.groupInputs}>
-        <label>Marca</label>
-        <Select
-            name='brand'
-            onChange={(e) => handleChange(e)}
-            placeholder="Marca del producto"
-            value={inputProducts.brand}
-            width='sm' >
-            { Store.brands.allBrands.map((brand:interfaceBrand) => {
-                return <option key={brand._id} value={brand._id}>{brand.name}</option>
-              })}
-          </Select>
-      </div>
-      <div className={style.groupInputs}>
-        <label>Categoria</label>
-        <Select
-          name='category'
-          onChange={(e) => handleChange(e)}
-          placeholder="Categoría del producto"
-          value={inputProducts.category}
-          width='sm' >
-          { Store.categories.allCategories.map((category:interfaceCategory) => {
-              return <option key={category._id} value={category._id}>{category.name}</option>
-            })}
-        </Select>
-      </div>
-      <img id="uploadedimage" src=""></img>
-      <hr className={style.hrLineDashed} />
-      <div className={style.groupButtons}>
-        <button className={style.btnWhite}>Cancelar</button>
-        <button className={style.btnPrimary}>Crear</button>
-      </div>
-    </form>
-  );
+  }else{
+    return (
+      <Card>
+        <CardHeader>
+          <div className={style.header}>
+            <Link to="./create" className={style.btnPrimary}>Nuevo</Link>
+          </div>
+          <Input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearch}
+            placeholder="Buscar"
+          />
+        </CardHeader>
+        <CardBody>
+          <TableContainer>
+            <Table2
+              data={filteredData}
+              columns={columns}
+            />
+          </TableContainer>
+        </CardBody>
+      </Card>
+    );
+  }
 }

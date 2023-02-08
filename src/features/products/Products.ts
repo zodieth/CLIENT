@@ -4,20 +4,29 @@ import interfaceProduct from "./interfaceProduct";
 export const Products = (
   state = {
     isLoading: true,
-    errMess: null,
+    errMess: null, 
     productsFilter: [],
     allProducts: [],
   },
   action: any
 ) => {
   switch (action.type) {
-    case ActionTypes.PRODUCT_ADD:
+    case ActionTypes.PRODUCTS_ADD:
       return {
         ...state,
         isLoading: false,
         errMess: null,
         productsFilter: action.payload,
         allProducts: action.payload,
+      };
+
+    case ActionTypes.PRODUCT_ADD:
+      return {
+        ...state,
+        isLoading: false,
+        errMess: null,
+        productsFilter: action.payload,
+        allProducts: state.allProducts.concat(action.payload),
       };
 
     case ActionTypes.PRODUCT_LOADING:
@@ -88,6 +97,7 @@ export const Products = (
       let totalOrder= order.split("|")
       
       if (totalOrder[0] === "ALF") {
+        console.log('hola+++',totalOrder);
         if (totalOrder[1] === "ASC") {
           filterCost.sort(function (a: interfaceProduct, b: interfaceProduct) {
             if (a.name > b.name) {
@@ -126,6 +136,18 @@ export const Products = (
         isLoading: false,
         errMess: null,
         productsFilter: filterCost,
+      };
+
+    case ActionTypes.PRODUCT_UPDATE:
+      return {
+        ...state,
+        isLoading: false,
+        errMess: null,
+        allProducts: state.allProducts.map((product:interfaceProduct) => {
+          if(product._id === action.payload._id)
+            return action.payload;
+          return product;
+        }),
       };
 
     default:

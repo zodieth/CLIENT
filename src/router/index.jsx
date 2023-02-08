@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "../views/Home.tsx";
 import Cart from "../components/Cart/Cart";
-import User from "../views/User";
+import User from "../views/USER/User";
 import Admin from "../views/Admin";
 import SignUp from "../views/SignUp/SignUp";
 import SignIn from "../views/SignIn/SignIn";
@@ -9,15 +9,20 @@ import CreateCategoryAdmin from "../components/Admin/Categories/createCategory";
 import CategoriesAdmin from "../components/Admin/Categories/categories";
 import EditCategoryAdmin from "../components/Admin/Categories/editCategory";
 import ArmaPC from "../views/ArmaPC/ArmaPC";
-import ProductAdmin from "../components/Admin/Products/products";
+import CreateProductAdmin from "../components/Admin/Products/createProduct";
 import Detail from "../views/Detail/Detail";
 import PostLogin from "../views/PostLogin/PostLogin";
 import PostSignUp from "../views/PostSignUp/PostSignUp";
 import CreateBrandAdmin from "../components/Admin/Brands/createBrand";
 import BrandsAdmin from "../components/Admin/Brands/brands";
 import EditBrandAdmin from "../components/Admin/Brands/editBrand";
+import ProductsAdmin from "../components/Admin/Products/products";
+import EditProductAdmin from "../components/Admin/Products/editProduct";
 import PreguntasFrecuentes from "../views/PreguntasFrecuentes/PreguntasFrecuentes";
 import ComoComprar from "../views/ComoComprar/ComoComprar";
+import EditUser from "../views/USER/EditUser";
+import QuestionsAdmin from "../components/Admin/Questions/questions";
+import AllQuestionsAdmin from "../components/Admin/Questions/allQuestions";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +38,11 @@ export const router = createBrowserRouter([
   {
     path: "/user",
     element: <User />,
+    exact: true,
+  },
+  {
+    path: "/user/perfil",
+    element: <User children={<EditUser />} />,
     exact: true,
   },
   {
@@ -66,7 +76,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/user/purchases",
-    element: <Admin children={<ProductAdmin />} />,
+    element: <Admin children={<ProductsAdmin />} />,
     exact: true,
   },
   {
@@ -76,7 +86,17 @@ export const router = createBrowserRouter([
   },
   {
     path: "/Admin/products",
-    element: <Admin children={<ProductAdmin />} />,
+    element: <Admin children={<ProductsAdmin />} />,
+    exact: true,
+  },
+  {
+    path: "/Admin/products/create",
+    element: <Admin children={<CreateProductAdmin />} />,
+    exact: true,
+  },
+  {
+    path: "/Admin/products/edit/:id",
+    element: <Admin children={<EditProductAdmin />} />,
     exact: true,
   },
   {
@@ -121,6 +141,16 @@ export const router = createBrowserRouter([
   {
     path: "/comocomprar",
     element: <ComoComprar />,
+    exact: true,
+  },
+  {
+    path: "/Admin/questions",
+    element: <Admin children={<QuestionsAdmin />} />,
+    exact: true,
+  },
+  {
+    path: "/Admin/allQuestions",
+    element: <Admin children={<AllQuestionsAdmin />} />,
     exact: true,
   },
 ]);

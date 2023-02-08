@@ -1,6 +1,6 @@
 .container {
   margin-top: 20px;
-  background: white;
+  /* background-color: white; */
   padding-top: 30px;
   padding-bottom: 30px;
   border-radius: 8px;
@@ -107,7 +107,6 @@ input {
 }
 
 .header {
-  margin-bottom: 10px;
   width: 100%;
   text-align: right;
   padding-right: 27px;

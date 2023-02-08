@@ -18,6 +18,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { auth } from "../../auth0.service";
+import { 
+  AUTH0_CALLBACK_URL,
+  AUTH0_CLIENT_ID,
+  API_SERVER_URL } from "../../auth0.config";
 import style from "./PostSignUp.module.css"
 
 export default function SignupCard() {
@@ -31,10 +35,61 @@ export default function SignupCard() {
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [zip, setZip] = useState("");
+  const [userNameError, setUserNameError] = useState("");
+  const [phoneNumberError, setPhoneNumberError] = useState("");
+  const [provinceError, setProvinceError] = useState("");
+  const [cityError, setCityError] = useState("");
+  const [addressError, setAddressError] = useState("");
+  const [zipError, setZipError] = useState("");
   const [allowSignUp, setAllowSignUp] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
+  const phonePattern = /^\d{8,}$/;
+  const validateUserData = () => {
+    if(userName.length < 5) {
+      setUserNameError("El nombre de usuario debe tener al menos cinco caracteres.");
+    } else setUserNameError("");
+    if(!phonePattern.test(phoneNumber)) {
+      setPhoneNumberError("Ingresa un número telefónico válido.");
+    } else setPhoneNumberError("");
+    if(province.length < 1) {
+      setProvinceError("Selecciona tu provincia.");
+    } else setProvinceError("");
+    if(city.length < 3) {
+      setCityError("Ingresa tu ciudad.");
+    } else setCityError("");
+    if(address.length < 5) {
+      setAddressError("Ingresa tu dirección.");
+    } else setAddressError("");
+    if(zip.length < 4) {
+      setZipError("Ingresa un código postal válido.");
+    } else setZipError("");
+  };
+  const checkErrors = () => {
+    const errors = [
+      userNameError,
+      userNameError,
+      phoneNumberError,
+      provinceError,
+      cityError,
+      addressError,
+      zipError];
+    const someErrors = errors.some(error => error !== "");
+    if(someErrors) {
+      setAllowSignUp(false);
+    } else {
+      setAllowSignUp(true);
+    };
+  };
+
+  const handleLogout = async () => {
+    localStorage.removeItem("accessToken");
+    await auth.logout({
+      returnTo: `${AUTH0_CALLBACK_URL}/signin`,
+      clientID: AUTH0_CLIENT_ID
+    });
+  };
 
   const handleHash = async (hash: String) => {
     await auth.parseHash({
@@ -42,6 +97,8 @@ export default function SignupCard() {
     }, async (error : Auth0ParseHashError | null, result : Auth0DecodedHash | null) => {
       if(error) {
         console.log("Error: ", error);
+        // window.alert("El proceso de autenticación no ha sido exitoso. Por favor, intenta más tarde.");
+        // navigate("/");
       } else {
         const { accessToken } = result;
         localStorage.setItem("accessToken", accessToken);
@@ -49,8 +106,10 @@ export default function SignupCard() {
           await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
             if(error) {
               console.log("Error: ", error);
+              window.alert("El proceso de autenticación no ha sido exitoso. Por favor, intenta más tarde.")
+              await handleLogout();
             } else {
-              const userExistsResponse = await fetch(`http://localhost:3001/user/${user.email}`, {
+              const userExistsResponse = await fetch(`${API_SERVER_URL}/user/${user.email}`, {
                 method: "GET",
                 headers: {
                   "content-type": "application/json",
@@ -84,7 +143,7 @@ export default function SignupCard() {
     email : String,
     // accessToken : String
     ) => {
-    const locationResponse = await fetch(`http://localhost:3001/location`, {
+    const locationResponse = await fetch(`${API_SERVER_URL}/location`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -99,7 +158,7 @@ export default function SignupCard() {
       });
       const locationDB = await locationResponse.json();
       const locationId = locationDB._id;
-      const userResponse = await fetch(`http://localhost:3001/user`, {
+      const userResponse = await fetch(`${API_SERVER_URL}/user`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -133,6 +192,7 @@ export default function SignupCard() {
       };
   };
   const handleSignUp = async () => {
+    if(!allowSignUp) return window.alert("Algunos de los datos ingresados NO son válidos.");
     const successfulUserCreater = await handleUserCreation(
       province,
       city,
@@ -154,11 +214,12 @@ export default function SignupCard() {
   useEffect(() => {
     if(location.hash) {
       handleHash(location.hash);
-    } else {
-      window.alert("El proceso de autenticación no ha sido exitoso. Por favor, intenta más tarde.");
-      navigate("/signin");
     };
-  }, [location, navigate]);
+  }, [location]);
+  useEffect(() => {
+    validateUserData();
+    checkErrors();
+  }, [userName, phoneNumber, province, city, address, zip]);
   return (
     <Flex
       minH={"100vh"}
@@ -187,6 +248,7 @@ export default function SignupCard() {
               <Input type="text" value={userName}
                                   onChange={e => setUserName(e.target.value)}/>
             </FormControl>
+            {userNameError}
             <HStack>
               <Box>
                 <FormControl id="email" isRequired>
@@ -195,6 +257,7 @@ export default function SignupCard() {
                           value={phoneNumber}
                           onChange={e => setPhoneNumber(e.target.value)}/>
                 </FormControl>
+                {phoneNumberError}
               </Box>
             </HStack>
             <HStack>
@@ -230,6 +293,7 @@ export default function SignupCard() {
                     <option value="Tucumán">Tucumán</option>
                   </Select>
                 </FormControl>
+                {provinceError}
               </Box>
               <Box>
                 <FormControl id="email" isRequired>
@@ -238,6 +302,7 @@ export default function SignupCard() {
                           value={city}
                           onChange={e => setCity(e.target.value)}/>
                 </FormControl>
+                {cityError}
               </Box>
             </HStack>
             <HStack>
@@ -249,6 +314,7 @@ export default function SignupCard() {
                           onChange={e => setAddress(e.target.value)}/>
                 </FormControl>
               </Box>
+              {addressError}
               <Box>
                 <FormControl id="email" isRequired>
                   <FormLabel className={style.largo}>Código Postal</FormLabel>
@@ -256,6 +322,7 @@ export default function SignupCard() {
                           value={zip}
                           onChange={e => setZip(e.target.value)}/>
                   </FormControl>
+                  {zipError}
               </Box>
             </HStack>
             <Stack spacing={10} pt={2}>

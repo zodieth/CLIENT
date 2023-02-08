@@ -117,25 +117,7 @@ export default function LargeWithNewsletter() {
           <Stack align={"flex-start"}>
             <ListHeader>¡Recibi descuentos y promociones!</ListHeader>
             <Stack direction={"row"}>
-              <Input
-                placeholder={"Ingrese email"}
-                bg={useColorModeValue("white", "white")}
-                border={0}
-                _focus={{
-                  bg: "white",
-                }}
-              />
-              {/* <IconButton
-                bg={useColorModeValue("green.400", "green.800")}
-                color={useColorModeValue("white", "gray.800")}
-                _hover={{
-                  bg: "green.600",
-                }}
-                aria-label="Subscribe"
-                icon={<BiMailSend />}
-                onClick={() => myFunction()}
-              /> */}
-              <MensajeMail />
+              <MensajeMail/>
             </Stack>
           </Stack>
         </SimpleGrid>
@@ -143,3 +125,5 @@ export default function LargeWithNewsletter() {
     </Box>
   );
 }
+
+

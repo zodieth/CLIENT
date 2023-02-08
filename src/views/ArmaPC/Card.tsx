@@ -1,10 +1,10 @@
-import { Box } from "@chakra-ui/react";
+import { Box, useColorModeValue } from "@chakra-ui/react";
 import style from "./armado.module.css";
 
 function Card(props: any) {
   return (
-    <Box>
-      <Box className={style.card}>
+    <Box >
+      <Box  className={style.card}>
         <Box className={style.titleImg}>
           <img className={style.imgCard} src={props.img} alt="" />
           <Box>

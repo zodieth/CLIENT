@@ -1,7 +1,7 @@
 import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
 import { BsHeartFill } from "react-icons/bs";
 import style from "./productCard.module.css";
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useState } from "react";
 import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import { useAppDispatch } from "../../app/hooks";
@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 function ProductCard(props: any) {
   const [favorites, setFavorites] = useState<any>("");
   let local = localStorage.getItem("favorites");
+  const dispatch = useAppDispatch();
   const starTotal = 5;
 
   const handleFavorite = () => {
@@ -51,7 +52,6 @@ function ProductCard(props: any) {
     return starPercentage;
   };
 
-  const dispatch = useAppDispatch();
   const addCart = (value: interfaceProduct) => {
     dispatch(addToCart(value));
   };
@@ -89,24 +89,24 @@ function ProductCard(props: any) {
   };
 
   return (
-    <div className={style.container}>
-      <div className={style.card}>
+    <Box className={style.container}>
+      <Box className={style.card}>
         {props.stock < 1 ? (
-          <div className={style.imgBx}>
+          <Box className={style.imgBx}>
             <img className={style.img} src={props.img} />
-          </div>
+          </Box>
         ) : (
           <Link to={`/productos/${props.name}`}>
-            <div className={style.imgBx}>
+            <Box className={style.imgBx}>
               <img className={style.img} src={props.img} />
-            </div>
+            </Box>
           </Link>
         )}
 
-        <div className={style.contentBx}>
-          <div className={style.name}>
+        <Box className={style.contentBx}>
+          <Box className={style.name}>
             <h2>{props.name}</h2>
-          </div>
+          </Box>
 
           <Button
             colorScheme="blue"
@@ -137,24 +137,24 @@ function ProductCard(props: any) {
               color={isFavorite(props.name) ? "red" : "white"}
             />
           </Button>
-        </div>
-        <div className={style.calificacion}>
-          <div className={style.starsOuter}>
-            <div
+        </Box>
+        <Box className={style.calificacion}>
+          <Box className={style.starsOuter}>
+            <Box
               className={style.starsInner}
               style={{ width: `${startPercentage()}%` }}
-            ></div>
-          </div>
-        </div>
-        <div className={style.price_Discount}>
-          <div className={style.price}>US$ {props.price}</div>
+            ></Box>
+          </Box>
+        </Box>
+        <Box className={style.price_Discount}>
+          <Box className={style.price}>US$ {props.price}</Box>
 
           {props.stock > 10 ? (
-            <div className={style.stock}>HAY STOCK</div>
+            <Box className={style.stock}>HAY STOCK</Box>
           ) : props.stock < 10 && props.stock > 1 ? (
-            <div className={style.pocoStock}>BAJO STOCK</div>
+            <Box className={style.pocoStock}>BAJO STOCK</Box>
           ) : props.stock < 1 ? (
-            <div className={style.sin}>NO DISPONIBLE</div>
+            <Box className={style.sin}>NO DISPONIBLE</Box>
           ) : (
             ""
           )}
@@ -164,9 +164,9 @@ function ProductCard(props: any) {
             alt=""
             className={style.ahora12}
           />
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 

@@ -16,12 +16,27 @@ import {
   MenuDivider,
   Stack,
   Center,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { auth } from "../../auth0.service";
-import { AUTH_MANAGEMENT_API_ACCESS_TOKEN } from "../../auth0.config";
+import {
+  AUTH0_CALLBACK_URL,
+  AUTH0_CLIENT_ID,
+  AUTH0_DOMAIN,
+  AUTH0_MANAGEMENT_API_ACCESS_TOKEN,
+} from "../../auth0.config";
+import ToggleColorMode from "../DarkMode/ToggleColorMode";
 
-function NavBar() {
+import { searchUserByEmail } from "../../app/actionsCreators";
+
+function NavBar(props: any) {
+  const dispatch = useAppDispatch();
+
+  function dispatchUser(value: any) {
+    dispatch(searchUserByEmail(value));
+  }
+
   const [userName, setUserName] = useState("");
   const [picture, setPicture] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
@@ -31,52 +46,77 @@ function NavBar() {
 
   const accessToken = localStorage.getItem("accessToken");
   const activeSession = accessToken ? true : false;
-  const handleUser = async () => {
-    await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
-      if(error) {
-        console.log("Error: ", error);
-        //Para disimular la limitación en la tasa de peticiones, se puede desloguear al usuario cuando se excede dicho límite.
-      } else {
-        setUserName(user.nickname);
-        setPicture(user.picture);
-        const userId = user.sub;
-        const userRolesResponse = await fetch(`https://dev-6d0rlv0acg7xdkxt.us.auth0.com/api/v2/users/${userId}/roles`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${AUTH_MANAGEMENT_API_ACCESS_TOKEN}`
-          }
-        });
-        const userRoles = await userRolesResponse.json();
-        const hasAdminRole = userRoles.some((role : { id : String, name : String, description : String }) => role.name === "alltech-admin");
-        setIsAdmin(hasAdminRole);
-      };
-    })
-  };
   const handleLogout = async () => {
     localStorage.removeItem("accessToken");
     await auth.logout({
-      returnTo: window.location.origin,
-      clientID: "2EHZJm086BzkgwY5HXmPeK5UnbHegBXl"
+      returnTo: AUTH0_CALLBACK_URL,
+      clientID: AUTH0_CLIENT_ID,
     });
   };
 
+  const userState = useAppSelector((state) => state.user);
+
+  // setUserName(useState.user.userName);
+
+  const handleUser = async () => {
+    await auth.client.userInfo(
+      accessToken,
+      async (error: Auth0Error | null, user: Auth0UserProfile) => {
+        if (error) {
+          console.log("Error: ", error);
+          // window.alert("La sesión ha expirado.");
+          // await handleLogout();
+        } else {
+          setPicture(user.picture);
+          dispatchUser(user.email);
+
+          localStorage.setItem("email", user.email);
+          localStorage.setItem("user_id", userState.user._id);
+
+          const userId = user.sub;
+          const userRolesResponse = await fetch(
+            `https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${AUTH0_MANAGEMENT_API_ACCESS_TOKEN}`,
+              },
+            }
+          );
+          const userRoles = await userRolesResponse.json();
+          const hasAdminRole = userRoles.some(
+            (role: { id: String; name: String; description: String }) =>
+              role.name === "alltech-admin"
+          );
+
+          setIsAdmin(hasAdminRole);
+        }
+      }
+    );
+  };
+
   useEffect(() => {
-    handleUser();
-  }, [handleUser]);
+    if (activeSession) {
+      setUserName(userState.user.userName);
+      handleUser();
+    }
+  }, []);
+
   return (
     <Box className={style.navBar}>
-      <div className={style.logo}>
+      <Box className={style.logo}>
         <Link to="/">
           <HamburgerIcon boxSize={8} color="Gray" />
         </Link>
-        <Link to="/" >
-          <h1 className={style.h1Logo}> AllTech</h1>
+        <Link to="/">
+          <h1 className={style.h1Logo}>
+            {" "}
+            <img src="https://res.cloudinary.com/dy5msftwe/image/upload/v1675614765/Products/logo_jvrcny.png" />
+          </h1>
         </Link>
-      </div>
-      {/* <div>
-        <SearchBar />
-      </div> */}
-      <div className={style.buttons}>
+      </Box>
+      <Box className={style.buttons}>
+        <ToggleColorMode />
         <Link to="/cart" className={style.cartI}>
           <Button
             leftIcon={<FaShoppingCart />}
@@ -99,7 +139,7 @@ function NavBar() {
         </Link>
 
         {activeSession ? (
-          <div className={style.avatar_login}>
+          <Box className={style.avatar_login}>
             <Button
               rightIcon={<FiLogIn />}
               className={style.button}
@@ -121,24 +161,30 @@ function NavBar() {
                 >
                   <Avatar size={"sm"} src={picture} />
                 </MenuButton>
-                <MenuList alignItems={"center"} style={{ color: "#495057" }}>
+                <MenuList alignItems={"center"}>
                   <br />
                   <Center>
                     <Avatar size={"2xl"} src={picture} />
                   </Center>
                   <br />
                   <Center>
-                    <p>{userName}</p>
+                    <p>{userState.user.userName}</p>
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem onClick={() => navigate("/user")}>Mi cuenta de usuario</MenuItem>
-                  {isAdmin ? <MenuItem onClick={() => navigate("/admin")}>Mi cuenta de administrador</MenuItem> : null}
+                  <MenuItem onClick={() => navigate("/user")}>
+                    Mi cuenta de usuario
+                  </MenuItem>
+                  {isAdmin ? (
+                    <MenuItem onClick={() => navigate("/admin")}>
+                      Mi cuenta de administrador
+                    </MenuItem>
+                  ) : null}
                   <MenuItem onClick={handleLogout}>Salir</MenuItem>
                 </MenuList>
               </Menu>
             </Stack>
-          </div>
+          </Box>
         ) : (
           <Link to="/signin">
             <Button
@@ -151,7 +197,7 @@ function NavBar() {
             </Button>
           </Link>
         )}
-      </div>
+      </Box>
     </Box>
   );
 }
