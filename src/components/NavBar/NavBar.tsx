@@ -111,7 +111,7 @@ function NavBar(props: any) {
         <Link to="/">
           <h1 className={style.h1Logo}>
             {" "}
-            <img src="https://res.cloudinary.com/dy5msftwe/image/upload/v1675614765/Products/logo_jvrcny.png" />
+            <img src="https://cdn.discordapp.com/attachments/1064640307213377546/1072673719069180005/3.png" />
           </h1>
         </Link>
       </Box>
