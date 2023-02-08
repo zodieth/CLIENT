@@ -12,6 +12,7 @@ import {
   Button, 
   Switch,
   LightMode,
+  Box,
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import interfaceBrand from  "../../../features/brands/interfaceBrand";
@@ -19,6 +20,7 @@ import { HiTrash, HiOutlinePencilAlt } from "react-icons/hi";
 import { deleteBrandApi, putBrand } from '../../../app/actionsCreators'
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+
 
 export default function BrandsAdmin() {
   const brandsStore = useAppSelector((state) => state.brands)

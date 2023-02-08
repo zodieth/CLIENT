@@ -18,9 +18,10 @@ export default class PauseOnHover extends Component {
       autoplaySpeed: 2000,
       pauseOnHover: true,
     };
+
     return (
       <div className={style.div1}>
-        <Slider {...settings} className={style.slider}>
+        <Slider  {...settings} className={style.slider}>
           <div className={style.img}>
           <img src={foto1} />
           </div>

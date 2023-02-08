@@ -17,6 +17,7 @@ import Cards from "../components/ProductCards/Cards";
 import Filter from "../components/Filtro/filter";
 import ToggleColorMode from "../components/DarkMode/ToggleColorMode"; // dark mode
 import { LightMode } from "@chakra-ui/react";
+import Testimonials from "../components/Testimonials/Testimonials";
 
 function Home() {
   const dispatch = useAppDispatch();
@@ -38,6 +39,7 @@ function Home() {
           <Carousel />
           <LightMode><Filter /></LightMode>
           <Cards />
+          <Testimonials/>
           <CarouselDown />
           <LightMode><Footer /></LightMode>
         </div>
