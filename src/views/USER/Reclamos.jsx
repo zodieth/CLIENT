@@ -5,6 +5,7 @@ import interfaceCategory from "../../features/categories/interfaceCategory";
 
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
+  fetchSalesApi,
   getSales,
   postClaim,
   searchUserByEmail,
@@ -25,13 +26,13 @@ export default function Reclamos() {
   });
 
   useEffect(() => {
-    dispatch(getSales());
+    dispatch(fetchSalesApi());
     dispatch(searchUserByEmail(localStorage.getItem("email")));
   }, []);
 
   const sales = useAppSelector((state) => state.sales);
 
-  const userSales = sales.sales.filter(
+  const userSales = sales.allSales.filter(
     (sale) => sale.user._id === userState.user._id
   );
 

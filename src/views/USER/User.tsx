@@ -29,6 +29,7 @@ import {
   FiBell,
   FiChevronDown,
   FiTrendingUp,
+  FiCompass,
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
@@ -39,7 +40,7 @@ import {
   fetchCategoryApi,
 } from "../../app/actionsCreators";
 import { auth } from "../../auth0.service";
-import { 
+import {
   AUTH0_CALLBACK_URL,
   AUTH0_CLIENT_ID,
   AUTH0_DOMAIN,
