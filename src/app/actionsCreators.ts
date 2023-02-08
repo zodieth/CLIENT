@@ -5,7 +5,7 @@ import axios from "axios";
 
 export const updateUser = (value: any) => {
   return {
-    type: ActionTypes.UPDATE_USER,
+    type: ActionTypes.USER_UPDATE,
     payload: value,
   };
 };
@@ -14,7 +14,7 @@ export const putUser =
   (user: any, id: any): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     return axios
-      .put("https://henry-pf-back.up.railway.app/users/" + id, user)
+      .put("http://localhost:3001/users/" + id, user)
       .then(
         (response) => {
           if (response.status) {
@@ -576,7 +576,6 @@ export const putProduct =
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     dispatch(productsLoading());
-    console.log(product);
     return axios
       .put("https://henry-pf-back.up.railway.app/product/" + id, product)
       .then(
@@ -814,3 +813,79 @@ export const putQuestion =
         console.log("PUT sale", error.message);
       });
   };
+
+//USERS
+
+
+export const updatedUser = (value: any) => {
+  return {
+    type: ActionTypes.USER_UPDATE,
+    payload: value,
+  };
+};
+
+export const loadingUser = () => {
+  return {
+    type: ActionTypes.USER_LOADING,
+  };
+};
+
+export const failedUser = (value: any) => {
+  return {
+    type: ActionTypes.USER_FAILED,
+    payload: value,
+  };
+};
+
+export const addUsers = (value: any) => {
+  return {
+    type: ActionTypes.USERS_ADD,
+    payload: value,
+  };
+};
+
+export const fetchUsersApi =
+  (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+    dispatch(loadingUser());
+
+    return await axios
+      .get("https://henry-pf-back.up.railway.app/users")
+      .then(
+        function (response) {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        function (error) {
+          var errMess = new Error(error.message);
+          throw errMess;
+        }
+      )
+      .then((questions) => dispatch(addUsers(questions.data)))
+      .catch((error) => dispatch(failedUser(error.message)));
+  };
+
+  //Valoracion
+
+  export const saveReview = (description: any, productoID: any, rating: any): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+    return axios
+      .post("http://localhost:3001/reviews", {
+        description,
+        productoID,
+        rating,
+      })
+      .then((response) => {
+        dispatch(addQuestion(response.data.question));
+        dispatch(updateProduct(response.data.updatedProduct));
+        return true;
+      })
+      .catch((error) => {
+        console.log("Post question", error.message);
+        dispatch(failedQuestion(error.message));
+      });
+  }
