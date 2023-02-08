@@ -98,7 +98,7 @@ export default function BrandsAdmin() {
               <Tr {...row.getRowProps()} key={Math.random()}>
                 {row.cells.map(cell => {
                   if(cell.column.Header === "Acciones"){
-                    return <Td key={Math.random()}><LightMode><Button><Link to={`/Admin/brands/edit/${cell.value}`}><HiOutlinePencilAlt size={20}/></Link></Button></LightMode></Td>
+                    return <Td key={Math.random()}><LightMode><Button colorScheme='blue'><Link to={`/Admin/brands/edit/${cell.value}`}><HiOutlinePencilAlt size={20}/></Link></Button></LightMode></Td>
                   } else if(cell.column.Header === "Activo"){
                     return <Td key={Math.random()}><Switch id='email-alerts' isChecked={cell.value.active ? true : false} onChange={() => setActive(cell.value._id, cell.value.active)} /></Td>
                   }else{
@@ -148,20 +148,20 @@ export default function BrandsAdmin() {
           <div className={style.header}>
           <Link to="./create" className={style.btnPrimary}>Nuevo</Link>
           </div>
-        <Input
-          type="text"
-          value={searchTerm}
-          onChange={handleSearch}
-          placeholder="Buscar"
-        />
+          <Input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearch}
+            placeholder="Buscar"
+          />
         </CardHeader>
         <CardBody>
-        <TableContainer>
-          <Table2
-            data={filteredData}
-            columns={columns}
-          />
-        </TableContainer>
+          <TableContainer>
+            <Table2
+              data={filteredData}
+              columns={columns}
+            />
+          </TableContainer>
         </CardBody>
       </Card>
     );
