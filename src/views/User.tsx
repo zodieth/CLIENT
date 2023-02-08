@@ -25,9 +25,6 @@ import {
 } from "@chakra-ui/react";
 import {
   FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
   FiSettings,
   FiMenu,
   FiBell,
@@ -35,12 +32,6 @@ import {
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
-import { useAppDispatch } from "../app/hooks";
-import {
-  fetchProductsApi,
-  fetchBrandApi,
-  fetchCategoryApi,
-} from "../app/actionsCreators";
 import { auth } from "../auth0.service";
 import { 
   AUTH0_CALLBACK_URL,

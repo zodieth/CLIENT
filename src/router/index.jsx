@@ -22,6 +22,7 @@ import PreguntasFrecuentes from "../views/PreguntasFrecuentes/PreguntasFrecuente
 import ComoComprar from "../views/ComoComprar/ComoComprar";
 import QuestionsAdmin from "../components/Admin/Questions/questions";
 import AllQuestionsAdmin from "../components/Admin/Questions/allQuestions";
+import SalesAdmin from "../components/Admin/Sales/sales";
 
 export const router = createBrowserRouter([
   {
@@ -145,6 +146,11 @@ export const router = createBrowserRouter([
   {
     path: "/Admin/allQuestions",
     element: <Admin children={<AllQuestionsAdmin />} />,
+    exact: true,
+  },
+  {
+    path: "/Admin/sales",
+    element: <Admin children={<SalesAdmin />} />,
     exact: true,
   },
 ]);

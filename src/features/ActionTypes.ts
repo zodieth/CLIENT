@@ -33,3 +33,9 @@ export const QUESTION_FAILED = "QUESTION_FAILED";
 export const QUESTION_UPDATE = "QUESTION_UPDATE";
 
 export const GET_USER = "GET_USER";
+
+export const SALES_ADD = "SALES_ADD";
+export const SALE_ADD = "SALE_ADD";
+export const SALE_LOADING = "SALE_LOADING";
+export const SALE_FAILED = "SALE_FAILED";
+export const SALE_UPDATE = "SALE_UPDATE";
