@@ -43,17 +43,22 @@ function Home() {
 }
   return (
     <div>
-        <div /* className={style.app} */>  {/* sacamos el estilo para que funcione el dark mode junto al archivo theme.js */}
+        <div /* className={style.app} */>  
+        {" "}
+        {/* sacamos el estilo para que funcione el dark mode junto al archivo theme.js */}
           <NavBar />
           <Carousel />
-          <LightMode><Filter /></LightMode>
+          <LightMode>
+            <Filter />
+          </LightMode>
           <Cards />
           <Testimonials/>
           <CarouselDown />
-          <LightMode><Footer /></LightMode>
+          <LightMode>
+            <Footer />
+            </LightMode>
         </div>
     </div>
-    
   );
 }
 
