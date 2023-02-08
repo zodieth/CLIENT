@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "../views/Home.tsx";
 import Cart from "../components/Cart/Cart";
-import User from "../views/User";
+import User from "../views/USER/User";
 import Admin from "../views/Admin";
 import SignUp from "../views/SignUp/SignUp";
 import SignIn from "../views/SignIn/SignIn";
@@ -20,8 +20,15 @@ import ProductsAdmin from "../components/Admin/Products/products";
 import EditProductAdmin from "../components/Admin/Products/editProduct";
 import PreguntasFrecuentes from "../views/PreguntasFrecuentes/PreguntasFrecuentes";
 import ComoComprar from "../views/ComoComprar/ComoComprar";
+import EditUser from "../views/USER/EditUser";
 import QuestionsAdmin from "../components/Admin/Questions/questions";
 import AllQuestionsAdmin from "../components/Admin/Questions/allQuestions";
+
+import Reclamos from "../views/USER/Reclamos";
+
+import SalesAdmin from "../components/Admin/Sales/sales";
+import GraphicsAdmin from "../components/Admin/Graphics/graphics";
+
 
 export const router = createBrowserRouter([
   {
@@ -40,8 +47,18 @@ export const router = createBrowserRouter([
     exact: true,
   },
   {
+    path: "/user/perfil",
+    element: <User children={<EditUser />} />,
+    exact: true,
+  },
+  {
+    path: "/user/reclamos",
+    element: <User children={<Reclamos />} />,
+    exact: true,
+  },
+  {
     path: "/admin",
-    element: <Admin />,
+    element: <Admin children={<GraphicsAdmin/>}/>,
     exact: true,
   },
   {
@@ -145,6 +162,11 @@ export const router = createBrowserRouter([
   {
     path: "/Admin/allQuestions",
     element: <Admin children={<AllQuestionsAdmin />} />,
+    exact: true,
+  },
+  {
+    path: "/Admin/sales",
+    element: <Admin children={<SalesAdmin />} />,
     exact: true,
   },
 ]);
