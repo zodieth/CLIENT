@@ -1,0 +1,114 @@
+.container {
+  margin-top: 20px;
+  /* background: white; */
+  padding-top: 30px;
+  padding-bottom: 30px;
+  border-radius: 8px;
+
+}
+
+.groupInputs{
+  margin-left: 30px;
+  width: 100%;
+  display: flex;
+  margin-bottom: 10px;
+}
+
+label{
+  width: 100px;
+  padding-top: 9px;
+  margin-bottom: 0;
+  text-align: right;
+  margin-right: 30px;
+}
+
+input {
+  width: 300px;
+}
+
+.hrLineDashed{
+  margin: 10px 0px !important;
+  padding-top: 10px;
+  border-top: 1px solid #6969696b;
+  /* color: #ffffff; */
+  /* background-color: #ffffff; */
+  height: 1px;
+  margin: 20px 0;
+}
+
+.groupButtons {
+  margin-left: 15.33333333%;
+}
+
+.btnPrimary{
+  background-color: #1ab394;
+  border-color: #1ab394;
+  color: #FFFFFF;
+
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;  
+  margin-left: 10px;
+}
+
+.btnPrimary:hover {
+  background-color: #18a689;
+  border-color: #18a689;
+  color: #FFFFFF;
+}
+
+.btnPrimary:active {
+  background-color: #18a689;
+  border-color: #18a689;
+  color: #FFFFFF;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 15%) inset;
+}
+
+.btnWhite {
+  color: gray;
+  /* background: white; */
+  border: 1px solid #cfd1d2;
+  
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  user-select: none;
+  background-image: none;
+  border-radius: 4px;
+}
+
+.btnWhite:active {
+  box-shadow: 0 2px 5px rgb(0 0 0 / 15%) inset;
+}
+
+.btnWhite:hover {
+  color: inherit;
+  border: 1px solid #999898 !important;
+}
+
+.header {
+  margin-bottom: 10px;
+  width: 100%;
+  text-align: right;
+  padding-right: 27px;
+}

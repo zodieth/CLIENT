@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import {
   postQuestion,
   fetchProductsApi,
+  fetchSalesApi
 } from "../../app/actionsCreators";
 import Footer from "../../components/Footer/Footer";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -16,19 +17,21 @@ import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import Swal from "sweetalert2";
 import NuevoCarrusel from "./NuevoCarrusel";
 import ToggleColorMode from "../../components/DarkMode/ToggleColorMode";
+import StarRating from "./StarRating";
 
 function Detail(props: any) {
   const { name } = useParams();
   const products = useAppSelector((state: any) => state.products);
-  const [ question, setQuestion ] = useState("");
+  const salesStore = useAppSelector((state: any) => state.sales);
+  const userStore = useAppSelector((state: any) => state.user);
   const dispatch = useAppDispatch();
-
   const findDetail = products?.allProducts.filter(
     (product: interfaceProduct) => product.name === name
   );
 
   useEffect(() => {
     dispatch(fetchProductsApi());
+    dispatch(fetchSalesApi());
   }, [dispatch]);
 
   const [onCart, setOncart] = useState(false);
@@ -154,7 +157,6 @@ function Detail(props: any) {
       <Box className={style.navBar}>
       <NavBar />
       </Box>
-
       {!findDetail.length ? (
         <Box>No se encontró el producto</Box>
       ) : (
@@ -190,19 +192,31 @@ function Detail(props: any) {
                     </Button>
                   </Box>
                   <Box className={style.calificacion}>
-                    <Box className={style.starsOuter}>
-                      <Box
-                        className={style.starsInner}
-                        style={{ width: `${startPercentage()}%` }}
-                      ></Box>
-                    </Box>
+                    {
+                    userStore.user ? 
+                      salesStore.allSales.map((sale: any) => 
+                        (sale.user._id === userStore.user._id) ?
+                          <StarRating product={e._id}/>
+                        : 
+                        <Box className={style.starsOuter}>
+                          <Box
+                            className={style.starsInner}
+                            style={{ width: `${startPercentage()}%` }}
+                          ></Box>
+                        </Box>
+                      )
+                    : 
+                      <Box className={style.starsOuter}>
+                        <Box
+                          className={style.starsInner}
+                          style={{ width: `${startPercentage()}%` }}
+                        ></Box>
+                      </Box>
+                    }
                   </Box>
                 </Box>
-
                 <Box className={style.right}>
                   <Box className={style.description}>{e.description}</Box>
-
-                  
                 </Box>
               </Box>
 
