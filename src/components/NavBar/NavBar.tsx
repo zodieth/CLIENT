@@ -67,7 +67,6 @@ function NavBar(props: any) {
           // window.alert("La sesión ha expirado.");
           // await handleLogout();
         } else {
-          // setUserName(user.nickname);
           setPicture(user.picture);
           dispatchUser(user.email);
 
@@ -101,7 +100,7 @@ function NavBar(props: any) {
       setUserName(userState.user.userName);
       handleUser();
     }
-  }, [handleUser]);
+  }, []);
 
   return (
     <Box className={style.navBar}>
@@ -109,8 +108,11 @@ function NavBar(props: any) {
         <Link to="/">
           <HamburgerIcon boxSize={8} color="Gray" />
         </Link>
-        <Link to="/" >
-          <h1 className={style.h1Logo}> <img src="https://res.cloudinary.com/dy5msftwe/image/upload/v1675614765/Products/logo_jvrcny.png"/></h1>
+        <Link to="/">
+          <h1 className={style.h1Logo}>
+            {" "}
+            <img src="https://res.cloudinary.com/dy5msftwe/image/upload/v1675614765/Products/logo_jvrcny.png" />
+          </h1>
         </Link>
       </Box>
       <Box className={style.buttons}>
@@ -166,7 +168,7 @@ function NavBar(props: any) {
                   </Center>
                   <br />
                   <Center>
-                    <p>{userName}</p>
+                    <p>{userState.user.userName}</p>
                   </Center>
                   <br />
                   <MenuDivider />
