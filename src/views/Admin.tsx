@@ -41,7 +41,8 @@ import {
   fetchProductsApi,
   fetchBrandApi,
   fetchCategoryApi,
-  fetchQuestionsApi
+  fetchQuestionsApi,
+  fetchSalesApi
 } from "../app/actionsCreators";
 import { auth } from "../auth0.service";
 import {
@@ -69,7 +70,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "Marcas", icon: FiStar, url: "/admin/brands" },
   { name: "Todas las preguntas", icon: FiHelpCircle, url: "/admin/allQuestions" },
   { name: "Preguntas sin contestar", icon: FiHelpCircle, url: "/admin/questions" },
-  { name: "Usuarios", icon: FiSettings, url: "#" },
+  { name: "Ventas", icon: FiSettings, url: "/admin/sales" },
 ];
 
 export default function SidebarWithHeader({
@@ -86,6 +87,7 @@ export default function SidebarWithHeader({
     dispatch(fetchBrandApi());
     dispatch(fetchCategoryApi());
     dispatch(fetchQuestionsApi());
+    dispatch(fetchSalesApi());
     setTimeout(() => {
       setRenderDashboard(true);
     }, 4000);

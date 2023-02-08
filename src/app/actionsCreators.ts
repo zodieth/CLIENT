@@ -3,6 +3,53 @@ import * as ActionTypes from "../features/ActionTypes";
 import { RootState } from "./store";
 import axios from "axios";
 
+export const updateUser = (value: any) => {
+  return {
+    type: ActionTypes.UPDATE_USER,
+    payload: value,
+  };
+};
+
+export const putUser =
+  (user: any, id: any): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    return axios
+      .put("https://henry-pf-back.up.railway.app/users/" + id, user)
+      .then(
+        (response) => {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .then((response) => {
+        dispatch(updateUser(response.data));
+      });
+  };
+
+export const getUser = (value: any) => {
+  return {
+    type: ActionTypes.GET_USER,
+    payload: value,
+  };
+};
+
+export const searchUserByEmail = (value: any) => async (dispatch: any) => {
+  const user = await axios.get(
+    `https://henry-pf-back.up.railway.app/useremail/${value}`
+  );
+
+  dispatch(getUser(user.data));
+};
+
 export const createProduct = (value: any) => {
   axios.post("https://henry-pf-back.up.railway.app/products", value);
   return {
@@ -11,7 +58,6 @@ export const createProduct = (value: any) => {
   };
 };
 
-
 export const footerEmail = (value: any) => {
   axios.post("http://localhost:3001/emails", value);
   return {
@@ -19,19 +65,12 @@ export const footerEmail = (value: any) => {
     payload: value,
   };
 };
-  
+
 export const sendProducts = (value: any) => {
   axios.post("https://henry-pf-back.up.railway.app/sale", value);
 
   return {
     type: ActionTypes.CREATE_PRODUCT,
-    payload: value,
-  };
-};
-
-export const getUser = (value: any) => {
-  return {
-    type: ActionTypes.GET_USER,
     payload: value,
   };
 };
@@ -111,7 +150,7 @@ export const fetchProductsApi =
       .get("https://henry-pf-back.up.railway.app/products")
       .then(
         function (response) {
-          if (response.data.length) return response;
+          if (response.status) return response;
           else {
             var error = new Error(
               "Error " + response.status + ": " + response.statusText
@@ -159,7 +198,7 @@ export const fetchBrandApi =
       .get("https://henry-pf-back.up.railway.app/brands")
       .then(
         function (response) {
-          if (response.data.length) return response;
+          if (response.status) return response;
           else {
             var error = new Error(
               "Error " + response.status + ": " + response.statusText
@@ -209,7 +248,7 @@ export const fetchCategoryApi =
       .get("https://henry-pf-back.up.railway.app/category")
       .then(
         function (response) {
-          if (response.data.length) {
+          if (response.status) {
             return response;
           } else {
             var error = new Error(
@@ -235,7 +274,6 @@ type Product = {
   images: [String];
   count: number;
 };
-
 
 export const payMercadoPagoApi = (products: Product[]) => {
   return async (dispatch: any) => {
@@ -266,7 +304,6 @@ export const payMercadoPagoApi = (products: Product[]) => {
     }
   };
 };
-
 
 //Category admin
 
@@ -417,7 +454,6 @@ export const postBrand =
       });
   };
 
-
 export const deleteBrand = (value: any) => {
   return {
     type: ActionTypes.BRAND_DELETE,
@@ -474,7 +510,7 @@ export const putBrand =
       .then(
         (response) => {
           if (response.status) {
-            return response
+            return response;
           } else {
             var error = new Error(
               "Error " + response.status + ": " + response.statusText
@@ -498,12 +534,10 @@ export const putBrand =
 //Product admin
 
 export const postProduct =
-  (
-    newProduct: any
-  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (newProduct: any): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     dispatch(productsLoading());
-    
+
     return axios
       .post("https://henry-pf-back.up.railway.app/products", newProduct)
       .then((response) => {
@@ -542,7 +576,7 @@ export const putProduct =
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     dispatch(productsLoading());
-    console.log(product)
+    console.log(product);
     return axios
       .put("https://henry-pf-back.up.railway.app/product/" + id, product)
       .then(
@@ -631,7 +665,7 @@ export const fetchQuestionsApi =
       .catch((error) => dispatch(categoryFailed(error.message)));
   };
 
-  export const postQuestion =
+export const postQuestion =
   (
     userMail: any,
     product: any,
@@ -639,13 +673,17 @@ export const fetchQuestionsApi =
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     dispatch(loadingQuestion());
-    
+
     return axios
-      .post("https://henry-pf-back.up.railway.app/questions", {userMail, product, newQuestion})
+      .post("https://henry-pf-back.up.railway.app/questions", {
+        userMail,
+        product,
+        newQuestion,
+      })
       .then((response) => {
         dispatch(addQuestion(response.data.question));
-        dispatch(updateProduct(response.data.updatedProduct))
-        return true
+        dispatch(updateProduct(response.data.updatedProduct));
+        return true;
       })
       .catch((error) => {
         console.log("Post question", error.message);
@@ -681,5 +719,98 @@ export const putQuestion =
       })
       .catch((error) => {
         console.log("PUT question", error.message);
+      });
+  };
+
+  //Ventas
+
+  export const updateSale = (value: any) => {
+    return {
+      type: ActionTypes.SALE_UPDATE,
+      payload: value,
+    };
+  };
+  
+  export const loadingSale = () => {
+    return {
+      type: ActionTypes.SALE_LOADING,
+    };
+  };
+  
+  export const failedSale = (value: any) => {
+    return {
+      type: ActionTypes.SALE_FAILED,
+      payload: value,
+    };
+  };
+  
+  export const addSales = (value: any) => {
+    return {
+      type: ActionTypes.SALES_ADD,
+      payload: value,
+    };
+  };
+  
+  export const addSale = (value: any) => {
+    return {
+      type: ActionTypes.SALE_ADD,
+      payload: value,
+    };
+  };
+
+  export const fetchSalesApi =
+  (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+    dispatch(loadingSale());
+
+    return await axios
+      .get("http://localhost:3001/sale")
+      .then(
+        function (response) {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        function (error) {
+          var errMess = new Error(error.message);
+          throw errMess;
+        }
+      )
+      .then((sales) => dispatch(addSales(sales.data)))
+      .catch((error) => dispatch(failedSale(error.message)));
+  };
+
+  export const putSale =
+  (
+    id: string,
+    sale: any
+  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    return axios
+      .put("http://localhost:3001/sale/" + id, sale)
+      .then(
+        (response) => {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .then((response) => {
+        dispatch(updateSale(response.data));
+      })
+      .catch((error) => {
+        console.log("PUT sale", error.message);
       });
   };

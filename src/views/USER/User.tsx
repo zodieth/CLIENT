@@ -25,30 +25,30 @@ import {
 } from "@chakra-ui/react";
 import {
   FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
   FiSettings,
   FiMenu,
   FiBell,
   FiChevronDown,
+  FiTrendingUp,
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch } from "../../app/hooks";
 import {
   fetchProductsApi,
   fetchBrandApi,
   fetchCategoryApi,
-} from "../app/actionsCreators";
-import { auth } from "../auth0.service";
+} from "../../app/actionsCreators";
+import { auth } from "../../auth0.service";
 import { 
   AUTH0_CALLBACK_URL,
   AUTH0_CLIENT_ID,
   AUTH0_DOMAIN,
-  AUTH0_MANAGEMENT_API_ACCESS_TOKEN } from "../auth0.config";
-import ToggleColorMode from "../components/DarkMode/ToggleColorMode";
-import DarkModeAdmin from "../components/DarkMode/DarkModeAdmin";
+  AUTH0_MANAGEMENT_API_ACCESS_TOKEN,
+} from "../../auth0.config";
+import ToggleColorMode from "../../components/DarkMode/ToggleColorMode";
+import DarkModeAdmin from "../../components/DarkMode/DarkModeAdmin";
+import { useAppSelector } from "../../hooks/hooks";
 
 interface LinkItemProps {
   name: string;
@@ -57,9 +57,15 @@ interface LinkItemProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome, url: "/user" },
-  { name: "Mis compras", icon: FiSettings, url: "/user/purchases" },
-  { name: "Mis reclamos", icon: FiSettings, url: "/user/claims" },
+  { name: "Home", icon: FiHome, url: "/" },
+  { name: "Perfil", icon: FiTrendingUp, url: "/user/perfil" },
+  // {
+  //   name: "Categorias",
+  //   icon: FiCompass,
+  //   url: "/admin/categories",
+  // },
+  // { name: "Marcas", icon: FiStar, url: "/admin/brands" },
+  // { name: "Usuarios", icon: FiSettings, url: "#" },
 ];
 
 export default function SidebarWithHeader({
@@ -67,9 +73,8 @@ export default function SidebarWithHeader({
 }: {
   children: ReactNode;
 }) {
-
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const [renderDashboard, setRenderDashboard] = useState(false);
 
   // useEffect(() => {
@@ -84,7 +89,9 @@ export default function SidebarWithHeader({
   }, []);
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
-      {renderDashboard ? <SidebarContent
+      {" "}
+      {/* el centro del panel */}
+      {renderDashboard ? <SidebarContent /* menu de la izquierda */
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
       /> : null}
@@ -116,7 +123,7 @@ interface SidebarProps extends BoxProps {
 //formacion del menu de la izquierda
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
-    <Box
+    <Box /* Menu de la izquierda y sus caracteristicas */
       transition="3s ease"
       bg={useColorModeValue("white", "gray.900")}
       borderRight="1px"
@@ -125,7 +132,9 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       pos="fixed"
       h="full"
       {...rest}
-    > <DarkModeAdmin /> {/* boton modo noche */}
+    >
+      {" "}
+      <DarkModeAdmin /> {/* boton modo noche */}
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Link href="/admin">
           <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
@@ -192,6 +201,8 @@ interface MobileProps extends FlexProps {
 }
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const userState = useAppSelector((state) => state.user);
+
   const [userName, setUserName] = useState("");
   const [picture, setPicture] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
@@ -205,7 +216,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     localStorage.removeItem("accessToken");
     auth.logout({
       returnTo: AUTH0_CALLBACK_URL,
-      clientID: AUTH0_CLIENT_ID
+      clientID: AUTH0_CLIENT_ID,
     });
   };
   const handleUser = async () => {
@@ -230,14 +241,14 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   };
 
   useEffect(() => {
-    if(!activeSession) {
+    if (!activeSession) {
       navigate("/");
     } else {
       handleUser();
     };
   }, []);
   return (
-    <Flex
+    <Flex /* devuelta es la barra donde esta la parte del administrador arriba */
       ml={{ base: 0, md: 60 }}
       px={{ base: 4, md: 4 }}
       height="20"
@@ -267,6 +278,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
       <HStack spacing={{ base: "0", md: "6" }}>
         {" "}
+        {/* seccion chiquita donde esta la parte del administrador */}{" "}
         {/* Arriba a la derecha */}
         <IconButton
           size="lg"
@@ -282,21 +294,16 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               _focus={{ boxShadow: "none" }}
             >
               <HStack>
-                <Avatar
-                  size={"sm"}
-                  src={
-                    picture
-                  }
-                />
+                <Avatar size={"sm"} src={picture} />
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">{userName}</Text>
+                  <Text fontSize="sm">{userState.user.userName}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Usuario
+                    {userState.user.userName}
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
@@ -308,8 +315,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem onClick={() => navigate("/cart")}>Mi carrito de compras</MenuItem>
-              {isAdmin ? <MenuItem onClick={() => navigate("/admin")}>Mi cuenta de administrador</MenuItem> : null}
+              <MenuItem onClick={() => navigate("/cart")}>
+                Mi carrito de compras
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/user")}>
+                Mi cuenta de usuario
+              </MenuItem>
               <MenuDivider />
               <MenuItem onClick={() => navigate("/")}>Volver a la tienda</MenuItem>
               <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>

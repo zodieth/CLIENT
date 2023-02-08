@@ -28,14 +28,14 @@ import {
   API_SERVER_URL
 } from "../../auth0.config";
 import ToggleColorMode from "../DarkMode/ToggleColorMode";
-import { getUser } from "../../app/actionsCreators";
 import Swal from "sweetalert2";
+import { searchUserByEmail } from "../../app/actionsCreators";
 
 function NavBar(props: any) {
   const dispatch = useAppDispatch();
 
-  function sendUser(name: any) {
-    dispatch(getUser(name));
+  function dispatchUser(value: any) {
+    dispatch(searchUserByEmail(value));
   }
 
   const [userName, setUserName] = useState("");
@@ -58,6 +58,10 @@ function NavBar(props: any) {
     });
   };
 
+  const userState = useAppSelector((state) => state.user);
+
+  // setUserName(useState.user.userName);
+
   const handleUser = async () => {
     await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
       if(error) {
@@ -66,7 +70,9 @@ function NavBar(props: any) {
         setUserName(user.nickname);
         setPicture(user.picture);
         setIsLoggedIn(true);
-        localStorage.setItem("email", user.email)
+        dispatchUser(user.email);
+        localStorage.setItem("email", user.email);
+        localStorage.setItem("user_id", userState.user._id);
         const userId = user.sub;
         const userRolesResponse = await fetch(`https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`, {
           method: "GET",
@@ -104,6 +110,7 @@ function NavBar(props: any) {
 
   useEffect(() => {
     if (activeSession) {
+      setUserName(userState.user.userName);
       handleUser();
     };
   }, []);
@@ -114,8 +121,11 @@ function NavBar(props: any) {
         <Link to="/">
           <HamburgerIcon boxSize={8} color="Gray" />
         </Link>
-        <Link to="/" >
-          <h1 className={style.h1Logo}> <img src="https://res.cloudinary.com/dy5msftwe/image/upload/v1675614765/Products/logo_jvrcny.png"/></h1>
+        <Link to="/">
+          <h1 className={style.h1Logo}>
+            {" "}
+            <img src="https://cdn.discordapp.com/attachments/1064640307213377546/1072673719069180005/3.png" />
+          </h1>
         </Link>
       </Box>
       <Box className={style.buttons}>
@@ -171,7 +181,7 @@ function NavBar(props: any) {
                   </Center>
                   <br />
                   <Center>
-                    <p>{userName}</p>
+                    <p>{userState.user.userName}</p>
                   </Center>
                   <br />
                   <MenuDivider />

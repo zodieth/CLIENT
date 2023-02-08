@@ -16,6 +16,7 @@ import { BiMailSend } from "react-icons/bi";
 import style from "./footer.module.css";
 import MensajeMail from "./MensajeMail";
 import { Link } from "react-router-dom";
+import Iconos from "../Iconos/Iconos";
 
 const myFunction = () => {
   alert("¡Dirección de correo recibido, pronto recibiras descuentos!");
@@ -75,7 +76,7 @@ const SocialButton = ({
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
   return (
-    <Text fontWeight={"500"} fontSize={"lg"} mb={2}>
+    <Text fontWeight={"500"} fontSize={"20"} mb={3}>
       {children}
     </Text>
   );
@@ -83,45 +84,53 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
 
 export default function LargeWithNewsletter() {
   return (
-    <Box className={style.box} color={useColorModeValue("black", "white")}>
-      <Container as={Stack} maxW={"6xl"} py={10}>
+    <Box  className={style.box} color={useColorModeValue("black", "white")}>
+      <Container as={Stack} maxW={"1x1"}   py={10}>
         <SimpleGrid
+        
           templateColumns={{ sm: "1fr 1fr", md: "2fr 1fr 1fr 2fr" }}
-          spacing={8}
+          spacing={8} 
         >
           <Stack spacing={6}>
-            <Box>
+{/*             <Box>
               <Logo color={useColorModeValue("gray.700", "white")} />
             </Box>
             <Text fontSize={"sm"}>
               © 2023 AllTech. Todos los derechos reservados
-            </Text>
+            </Text> */}
+            <Stack align={"center"}>
+            <ListHeader>¡Encontra nuestra primer sucursal en Google Maps!</ListHeader>
+            <iframe className= {style.mapa}src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1967.0033646303623!2d-64.19085517123436!3d-31.413392317778513!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9432995a5c742607%3A0x8016b37754d612fb!2sAllTech!5e0!3m2!1ses-419!2sar!4v1675787558277!5m2!1ses-419!2sar"   loading="lazy" referrerPolicy="no-referrer-when-downgrade" ></iframe>
+            </Stack>
           </Stack>
 
-          <Stack align={"flex-start"}>
-            <ListHeader>Nosotros</ListHeader>
-            <Link to="">Sobre nosotros</Link>
-            <Link to="">Envíos y entregas</Link>
-            <Link to="">Políticas de garantías</Link>
-            <Link to="">Cambios y devoluciones</Link>
-            <Link to="">Testimonios</Link>
+          <Stack className={style.texto} align={"center"}>
+            <ListHeader>Contacto</ListHeader>
+            <Iconos/>
           </Stack>
-          <Stack align={"flex-start"}>
+          <Stack  className={style.texto} align={"center"}>
             <ListHeader>Soporte</ListHeader>
             <Link to="/comocomprar">Cómo comprar</Link>
             <Link to="/preguntas">Preguntas Frecuentes</Link>
-            <Link to="">Contáctenos</Link>
             <Link to="">Términos y condiciones</Link>
             <Link to="">Políticas de privacidad</Link>
+
+            
           </Stack>
-          <Stack align={"flex-start"}>
+          <Stack  className={style.texto2}  align={"center"}>
             <ListHeader>¡Recibi descuentos y promociones!</ListHeader>
             <Stack direction={"row"}>
               <MensajeMail/>
             </Stack>
+
+          
           </Stack>
+
         </SimpleGrid>
       </Container>
+          <Box width="100%" height="5%" /* border="1px solid #CCC" */ padding="1px" textAlign="center" backgroundColor="#2f3e46" textColor="white">
+              <ListHeader  >Copyright © 2023 AllTech. Todos los derechos reservados.</ListHeader>
+          </Box>
     </Box>
   );
 }

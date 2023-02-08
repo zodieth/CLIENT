@@ -256,14 +256,16 @@ function Detail(props: any) {
                   <Box className={style.tituloPreguntas}>Preguntas de nuestros clientes</Box>
                   {e.questions.length>0?  
                   (e.questions.map((q:any)=>{
-                    return(
-                      <Box className={style.question}>
-                        <dl>
-                          <dt>{q.question}</dt>
-                          <dd>└─ {q.answer}</dd>
-                        </dl>
-                      </Box>
-                    )
+                    if(q.active){
+                      return(
+                        <Box className={style.question}>
+                          <dl>
+                            <dt>{q.question}</dt>
+                            <dd>└─ {q.answer}</dd>
+                          </dl>
+                        </Box>
+                      )
+                    }
                 })): (
                   <Box className={style.question}>
                     Aún no hay preguntas sobre este producto, sé el primero
