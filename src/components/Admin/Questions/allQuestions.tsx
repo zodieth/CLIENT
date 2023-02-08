@@ -135,7 +135,7 @@ export default function AllQuestionsAdmin() {
                         <LightMode><Td><Switch id='email-alerts' isChecked={question.active ? true : false} onChange={() => setActive(question._id, question.active)} /></Td> </LightMode>
                         <Td style={{ display: "flex" }}>
                           <LightMode>
-                            <Button onClick={() => handleClickOpenModal(question._id)}>
+                            <Button colorScheme='blue' onClick={() => handleClickOpenModal(question._id)}>
                               <HiReply size={20}/>
                             </Button>
                           </LightMode>                      

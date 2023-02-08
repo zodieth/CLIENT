@@ -3,6 +3,14 @@ import * as ActionTypes from "../features/ActionTypes";
 import { RootState } from "./store";
 import axios from "axios";
 
+export const postClaim = (value: any) => {
+  axios.post("https://henry-pf-back.up.railway.app/claims", value);
+  return {
+    type: ActionTypes.POST_CLAIM,
+    payload: value,
+  };
+};
+
 export const updateUser = (value: any) => {
   return {
     type: ActionTypes.UPDATE_USER,
@@ -59,7 +67,7 @@ export const createProduct = (value: any) => {
 };
 
 export const footerEmail = (value: any) => {
-  axios.post("http://localhost:3001/emails", value);
+  axios.post("https://henry-pf-back.up.railway.app/emails", value);
   return {
     type: ActionTypes.FOOTER_EMAIL,
     payload: value,
@@ -150,7 +158,7 @@ export const fetchProductsApi =
       .get("https://henry-pf-back.up.railway.app/products")
       .then(
         function (response) {
-          if (response.data.length) return response;
+          if (response.status) return response;
           else {
             var error = new Error(
               "Error " + response.status + ": " + response.statusText
@@ -198,7 +206,7 @@ export const fetchBrandApi =
       .get("https://henry-pf-back.up.railway.app/brands")
       .then(
         function (response) {
-          if (response.data.length) return response;
+          if (response.status) return response;
           else {
             var error = new Error(
               "Error " + response.status + ": " + response.statusText
@@ -248,7 +256,7 @@ export const fetchCategoryApi =
       .get("https://henry-pf-back.up.railway.app/category")
       .then(
         function (response) {
-          if (response.data.length) {
+          if (response.status) {
             return response;
           } else {
             var error = new Error(
@@ -719,5 +727,95 @@ export const putQuestion =
       })
       .catch((error) => {
         console.log("PUT question", error.message);
+      });
+  };
+
+//Ventas
+
+export const updateSale = (value: any) => {
+  return {
+    type: ActionTypes.SALE_UPDATE,
+    payload: value,
+  };
+};
+
+export const loadingSale = () => {
+  return {
+    type: ActionTypes.SALE_LOADING,
+  };
+};
+
+export const failedSale = (value: any) => {
+  return {
+    type: ActionTypes.SALE_FAILED,
+    payload: value,
+  };
+};
+
+export const addSales = (value: any) => {
+  return {
+    type: ActionTypes.SALES_ADD,
+    payload: value,
+  };
+};
+
+export const addSale = (value: any) => {
+  return {
+    type: ActionTypes.SALE_ADD,
+    payload: value,
+  };
+};
+
+export const fetchSalesApi =
+  (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+    dispatch(loadingSale());
+
+    return await axios
+      .get("https://henry-pf-back.up.railway.app/sale")
+      .then(
+        function (response) {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        function (error) {
+          var errMess = new Error(error.message);
+          throw errMess;
+        }
+      )
+      .then((sales) => dispatch(addSales(sales.data)))
+      .catch((error) => dispatch(failedSale(error.message)));
+  };
+
+export const putSale =
+  (id: string, sale: any): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    return axios
+      .put("https://henry-pf-back.up.railway.app/sale/" + id, sale)
+      .then(
+        (response) => {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .then((response) => {
+        dispatch(updateSale(response.data));
+      })
+      .catch((error) => {
+        console.log("PUT sale", error.message);
       });
   };

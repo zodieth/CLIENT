@@ -24,6 +24,7 @@ import {
 import style from "./SignUp.module.css"
 import { error } from "console";
 import { Password } from "@mui/icons-material";
+import Swal from "sweetalert2";
 
 export default function SignupCard() {
   const [userName, setUserName] = useState("");
@@ -164,11 +165,38 @@ export default function SignupCard() {
           return error.param === "phoneNumber";
         });
         if(userNameExists) {
-          window.alert("Ya existe una cuenta con el nombre de usuario ingresado.");
+          const Toast = Swal.mixin({
+            toast: false,
+            position: "center",
+            showConfirmButton: true
+          });
+          Toast.fire({
+            icon: "warning",
+            title: "Atención...",
+            text: "Ya existe una cuenta con el nombre de usuario ingresado."
+          });
         } else if(emailExists) {
-          window.alert("Ya existe una cuenta con el correo electrónico ingresado.");
+          const Toast = Swal.mixin({
+            toast: false,
+            position: "center",
+            showConfirmButton: true
+          });
+          Toast.fire({
+            icon: "warning",
+            title: "Atención...",
+            text: "Ya existe una cuenta con el correo electrónico ingresado."
+          });
         } else if(phoneNumberExists) {
-          window.alert("Ya existe una cuenta con el número telefónico ingresado.");
+          const Toast = Swal.mixin({
+            toast: false,
+            position: "center",
+            showConfirmButton: true
+          });
+          Toast.fire({
+            icon: "warning",
+            title: "Atención...",
+            text: "Ya existe una cuenta con el número telefónico ingresado."
+          });
         };
         return false;
       } else {
@@ -176,7 +204,18 @@ export default function SignupCard() {
       };
   };
   const handleSignUp = async () => {
-    if(!allowSignUp) return window.alert("Algunos de los datos ingresados NO son válidos.");
+    if(!allowSignUp) {
+      const Toast = Swal.mixin({
+        toast: false,
+        position: "center",
+        showConfirmButton: true
+      });
+      return Toast.fire({
+        icon: "warning",
+        title: "Atención...",
+        text: "Algunos de los datos ingresados NO son válidos."
+      });
+    };
     const successfulUserCreation = await handleUserCreation(
       province,
       city,
@@ -196,10 +235,27 @@ export default function SignupCard() {
         connection: AUTH0_REALM
       }, async (error : Auth0Error | null, result : any) => {
         if(error) {
-          window.alert("El proceso de registro no ha sido exitoso. Por favor, intenta más tarde.");
+          const Toast = Swal.mixin({
+            toast: false,
+            position: "center",
+            showConfirmButton: true
+          });
+          Toast.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "El proceso de registro no ha sido exitoso. Por favor, intenta más tarde."
+          });
         } else {
-          window.alert("Bienvenido a AllTech. Revisa tu correo electrónico, recuerda que debes verificar tu cuenta antes de ingresar.");
-          //Esta alerta podría recordar al usuario los datos de la cuenta recién creada...
+          const Toast = Swal.mixin({
+            toast: false,
+            position: "center",
+            showConfirmButton: true
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Enhorabuena...",
+            text: "Bienvenido a AllTech. Revisa tu correo electrónico, recuerda que debes verificar tu cuenta antes de ingresar."
+          });
           navigate("/signin");
         };
       });

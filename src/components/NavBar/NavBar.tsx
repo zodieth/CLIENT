@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "./navBar.module.css";
 import { Box, Button } from "@chakra-ui/react";
@@ -25,9 +25,10 @@ import {
   AUTH0_CLIENT_ID,
   AUTH0_DOMAIN,
   AUTH0_MANAGEMENT_API_ACCESS_TOKEN,
+  API_SERVER_URL
 } from "../../auth0.config";
 import ToggleColorMode from "../DarkMode/ToggleColorMode";
-
+import Swal from "sweetalert2";
 import { searchUserByEmail } from "../../app/actionsCreators";
 
 function NavBar(props: any) {
@@ -39,6 +40,7 @@ function NavBar(props: any) {
 
   const [userName, setUserName] = useState("");
   const [picture, setPicture] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
   const cartItems = useAppSelector((state) => state.cart);
@@ -47,10 +49,12 @@ function NavBar(props: any) {
   const accessToken = localStorage.getItem("accessToken");
   const activeSession = accessToken ? true : false;
   const handleLogout = async () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem("email");
     localStorage.removeItem("accessToken");
     await auth.logout({
       returnTo: AUTH0_CALLBACK_URL,
-      clientID: AUTH0_CLIENT_ID,
+      clientID: AUTH0_CLIENT_ID
     });
   };
 
@@ -59,47 +63,56 @@ function NavBar(props: any) {
   // setUserName(useState.user.userName);
 
   const handleUser = async () => {
-    await auth.client.userInfo(
-      accessToken,
-      async (error: Auth0Error | null, user: Auth0UserProfile) => {
-        if (error) {
-          console.log("Error: ", error);
-          // window.alert("La sesión ha expirado.");
-          // await handleLogout();
-        } else {
-          setPicture(user.picture);
-          dispatchUser(user.email);
-
-          localStorage.setItem("email", user.email);
-          localStorage.setItem("user_id", userState.user._id);
-
-          const userId = user.sub;
-          const userRolesResponse = await fetch(
-            `https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${AUTH0_MANAGEMENT_API_ACCESS_TOKEN}`,
-              },
-            }
-          );
-          const userRoles = await userRolesResponse.json();
-          const hasAdminRole = userRoles.some(
-            (role: { id: String; name: String; description: String }) =>
-              role.name === "alltech-admin"
-          );
-
-          setIsAdmin(hasAdminRole);
-        }
-      }
-    );
+    await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
+      if(error) {
+        console.log("Error: ", error);
+      } else {
+        setUserName(user.nickname);
+        setPicture(user.picture);
+        setIsLoggedIn(true);
+        dispatchUser(user.email);
+        localStorage.setItem("email", user.email);
+        // localStorage.setItem("user_id", userState.user._id);
+        const userId = user.sub;
+        const userRolesResponse = await fetch(`https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${AUTH0_MANAGEMENT_API_ACCESS_TOKEN}`
+          }
+        });
+        const userRoles = await userRolesResponse.json();
+        const hasAdminRole = userRoles.some((role : { id : String, name : String, description : String }) => role.name === "alltech-admin");
+        setIsAdmin(hasAdminRole);
+        const userDataResponse = await fetch(`${API_SERVER_URL}/useremail/${user.email}`, {
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+            // Authorization: `Bearer ${accessToken}`
+          }
+        });
+        const userData = await userDataResponse.json();
+        if(!userData.active) {
+          await handleLogout();
+          const Toast = Swal.mixin({
+            toast: false,
+            position: "center",
+            showConfirmButton: true
+          });
+          Toast.fire({
+            icon: "warning",
+            title: "Atención...",
+            text: "Tu cuenta ha sido desactivada, escríbenos a alltech@gmail.com."
+          });
+        };
+      };
+    });
   };
 
   useEffect(() => {
     if (activeSession) {
       setUserName(userState.user.userName);
       handleUser();
-    }
+    };
   }, []);
 
   return (
@@ -111,13 +124,13 @@ function NavBar(props: any) {
         <Link to="/">
           <h1 className={style.h1Logo}>
             {" "}
-            <img src="https://res.cloudinary.com/dy5msftwe/image/upload/v1675614765/Products/logo_jvrcny.png" />
+            <img src="https://cdn.discordapp.com/attachments/1064640307213377546/1072673719069180005/3.png" />
           </h1>
         </Link>
       </Box>
       <Box className={style.buttons}>
         <ToggleColorMode />
-        <Link to="/cart" className={style.cartI}>
+        <Link to={"/cart"} className={style.cartI}>
           <Button
             leftIcon={<FaShoppingCart />}
             className={style.items}
@@ -138,7 +151,7 @@ function NavBar(props: any) {
           </Button>
         </Link>
 
-        {activeSession ? (
+        {isLoggedIn ? (
           <Box className={style.avatar_login}>
             <Button
               rightIcon={<FiLogIn />}
@@ -180,7 +193,7 @@ function NavBar(props: any) {
                       Mi cuenta de administrador
                     </MenuItem>
                   ) : null}
-                  <MenuItem onClick={handleLogout}>Salir</MenuItem>
+                  <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
                 </MenuList>
               </Menu>
             </Stack>

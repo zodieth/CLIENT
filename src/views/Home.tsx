@@ -17,6 +17,7 @@ import Cards from "../components/ProductCards/Cards";
 import Filter from "../components/Filtro/filter";
 import ToggleColorMode from "../components/DarkMode/ToggleColorMode"; // dark mode
 import { LightMode } from "@chakra-ui/react";
+import Testimonials from "../components/Testimonials/Testimonials";
 
 function Home() {
   const dispatch = useAppDispatch();
@@ -25,27 +26,38 @@ function Home() {
     dispatch(fetchProductsApi());
     dispatch(fetchBrandApi());
     dispatch(fetchCategoryApi());
+    loadScript();
   }, []);
 
-  /*   function loadScript() {
-    var ldk = document.createElement('script'); ldk.type = 'text/javascript'; ldk.async = true; ldk.src = 'https://s.cliengo.com/weboptimizer/63d9c2f6c9293c0029564cc9/63d9c2fac9293c0029564ccc.js?platform=view_installation_code'; var s = document.getElementsByTagName('script')[0]; s.parentNode!.insertBefore(ldk, s);
-  } */
+/* BOT */
+  function loadScript() {
+    var Tawk_API:any = Tawk_API || {};
+    var Tawk_LoadStart = new Date();
+    var s1 = document.createElement("script");
+    var s0 = document.getElementsByTagName("script")[0];
+    s1.async = true;
+    s1.src = 'https://embed.tawk.to/63ddf0564742512879116b39/1godf5l70';
+    s1.charset = 'UTF-8';
+    s1.setAttribute('crossorigin', '*');
+    s0.parentNode?.insertBefore(s1, s0);
+}
   return (
     <div>
-      <div /* className={style.app} */>
+        <div /* className={style.app} */>  
         {" "}
         {/* sacamos el estilo para que funcione el dark mode junto al archivo theme.js */}
-        <NavBar />
-        <Carousel />
-        <LightMode>
-          <Filter />
-        </LightMode>
-        <Cards />
-        <CarouselDown />
-        <LightMode>
-          <Footer />
-        </LightMode>
-      </div>
+          <NavBar />
+          <Carousel />
+          <LightMode>
+            <Filter />
+          </LightMode>
+          <Cards />
+          <Testimonials/>
+          <CarouselDown />
+          <LightMode>
+            <Footer />
+            </LightMode>
+        </div>
     </div>
   );
 }

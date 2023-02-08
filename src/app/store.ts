@@ -7,15 +7,18 @@ import logger from "redux-logger";
 import thunk from "redux-thunk";
 import { Categories } from "../features/categories/Categories";
 import { User } from "../features/user/User";
+import { Sales } from "../features/sales/Sales";
 
 export const store = configureStore({
   reducer: {
+    sales: Sales,
     user: User,
     cart: Cart,
     products: Products,
     brands: Brands,
     categories: Categories,
     questions: Questions,
+    // sales: Sales,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(thunk).concat(logger),
