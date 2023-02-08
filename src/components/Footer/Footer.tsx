@@ -136,6 +136,9 @@ export default function LargeWithNewsletter() {
 
         </SimpleGrid>
       </Container>
+          <Box width="100%" height="5%" /* border="1px solid #CCC" */ padding="1px" textAlign="center" backgroundColor="#2f3e46" textColor="white">
+              <ListHeader  >Copyright © 2023 AllTech. Todos los derechos reservados.</ListHeader>
+          </Box>
     </Box>
   );
 }
