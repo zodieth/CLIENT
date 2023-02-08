@@ -106,7 +106,7 @@ export default function CategoriesAdmin() {
               <Tr {...row.getRowProps()}>
                 {row.cells.map(cell => {
                   if(cell.column.Header === "Acciones"){
-                    return <Td><LightMode><Button><Link to={`/Admin/categories/edit/${cell.value}`}><HiOutlinePencilAlt size={20}/></Link></Button></LightMode></Td>
+                    return <Td><LightMode><Button colorScheme='blue'><Link to={`/Admin/categories/edit/${cell.value}`}><HiOutlinePencilAlt size={20}/></Link></Button></LightMode></Td>
                   } else if(cell.column.Header === "Activo"){
                     return <Td><Switch id='email-alerts' isChecked={cell.value.active ? true : false} onChange={() => setActive(cell.value._id, cell.value.active)} /></Td>
                   } else if(cell.column.Header === "Descripcion"){
