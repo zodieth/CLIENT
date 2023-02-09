@@ -124,3 +124,20 @@
   font-size: 0.5rem;
   font-size: 13px;
 }
+
+.totalpc{
+  display: flex;
+  justify-content: center;
+ /*  margin: 0 auto; */
+  text-align: center;
+}
+
+.botonArmado{
+  left: 150px;
+}
+.gammer{
+  /* text-align: start; */
+  width: 1000px;
+  right: 1000px;
+
+}
