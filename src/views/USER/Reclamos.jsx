@@ -31,7 +31,7 @@ export default function Reclamos() {
 
   useEffect(() => {
     dispatch(fetchSalesApi());
-    dispatch(searchUserByEmail(localStorage.getItem("email")));
+    //dispatch(searchUserByEmail(localStorage.getItem("email")));
   }, []);
 
   const sales = useAppSelector((state) => state.sales);
