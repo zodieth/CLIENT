@@ -78,7 +78,6 @@ export default function SidebarWithHeader({
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
-  const [renderDashboard, setRenderDashboard] = useState(true);
 
   useEffect(() => {
     dispatch(fetchProductsApi());
@@ -92,11 +91,11 @@ export default function SidebarWithHeader({
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       {" "}
       {/* el centro del panel */}
-      {renderDashboard ? <SidebarContent  /* menu de la izquierda */
+      <SidebarContent /* menu de la izquierda */
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
-      /> : null}
-      {renderDashboard ? <Drawer 
+      />
+      <Drawer
         autoFocus={false}
         isOpen={isOpen}
         placement="left"
@@ -108,11 +107,11 @@ export default function SidebarWithHeader({
         <DrawerContent>
           <SidebarContent onClose={onClose} />
         </DrawerContent>
-      </Drawer> : null}
-      <MobileNav  onOpen={onOpen} />
-      {renderDashboard ? <Box ml={{ base: 0, md: 60 }} p="4">
+      </Drawer>
+      <MobileNav onOpen={onOpen} />
+      <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
-      </Box> : null}
+      </Box>
     </Box>
   );
 }
@@ -218,24 +217,33 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     });
   };
   const handleUser = async () => {
-    await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
-      if(error) {
-        console.log("Error: ", error);
-      } else {
-        const userId = user.sub;
-        const userRolesResponse = await fetch(`https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${AUTH0_MANAGEMENT_API_ACCESS_TOKEN}`
-          }
-        });
-        const userRoles = await userRolesResponse.json();
-        const hasAdminRole = userRoles.some((role : { id : String, name : String, description : String }) => role.name === "alltech-admin");
-        if(!hasAdminRole) navigate("/");
-        setUserName(user.nickname);
-        setPicture(user.picture);
-      };
-    })
+    await auth.client.userInfo(
+      accessToken,
+      async (error: Auth0Error | null, user: Auth0UserProfile) => {
+        if (error) {
+          console.log("Error: ", error);
+        } else {
+          const userId = user.sub;
+          const userRolesResponse = await fetch(
+            `https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${AUTH0_MANAGEMENT_API_ACCESS_TOKEN}`,
+              },
+            }
+          );
+          const userRoles = await userRolesResponse.json();
+          const hasAdminRole = userRoles.some(
+            (role: { id: String; name: String; description: String }) =>
+              role.name === "alltech-admin"
+          );
+          if (!hasAdminRole) navigate("/");
+          setUserName(user.nickname);
+          setPicture(user.picture);
+        }
+      }
+    );
   };
 
   useEffect(() => {
@@ -243,8 +251,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       navigate("/");
     } else {
       handleUser();
-    };
-
+    }
   }, []);
   return (
     <Flex /* devuelta es la barra donde esta la parte del administrador arriba */
