@@ -26,7 +26,6 @@ function Detail(props: any) {
   const products = useAppSelector((state: any) => state.products);
   const salesStore = useAppSelector((state: any) => state.sales);
   const userStore = useAppSelector((state: any) => state.user);
-  const [ question, setQuestion ] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dispatch = useAppDispatch();
   const findDetail = products?.allProducts.filter(
