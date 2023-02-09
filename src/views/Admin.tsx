@@ -78,7 +78,7 @@ export default function SidebarWithHeader({
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
-  const [renderDashboard, setRenderDashboard] = useState(false);
+  const [renderDashboard, setRenderDashboard] = useState(true);
 
   useEffect(() => {
     dispatch(fetchProductsApi());
@@ -87,6 +87,7 @@ export default function SidebarWithHeader({
     dispatch(fetchQuestionsApi());
     dispatch(fetchSalesApi());
   }, [dispatch]);
+  
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       {" "}

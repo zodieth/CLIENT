@@ -22,7 +22,7 @@ export const putUser =
   (user: any, id: any): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     return axios
-      .put("http://localhost:3001/users/" + id, user)
+      .put("https://henry-pf-back.up.railway.app/users/" + id, user)
       .then(
         (response) => {
           if (response.status) {
@@ -67,7 +67,7 @@ export const createProduct = (value: any) => {
 };
 
 export const footerEmail = (value: any) => {
-  axios.post("http://localhost:3001/emails", value);
+  axios.post("https://henry-pf-back.up.railway.app/emails", value);
   return {
     type: ActionTypes.FOOTER_EMAIL,
     payload: value,
@@ -769,7 +769,7 @@ export const putQuestion =
     dispatch(loadingSale());
 
     return await axios
-      .get("http://localhost:3001/sale")
+      .get("https://henry-pf-back.up.railway.app/sale")
       .then(
         function (response) {
           if (response.status) {
@@ -797,7 +797,7 @@ export const putQuestion =
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     return axios
-      .put("http://localhost:3001/sale/" + id, sale)
+      .put("https://henry-pf-back.up.railway.app/sale/" + id, sale)
       .then(
         (response) => {
           if (response.status) {
@@ -882,7 +882,7 @@ export const fetchUsersApi =
 
   export const saveReview = (description: any, productoID: any, rating: any): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     return axios
-      .post("http://localhost:3001/reviews", {
+      .post("https://henry-pf-back.up.railway.app/reviews", {
         description,
         productoID,
         rating,

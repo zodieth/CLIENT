@@ -220,8 +220,8 @@ export default function SalesAdmin() {
                     value={`${selectedSale._id}`}  width={1}
                   />
                   <p>Nombre: {selectedSale.user.firstName} {selectedSale.user.lastName}</p>
-                  <p>Teléfono: {selectedSale.user.phoneNumber}</p>
-                  <p>Dirección: {selectedSale.user.location.address} - {selectedSale.user.location.province} - {selectedSale.user.location.city}</p>
+                  <p>Teléfono: {selectedSale.user?.phoneNumber}</p>
+                  <p>Dirección: {selectedSale.user?.location?.address} - {selectedSale.user?.location?.province} - {selectedSale.user?.location?.city}</p>
                   <Button id="imprimir" rightIcon={<AiFillPrinter />} onClick={() => window.print()}>Imprimir</Button>
                 </>
                 : ""
