@@ -48,16 +48,42 @@ export default function Reclamos() {
     });
   }
 
+  function error(error){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: "error",
+      title: "Agregado Correctamente",
+      text: error
+    });
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     if (inputs.description.length < 10) {
       setErrors(true);
+      error("La descripción no puede ser menor a 10 caracteres")
     } else if (!inputs.user.length) {
       setErrors(true);
+      error("Debe seleccionar un usuario")
     } else if (!inputs.email.length) {
       setErrors(true);
+      error("Debe proporcionar un correo")
+    } else if (inputs.issue === ""){
+      setErrors(true);
+      error("Debe seleccionar un problema")
     } else {
-      dispatch(postClaim(inputs));
+      //dispatch(postClaim(inputs));
 
       const Toast = Swal.mixin({
         toast: true,
@@ -113,8 +139,8 @@ export default function Reclamos() {
             name="issue"
             placeholder="issue"
             onChange={(e) => handleChange(e)}
+            required
           >
-            <option value="wrong">Problema</option>
             <option value="missing">Perdido</option>
             <option value="damaged">Dañado</option>
             <option value="wrong">Erróneo</option>

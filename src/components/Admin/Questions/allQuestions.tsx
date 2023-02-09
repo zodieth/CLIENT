@@ -31,9 +31,11 @@ import { HiReply } from "react-icons/hi";
 import { putQuestion } from '../../../app/actionsCreators'
 import Swal from "sweetalert2";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function AllQuestionsAdmin() {
   const questionsStore = useAppSelector((state) => state.questions)
+  const productsStore = useAppSelector((state) => state.products)
   const dispatch = useAppDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [questionId, setQuestionId] = useState('');
@@ -119,6 +121,7 @@ export default function AllQuestionsAdmin() {
               <TableCaption>Listado de preguntas</TableCaption>
               <Thead>
                 <Tr>
+                  <Th>Producto</Th>
                   <Th>Pregunta</Th>
                   <Th>Respuesta</Th>
                   <Th>Activo</Th>
@@ -127,21 +130,34 @@ export default function AllQuestionsAdmin() {
               </Thead>
               <Tbody>
                 { questionsStore.allQuestions.map((question:any) => {
-                  return( 
-                    <>
-                      <Tr key={question._id}>
-                        <Td>{question.question.substring(0,100)+"..."}</Td>
-                        <Td>{question.answer.substring(0,100)+"..."}</Td>
-                        <LightMode><Td><Switch id='email-alerts' isChecked={question.active ? true : false} onChange={() => setActive(question._id, question.active)} /></Td> </LightMode>
-                        <Td style={{ display: "flex" }}>
-                          <LightMode>
-                            <Button colorScheme='blue' onClick={() => handleClickOpenModal(question._id)}>
-                              <HiReply size={20}/>
-                            </Button>
-                          </LightMode>                      
-                        </Td>
-                      </Tr>
-                    </>)
+                  let showRow = false;
+                  let producto: any = {};
+                  productsStore.allProducts.map((product: any) => {
+                    product.questions.map((questionProduct: any) => {
+                      if(question._id === questionProduct._id){
+                        showRow = true;
+                        producto = product;
+                      }
+                    })
+                  })
+                  if (showRow) {
+                    return( 
+                      <>
+                        <Tr key={question._id}>
+                          <Td><Link to={"../productos/"+producto.name} target="_blank">{producto.name}</Link></Td>
+                          <Td>{question.question.substring(0,100)+"..."}</Td>
+                          <Td>{question.answer.substring(0,100)+"..."}</Td>
+                          <LightMode><Td><Switch id='email-alerts' isChecked={question.active ? true : false} onChange={() => setActive(question._id, question.active)} /></Td> </LightMode>
+                          <Td style={{ display: "flex" }}>
+                            <LightMode>
+                              <Button colorScheme='blue' onClick={() => handleClickOpenModal(question._id)}>
+                                <HiReply size={20}/>
+                              </Button>
+                            </LightMode>                      
+                          </Td>
+                        </Tr>
+                      </>)
+                  }
                 })}
               </Tbody>
             </Table>
