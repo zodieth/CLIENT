@@ -193,28 +193,18 @@ export default function SimpleCard() {
                 </Center>
               </Button>
 
-              <Link
-                to={
-                  email === "admin@gmail.com" && password === "admin"
-                    ? "/admin"
-                    : email === "prueba@gmail.com" && password === "prueba"
-                    ? "/"
-                    : ""
-                }
+              <Button
+                className={style.iniciosesion}
+                width={"full"}
+                bg={"blue.400"}
+                color={"white"}
+                _hover={{
+                  bg: "blue.500",
+                }}
+                onClick={handleLogin}
               >
-                <Button
-                  className={style.iniciosesion}
-                  width={"full"}
-                  bg={"blue.400"}
-                  color={"white"}
-                  _hover={{
-                    bg: "blue.500",
-                  }}
-                  onClick={handleLogin}
-                >
-                  Iniciar sesión
-                </Button>
-              </Link>
+                Iniciar sesión
+              </Button>
 
               <Stack onClick={() => navigate("/resetpassword")}>
                 <Link style={{ color: "blue" }} color={"blue.400"}>
