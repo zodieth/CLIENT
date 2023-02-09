@@ -155,14 +155,6 @@ function Detail(props: any) {
 
   const accessToken = localStorage.getItem("accessToken");
   const activeSession = accessToken ? true : false;
-  const handleLogout = async () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("accessToken");
-    await auth.logout({
-      returnTo: AUTH0_CALLBACK_URL,
-      clientID: AUTH0_CLIENT_ID
-    });
-  };
 
   const handleUser = async () => {
     await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
@@ -170,7 +162,6 @@ function Detail(props: any) {
         console.log("Error: ", error);
       } else {
         setIsLoggedIn(true);
-        if(!isLoggedIn) handleLogout();
       };
     });
   };
