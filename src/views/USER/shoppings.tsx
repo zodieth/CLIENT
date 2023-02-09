@@ -47,7 +47,6 @@ export default function ShoppingUser() {
   const data: any = [];
 
   salesStore.allSales.map((sale: any) => {
-    //if(sale.user._id === "63e28a72552bcfe958840369")
     if(sale.user._id === userStore.user._id)
       data.push({
         name: sale._id,

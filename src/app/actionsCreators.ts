@@ -939,7 +939,7 @@ export const saveReview =
     dispatch(loadingClaim());
 
     return await axios
-      .get("http://localhost:3001/claims")
+      .get("https://henry-pf-back.up.railway.app/claims")
       .then(
         function (response) {
           if (response.status) {
