@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  postQuestion,
-  fetchProductsApi,
-} from "../../app/actionsCreators";
+import { postQuestion, fetchProductsApi } from "../../app/actionsCreators";
 import Footer from "../../components/Footer/Footer";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import NavBar from "../../components/NavBar/NavBar";
@@ -17,13 +14,12 @@ import Swal from "sweetalert2";
 import NuevoCarrusel from "./NuevoCarrusel";
 import ToggleColorMode from "../../components/DarkMode/ToggleColorMode";
 import { auth } from "../../auth0.service";
-import { AUTH0_CLIENT_ID, 
-  AUTH0_CALLBACK_URL } from "../../auth0.config";
+import { AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL } from "../../auth0.config";
 
 function Detail(props: any) {
   const { name } = useParams();
   const products = useAppSelector((state: any) => state.products);
-  const [ question, setQuestion ] = useState("");
+  const [question, setQuestion] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -99,20 +95,22 @@ function Detail(props: any) {
   ///////////////////////////////////////////
 
   const handleSubmitQuestion = () => {
-    const question = document.querySelector<HTMLInputElement>('#pregunta');
-    const email = localStorage.getItem("email")
-    if(question?.value.length !== 0){
-      try{
+    const question = document.querySelector<HTMLInputElement>("#pregunta");
+    const email = localStorage.getItem("email");
+    if (question?.value.length !== 0) {
+      try {
         dispatch(postQuestion(email, findDetail[0]._id, question?.value));
         createdAlert();
         question!.value = "";
-      }catch (e){
-        createdAlertError("Algo salio mal, pongase en contacot con un administrador")
+      } catch (e) {
+        createdAlertError(
+          "Algo salio mal, pongase en contacot con un administrador"
+        );
       }
-    }else{
-      createdAlertError("Complete el campo pregunta antes de enviarla")
+    } else {
+      createdAlertError("Complete el campo pregunta antes de enviarla");
     }
-  }
+  };
 
   const createdAlert = () => {
     const Toast = Swal.mixin({
@@ -133,7 +131,7 @@ function Detail(props: any) {
     });
   };
 
-  const createdAlertError = (mensaje:string) => {
+  const createdAlertError = (mensaje: string) => {
     const Toast = Swal.mixin({
       toast: true,
       position: "top-end",
@@ -170,25 +168,25 @@ function Detail(props: any) {
     const Toast = Swal.mixin({
       toast: false,
       position: "center",
-      showConfirmButton: true
+      showConfirmButton: true,
     });
     Toast.fire({
       icon: "info",
       title: "Ten en cuenta...",
-      text: "Para hacer una pregunta, debes iniciar sesión o registrarte. Haz click en 'Ingresar' en la esquina superior derecha de la ventana."
+      text: "Para hacer una pregunta, debes iniciar sesión o registrarte. Haz click en 'Ingresar' en la esquina superior derecha de la ventana.",
     });
   };
 
   useEffect(() => {
     if (activeSession) {
       handleUser();
-    };
+    }
   }, []);
 
   return (
     <Box>
       <Box className={style.navBar}>
-      <NavBar />
+        <NavBar />
       </Box>
 
       {!findDetail.length ? (
@@ -205,7 +203,9 @@ function Detail(props: any) {
                     alt="imgDetail"
                     className={style.imgDetail}
                   />
-                  <h4 className={style.texto}>* Las imágenes se exhiben con fines ilustrativos.</h4>
+                  <h4 className={style.texto}>
+                    * Las imágenes se exhiben con fines ilustrativos.
+                  </h4>
                   <Box className={style.price_cart}>
                     <Box className={style.price}>US$ {e.price}</Box>
                     <Button
@@ -237,39 +237,51 @@ function Detail(props: any) {
 
                 <Box className={style.right}>
                   <Box className={style.description}>{e.description}</Box>
-
-                  
                 </Box>
               </Box>
 
               <Box className={style.preguntas}>
                 <Box>
-                  <Box className={style.tituloPreguntas}>Preguntas de nuestros clientes</Box>
-                  {e.questions.length>0?  
-                  (e.questions.map((q:any)=>{
-                    if(q.active){
-                      return(
-                        <Box className={style.question}>
-                          <dl>
-                            <dt>{q.question}</dt>
-                            <dd>└─ {q.answer}</dd>
-                          </dl>
-                        </Box>
-                      )
-                    }
-                })): (
-                  <Box className={style.question}>
-                    Aún no hay preguntas sobre este producto, sé el primero
-                  </Box>)
-                }
+                  <Box className={style.tituloPreguntas}>
+                    Preguntas de nuestros clientes
+                  </Box>
+                  {e.questions.length > 0 ? (
+                    e.questions.map((q: any) => {
+                      if (q.active) {
+                        return (
+                          <Box className={style.question}>
+                            <dl>
+                              <dt>{q.question}</dt>
+                              <dd>└─ {q.answer}</dd>
+                            </dl>
+                          </Box>
+                        );
+                      }
+                    })
+                  ) : (
+                    <Box className={style.question}>
+                      Aún no hay preguntas sobre este producto, sé el primero
+                    </Box>
+                  )}
                 </Box>
                 <Box className={style.rigth}>
-                  <Box className={style.tituloPreguntas}>Dejanos tu consulta:</Box>
-                  <Box className={style.newQuestion}> 
-                    <Textarea name="Pregunta" id="pregunta" placeholder="Escribe tu pregunta aquí"></Textarea>
-                    <Button colorScheme="blue" onClick={isLoggedIn ? handleSubmitQuestion : handleLoginReminder}>
+                  <Box className={style.tituloPreguntas}>
+                    Dejanos tu consulta:
+                  </Box>
+                  <Box className={style.newQuestion}>
+                    <Textarea
+                      name="Pregunta"
+                      id="pregunta"
+                      placeholder="Escribe tu pregunta aquí"
+                    ></Textarea>
+                    <Button
+                      colorScheme="blue"
+                      onClick={
+                        isLoggedIn ? handleSubmitQuestion : handleLoginReminder
+                      }
+                    >
                       <h5>Enviar</h5>
-                      <TbSend height={8} color={"white"}/>
+                      <TbSend height={8} color={"white"} />
                     </Button>
                   </Box>
                 </Box>
@@ -279,8 +291,12 @@ function Detail(props: any) {
         })
       )}
       <Box>
-      <LightMode><NuevoCarrusel /></LightMode>
-        <LightMode><Footer /></LightMode>
+        <LightMode>
+          <NuevoCarrusel />
+        </LightMode>
+        <LightMode>
+          <Footer />
+        </LightMode>
       </Box>
     </Box>
   );
