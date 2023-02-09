@@ -75,7 +75,7 @@ export const footerEmail = (value: any) => {
 };
 
 export const sendProducts = (value: any) => {
-  axios.post("http://localhost:3001/sale", value);
+  axios.post("https://henry-pf-back.up.railway.app/sale", value);
 
   return {
     type: ActionTypes.CREATE_PRODUCT,
@@ -728,43 +728,43 @@ export const putQuestion =
       });
   };
 
-  //Ventas
+//Ventas
 
-  export const updateSale = (value: any) => {
-    return {
-      type: ActionTypes.SALE_UPDATE,
-      payload: value,
-    };
+export const updateSale = (value: any) => {
+  return {
+    type: ActionTypes.SALE_UPDATE,
+    payload: value,
   };
-  
-  export const loadingSale = () => {
-    return {
-      type: ActionTypes.SALE_LOADING,
-    };
-  };
-  
-  export const failedSale = (value: any) => {
-    return {
-      type: ActionTypes.SALE_FAILED,
-      payload: value,
-    };
-  };
-  
-  export const addSales = (value: any) => {
-    return {
-      type: ActionTypes.SALES_ADD,
-      payload: value,
-    };
-  };
-  
-  export const addSale = (value: any) => {
-    return {
-      type: ActionTypes.SALE_ADD,
-      payload: value,
-    };
-  };
+};
 
-  export const fetchSalesApi =
+export const loadingSale = () => {
+  return {
+    type: ActionTypes.SALE_LOADING,
+  };
+};
+
+export const failedSale = (value: any) => {
+  return {
+    type: ActionTypes.SALE_FAILED,
+    payload: value,
+  };
+};
+
+export const addSales = (value: any) => {
+  return {
+    type: ActionTypes.SALES_ADD,
+    payload: value,
+  };
+};
+
+export const addSale = (value: any) => {
+  return {
+    type: ActionTypes.SALE_ADD,
+    payload: value,
+  };
+};
+
+export const fetchSalesApi =
   (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
     dispatch(loadingSale());
 
@@ -790,11 +790,8 @@ export const putQuestion =
       .catch((error) => dispatch(failedSale(error.message)));
   };
 
-  export const putSale =
-  (
-    id: string,
-    sale: any
-  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+export const putSale =
+  (id: string, sale: any): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     return axios
       .put("https://henry-pf-back.up.railway.app/sale/" + id, sale)
@@ -821,9 +818,7 @@ export const putQuestion =
       });
   };
 
-
 //USERS
-
 
 export const updatedUser = (value: any) => {
   return {
@@ -878,9 +873,15 @@ export const fetchUsersApi =
       .catch((error) => dispatch(failedUser(error.message)));
   };
 
-  //Valoracion
+//Valoracion
 
-  export const saveReview = (description: any, productoID: any, rating: any): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+export const saveReview =
+  (
+    description: any,
+    productoID: any,
+    rating: any
+  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  async (dispatch) => {
     return axios
       .post("https://henry-pf-back.up.railway.app/reviews", {
         description,
@@ -895,4 +896,4 @@ export const fetchUsersApi =
         console.log("Post question", error.message);
         dispatch(failedQuestion(error.message));
       });
-  }
+  };

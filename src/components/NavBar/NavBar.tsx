@@ -25,7 +25,7 @@ import {
   AUTH0_CLIENT_ID,
   AUTH0_DOMAIN,
   AUTH0_MANAGEMENT_API_ACCESS_TOKEN,
-  API_SERVER_URL
+  API_SERVER_URL,
 } from "../../auth0.config";
 import ToggleColorMode from "../DarkMode/ToggleColorMode";
 import Swal from "sweetalert2";
@@ -54,7 +54,7 @@ function NavBar(props: any) {
     localStorage.removeItem("accessToken");
     await auth.logout({
       returnTo: AUTH0_CALLBACK_URL,
-      clientID: AUTH0_CLIENT_ID
+      clientID: AUTH0_CLIENT_ID,
     });
   };
 
@@ -63,56 +63,68 @@ function NavBar(props: any) {
   // setUserName(useState.user.userName);
 
   const handleUser = async () => {
-    await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
-      if(error) {
-        console.log("Error: ", error);
-      } else {
-        setUserName(user.nickname);
-        setPicture(user.picture);
-        setIsLoggedIn(true);
-        dispatchUser(user.email);
-        localStorage.setItem("email", user.email);
-        // localStorage.setItem("user_id", userState.user._id);
-        const userId = user.sub;
-        const userRolesResponse = await fetch(`https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${AUTH0_MANAGEMENT_API_ACCESS_TOKEN}`
+    await auth.client.userInfo(
+      accessToken,
+      async (error: Auth0Error | null, user: Auth0UserProfile) => {
+        if (error) {
+          console.log("Error: ", error);
+        } else {
+          setUserName(user.nickname);
+          setPicture(user.picture);
+          setIsLoggedIn(true);
+          dispatchUser(user.email);
+          localStorage.setItem("email", user.email);
+          // localStorage.setItem("user_id", userState.user._id);
+          const userId = user.sub;
+          const userRolesResponse = await fetch(
+            `https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${AUTH0_MANAGEMENT_API_ACCESS_TOKEN}`,
+              },
+            }
+          );
+          const userRoles = await userRolesResponse.json();
+          const hasAdminRole = userRoles.some(
+            (role: { id: String; name: String; description: String }) =>
+              role.name === "alltech-admin"
+          );
+          setIsAdmin(hasAdminRole);
+          const userDataResponse = await fetch(
+            `${API_SERVER_URL}/useremail/${user.email}`,
+            {
+              method: "GET",
+              headers: {
+                "content-type": "application/json",
+                // Authorization: `Bearer ${accessToken}`
+              },
+            }
+          );
+          const userData = await userDataResponse.json();
+          if (!userData.active) {
+            await handleLogout();
+            const Toast = Swal.mixin({
+              toast: false,
+              position: "center",
+              showConfirmButton: true,
+            });
+            Toast.fire({
+              icon: "warning",
+              title: "Atención...",
+              text: "Tu cuenta ha sido desactivada, escríbenos a alltech@gmail.com.",
+            });
           }
-        });
-        const userRoles = await userRolesResponse.json();
-        const hasAdminRole = userRoles.some((role : { id : String, name : String, description : String }) => role.name === "alltech-admin");
-        setIsAdmin(hasAdminRole);
-        const userDataResponse = await fetch(`${API_SERVER_URL}/useremail/${user.email}`, {
-          method: "GET",
-          headers: {
-            "content-type": "application/json",
-            // Authorization: `Bearer ${accessToken}`
-          }
-        });
-        const userData = await userDataResponse.json();
-        if(!userData.active) {
-          await handleLogout();
-          const Toast = Swal.mixin({
-            toast: false,
-            position: "center",
-            showConfirmButton: true
-          });
-          Toast.fire({
-            icon: "warning",
-            title: "Atención...",
-            text: "Tu cuenta ha sido desactivada, escríbenos a alltech@gmail.com."
-          });
-        };
-      };
-    });
+        }
+      }
+    );
   };
 
   useEffect(() => {
     if (activeSession) {
       setUserName(userState.user.userName);
       handleUser();
-    };
+    }
   }, []);
 
   return (
