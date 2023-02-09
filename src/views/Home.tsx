@@ -54,10 +54,10 @@ function Home() {
             <Filter />
           </LightMode>
           <Cards />
-          <Box>
-          <ArmaPCHome/>
-          <TimeLine/>
-          </Box>
+                    <Box  className={style.pc} >
+                      <ArmaPCHome/>
+                      {/* <TimeLine/> */}
+                    </Box>
           <Testimonials/>
           <CarouselDown />
           <LightMode>

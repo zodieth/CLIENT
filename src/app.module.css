@@ -42,3 +42,11 @@ body {
 .slick-next:before {
   color: black;
 }
+
+.pc{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
