@@ -28,11 +28,12 @@ import {
   FiTrendingUp,
   FiCompass,
   FiStar,
-  FiSettings,
+  FiShoppingCart,
   FiMenu,
   FiBell,
   FiChevronDown,
   FiHelpCircle,
+  FiUsers
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
@@ -42,7 +43,7 @@ import {
   fetchBrandApi,
   fetchCategoryApi,
   fetchQuestionsApi,
-  fetchSalesApi,
+  fetchSalesApi
 } from "../app/actionsCreators";
 import { auth } from "../auth0.service";
 import {
@@ -63,23 +64,11 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, url: "/admin" },
   { name: "Productos", icon: FiTrendingUp, url: "/admin/products" },
-  {
-    name: "Categorias",
-    icon: FiCompass,
-    url: "/admin/categories",
-  },
+  { name: "Categorias", icon: FiCompass, url: "/admin/categories" },
   { name: "Marcas", icon: FiStar, url: "/admin/brands" },
-  {
-    name: "Todas las preguntas",
-    icon: FiHelpCircle,
-    url: "/admin/allQuestions",
-  },
-  {
-    name: "Preguntas sin contestar",
-    icon: FiHelpCircle,
-    url: "/admin/questions",
-  },
-  { name: "Ventas", icon: FiSettings, url: "/admin/sales" },
+  { name: "Todas las preguntas", icon: FiHelpCircle, url: "/admin/allQuestions" },
+  { name: "Preguntas sin contestar", icon: FiHelpCircle, url: "/admin/questions" },
+  { name: "Ventas", icon: FiShoppingCart, url: "/admin/sales" },
 ];
 
 export default function SidebarWithHeader({
@@ -97,6 +86,7 @@ export default function SidebarWithHeader({
     dispatch(fetchQuestionsApi());
     dispatch(fetchSalesApi());
   }, [dispatch]);
+  
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       {" "}

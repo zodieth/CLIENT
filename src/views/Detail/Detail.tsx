@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { postQuestion, fetchProductsApi } from "../../app/actionsCreators";
+import {
+  postQuestion,
+  fetchProductsApi,
+  fetchSalesApi
+} from "../../app/actionsCreators";
 import Footer from "../../components/Footer/Footer";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import NavBar from "../../components/NavBar/NavBar";
@@ -13,22 +17,24 @@ import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import Swal from "sweetalert2";
 import NuevoCarrusel from "./NuevoCarrusel";
 import ToggleColorMode from "../../components/DarkMode/ToggleColorMode";
+import StarRating from "./StarRating";
 import { auth } from "../../auth0.service";
 import { AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL } from "../../auth0.config";
 
 function Detail(props: any) {
   const { name } = useParams();
   const products = useAppSelector((state: any) => state.products);
-  const [question, setQuestion] = useState("");
+  const salesStore = useAppSelector((state: any) => state.sales);
+  const userStore = useAppSelector((state: any) => state.user);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dispatch = useAppDispatch();
-
   const findDetail = products?.allProducts.filter(
     (product: interfaceProduct) => product.name === name
   );
 
   useEffect(() => {
     dispatch(fetchProductsApi());
+    dispatch(fetchSalesApi());
   }, [dispatch]);
 
   const [onCart, setOncart] = useState(false);
@@ -82,14 +88,14 @@ function Detail(props: any) {
     review: number;
   };
 
-  const startPercentage = () => {
-    let total = 100;
-    props.reviews?.forEach(function (a: review) {
+  const startPercentage = (product: any) => {
+    let total = 0;
+    product.reviews.forEach(function (a: review) {
       total += a.review;
     });
-    const percentage = total / props.reviews?.length;
+    const percentage = total / product.reviews.length;
     const starPercentage = ((percentage ? percentage : 0 / 100) / 5) * 100;
-
+    
     return starPercentage;
   };
   ///////////////////////////////////////////
@@ -191,7 +197,6 @@ function Detail(props: any) {
       <Box className={style.navBar}>
         <NavBar />
       </Box>
-
       {!findDetail.length ? (
         <Box>No se encontró el producto</Box>
       ) : (
@@ -229,15 +234,45 @@ function Detail(props: any) {
                     </Button>
                   </Box>
                   <Box className={style.calificacion}>
+                    {
+                    userStore.user ? 
+                    salesStore.allSales.length > 0 ?
+                    (
+                      <>
+                        {
+                          salesStore.allSales.some((sale: any) => 
+                            (sale.user._id === userStore.user._id && sale.products.some((product: any) => 
+                              product.product._id === e._id
+                            ))
+                          ) ?
+                            <StarRating product={e._id}/>
+                          : 
+                            <Box className={style.starsOuter}>
+                              <Box
+                                className={style.starsInner}
+                                style={{ width: `${startPercentage(e)}%` }}
+                              ></Box>
+                            </Box>
+                        }
+                      </>
+                    )
+                  :
                     <Box className={style.starsOuter}>
                       <Box
                         className={style.starsInner}
-                        style={{ width: `${startPercentage()}%` }}
+                        style={{ width: `${startPercentage(e)}%` }}
                       ></Box>
                     </Box>
+                    : 
+                      <Box className={style.starsOuter}>
+                        <Box
+                          className={style.starsInner}
+                          style={{ width: `${startPercentage(e)}%` }}
+                        ></Box>
+                      </Box>
+                    }
                   </Box>
                 </Box>
-
                 <Box className={style.right}>
                   <Box className={style.description}>{e.description}</Box>
                 </Box>

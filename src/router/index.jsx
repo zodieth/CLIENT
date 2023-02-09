@@ -27,6 +27,7 @@ import ResetPassword from "../views/SignIn/ResetPassword";
 import Reclamos from "../views/USER/Reclamos";
 import SalesAdmin from "../components/Admin/Sales/sales";
 import GraphicsAdmin from "../components/Admin/Graphics/graphics";
+import UsersAdmin from "../components/Admin/Users/users";
 
 
 export const router = createBrowserRouter([
@@ -171,6 +172,11 @@ export const router = createBrowserRouter([
   {
     path: "/Admin/sales",
     element: <Admin children={<SalesAdmin />} />,
+    exact: true,
+  },
+  {
+    path: "/Admin/users",
+    element: <Admin children={<UsersAdmin />} />,
     exact: true,
   },
 ]);
