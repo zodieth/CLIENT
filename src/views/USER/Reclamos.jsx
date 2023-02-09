@@ -114,6 +114,7 @@ export default function Reclamos() {
         <Box className={style.groupInputs}>
           <label>Compra</label>
           <select
+            className={style.select}
             name="sale"
             placeholder="Compra"
             onChange={(e) => handleChange(e)}
