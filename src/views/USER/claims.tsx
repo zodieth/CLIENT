@@ -1,4 +1,3 @@
-import style from "./products.module.css";
 import {
   Table,
   Thead,
@@ -9,43 +8,60 @@ import {
   TableCaption,
   TableContainer,
   Button,
-  Switch,
   LightMode,
   Input,
   Spinner,
   Card,
   CardHeader,
   CardBody,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
 } from "@chakra-ui/react";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import interfaceProduct from "../../../features/products/interfaceProduct";
-import { HiOutlinePencilAlt } from "react-icons/hi";
-import { putProduct } from "../../../app/actionsCreators";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useTable } from "react-table";
+import { ImEye } from "react-icons/im";
 import Swal from "sweetalert2";
+import { useTable } from "react-table";
+import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-export default function ProductsAdmin() {
-  const productsStore = useAppSelector((state) => state.products);
+export default function ClaimsUser() {
+  const salesStore = useAppSelector((state) => state.sales);
+  const claimsStore = useAppSelector((state) => state.claims);
+  const userStore = useAppSelector((state: any) => state.user);
   const dispatch = useAppDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sale, setSale] = useState<any>();
 
-  const setActive = (id: string, active: Boolean) => {
-    dispatch(putProduct(id, { active: !active }));
+  const handleClickOpenModal = (id: any) => {
+    setIsModalOpen(true);
+    setSale(id);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSale("");
   };
 
   const data: any = [];
 
-  productsStore.allProducts.map((product: interfaceProduct) => {
-    data.push({
-      name: product.name,
-      price: product.price,
-      stock: product.stock,
-      brand: product.brand?.name,
-      category: product.category?.name,
-      active: product,
-      acciones: product._id,
-    });
+  claimsStore.allClaims.map((claim: any) => {
+    if(claim.user._id === userStore.user._id)
+      data.push({
+        issue: claim.issue,
+        description: claim.description,
+        status: claim.status,
+        count: claim.sale.products.length,
+        date: new Date(claim.createdAt).toLocaleDateString("es-ES", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric"
+        }),
+        total: claim.sale.total,
+      });
   });
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -55,37 +71,31 @@ export default function ProductsAdmin() {
 
   const columns = [
     {
-      Header: "Nombre",
-      accessor: "name",
+      Header: "Asunto",
+      accessor: "issue",
     },
     {
-      Header: "Precio",
-      accessor: "price",
+      Header: "Descripcion",
+      accessor: "description",
     },
     {
-      Header: "Stock",
-      accessor: "stock",
+      Header: "Estado",
+      accessor: "status",
     },
     {
-      Header: "Marca",
-      accessor: "brand",
+      Header: "Fecha",
+      accessor: "date",
     },
     {
-      Header: "Categoria",
-      accessor: "category",
-    },
-    {
-      Header: "Activo",
-      accessor: "active",
-    },
-    {
-      Header: "Acciones",
-      accessor: "acciones",
+      Header: "Total USD $",
+      accessor: "total",
     },
   ];
 
-  const filteredData = data.filter((d: any) =>
-    d.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredData = data.filter(
+    (d: any) =>
+      d.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      d.status.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   function Table2({ columns, data }: any) {
@@ -99,7 +109,7 @@ export default function ProductsAdmin() {
     // Render the UI for your table
     return (
       <Table {...getTableProps()} variant="simple" key={Math.random()}>
-        <TableCaption>Listado de productos</TableCaption>
+        <TableCaption>Listado de reclamos</TableCaption>
         <Thead>
           {headerGroups.map((headerGroup) => (
             <Tr {...headerGroup.getHeaderGroupProps()}>
@@ -115,28 +125,18 @@ export default function ProductsAdmin() {
             return (
               <Tr {...row.getRowProps()} key={Math.random()}>
                 {row.cells.map((cell) => {
-                  if (cell.column.Header === "Acciones") {
+                  if (cell.column.Header === "Asunto") {
                     return (
-                      <Td key={Math.random()}>
-                        <LightMode>
-                          <Button colorScheme="blue">
-                            <Link to={`/Admin/products/edit/${cell.value}`}>
-                              <HiOutlinePencilAlt size={20} />
-                            </Link>
-                          </Button>
-                        </LightMode>
-                      </Td>
-                    );
-                  } else if (cell.column.Header === "Activo") {
-                    return (
-                      <Td key={Math.random()}>
-                        <Switch
-                          id="email-alerts"
-                          isChecked={cell.value.active ? true : false}
-                          onChange={() =>
-                            setActive(cell.value._id, cell.value.active)
-                          }
-                        />
+                      <Td {...cell.getCellProps()}>
+                        {cell.value === "missing"
+                          ? "Desaparecido"
+                          : cell.value === "damaged"
+                          ? "Dañado"
+                          : cell.value === "wrong"
+                          ? "Producto incorrecto"
+                          : cell.value === "closed"
+                          ? "Cerrado"
+                          : ""}
                       </Td>
                     );
                   } else {
@@ -153,7 +153,7 @@ export default function ProductsAdmin() {
     );
   }
 
-  if (productsStore.isLoading) {
+  if (salesStore.isLoading && claimsStore.isLoading) {
     return (
       <Spinner
         thickness="4px"
@@ -163,7 +163,7 @@ export default function ProductsAdmin() {
         size="xl"
       />
     );
-  } else if (productsStore.errMess) {
+  } else if (salesStore.errMess || claimsStore.errMess) {
     const Toast = Swal.mixin({
       toast: true,
       position: "top-end",
@@ -185,11 +185,6 @@ export default function ProductsAdmin() {
     return (
       <Card>
         <CardHeader>
-          <div className={style.header}>
-            <Link to="./create" className={style.btnPrimary}>
-              Nuevo
-            </Link>
-          </div>
           <Input
             type="text"
             value={searchTerm}

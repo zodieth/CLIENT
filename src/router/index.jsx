@@ -23,6 +23,13 @@ import ComoComprar from "../views/ComoComprar/ComoComprar";
 import EditUser from "../views/USER/EditUser";
 import QuestionsAdmin from "../components/Admin/Questions/questions";
 import AllQuestionsAdmin from "../components/Admin/Questions/allQuestions";
+import ResetPassword from "../views/SignIn/ResetPassword";
+import Reclamos from "../views/USER/Reclamos";
+import SalesAdmin from "../components/Admin/Sales/sales";
+import GraphicsAdmin from "../components/Admin/Graphics/graphics";
+import UsersAdmin from "../components/Admin/Users/users";
+import ClaimsUser from "../views/USER/claims";
+import ShoppingUser from "../views/USER/shoppings";
 
 export const router = createBrowserRouter([
   {
@@ -46,8 +53,13 @@ export const router = createBrowserRouter([
     exact: true,
   },
   {
+    path: "/user/reclamos",
+    element: <User children={<Reclamos />} />,
+    exact: true,
+  },
+  {
     path: "/admin",
-    element: <Admin />,
+    element: <Admin children={<GraphicsAdmin/>}/>,
     exact: true,
   },
   {
@@ -58,6 +70,11 @@ export const router = createBrowserRouter([
   {
     path: "/signin",
     element: <SignIn />,
+    exact: true,
+  },
+  {
+    path: "/resetpassword",
+    element: <ResetPassword />,
     exact: true,
   },
   {
@@ -73,16 +90,6 @@ export const router = createBrowserRouter([
   {
     path: "/armatupc",
     element: <ArmaPC />,
-  },
-  {
-    path: "/user/purchases",
-    element: <Admin children={<ProductsAdmin />} />,
-    exact: true,
-  },
-  {
-    path: "/user/claims",
-    element: <Admin children={<CategoriesAdmin />} />,
-    exact: true,
   },
   {
     path: "/Admin/products",
@@ -151,6 +158,26 @@ export const router = createBrowserRouter([
   {
     path: "/Admin/allQuestions",
     element: <Admin children={<AllQuestionsAdmin />} />,
+    exact: true,
+  },
+  {
+    path: "/Admin/sales",
+    element: <Admin children={<SalesAdmin />} />,
+    exact: true,
+  },
+  {
+    path: "/Admin/users",
+    element: <Admin children={<UsersAdmin />} />,
+    exact: true,
+  },
+  {
+    path: "/user/claims",
+    element: <User children={<ClaimsUser />} />,
+    exact: true,
+  },
+  {
+    path: "user/shopping",
+    element: <User children={<ShoppingUser />} />,
     exact: true,
   },
 ]);

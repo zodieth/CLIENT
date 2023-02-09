@@ -10,7 +10,6 @@ import {
   VStack,
   Icon,
   useColorModeValue,
-  Link,
   Drawer,
   DrawerContent,
   Text,
@@ -25,21 +24,19 @@ import {
 } from "@chakra-ui/react";
 import {
   FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
   FiSettings,
   FiMenu,
   FiBell,
   FiChevronDown,
+  FiTrendingUp,
+  FiCompass,
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
 import { useAppDispatch } from "../../app/hooks";
 import {
   fetchProductsApi,
-  fetchBrandApi,
-  fetchCategoryApi,
+  fetchClaimsApi
 } from "../../app/actionsCreators";
 import { auth } from "../../auth0.service";
 import {
@@ -51,6 +48,7 @@ import {
 import ToggleColorMode from "../../components/DarkMode/ToggleColorMode";
 import DarkModeAdmin from "../../components/DarkMode/DarkModeAdmin";
 import { useAppSelector } from "../../hooks/hooks";
+import { Link } from "react-router-dom";
 
 interface LinkItemProps {
   name: string;
@@ -59,15 +57,11 @@ interface LinkItemProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome, url: "/" },
+  { name: "Inicio", icon: FiHome, url: "/" },
   { name: "Perfil", icon: FiTrendingUp, url: "/user/perfil" },
-  // {
-  //   name: "Categorias",
-  //   icon: FiCompass,
-  //   url: "/admin/categories",
-  // },
-  // { name: "Marcas", icon: FiStar, url: "/admin/brands" },
-  // { name: "Usuarios", icon: FiSettings, url: "#" },
+  { name: "Mis compras", icon: FiTrendingUp, url: "/user/shopping" },
+  { name: "Mis reclamos", icon: FiTrendingUp, url: "/user/claims" },
+  { name: "Reclamos", icon: FiCompass, url: "/user/reclamos", },
 ];
 
 export default function SidebarWithHeader({
@@ -78,6 +72,11 @@ export default function SidebarWithHeader({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    dispatch(fetchProductsApi());
+    dispatch(fetchClaimsApi());
+  }, [dispatch]);
+  
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       {" "}
@@ -99,7 +98,7 @@ export default function SidebarWithHeader({
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      <MobileNav onOpen={onOpen} />
+      {/* <MobileNav onOpen={onOpen} /> */}
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
@@ -127,9 +126,9 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       {" "}
       <DarkModeAdmin /> {/* boton modo noche */}
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Link href="/admin">
+        <Link to="/">
           <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-            Logo
+            AllTech
           </Text>
         </Link>
 
@@ -154,9 +153,9 @@ interface NavItemProps extends FlexProps {
 const NavItem = ({ icon, children, url, ...rest }: NavItemProps) => {
   return (
     <Link
-      href={url}
+      to={url}
       style={{ textDecoration: "none" }}
-      _focus={{ boxShadow: "none" }}
+      // _focus={{ boxShadow: "none" }}
     >
       <Flex
         align="center"
@@ -196,12 +195,14 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
   const [userName, setUserName] = useState("");
   const [picture, setPicture] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
   const activeSession = accessToken ? true : false;
   const handleLogout = () => {
+    localStorage.removeItem("email");
     localStorage.removeItem("accessToken");
     auth.logout({
       returnTo: AUTH0_CALLBACK_URL,
@@ -214,8 +215,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       async (error: Auth0Error | null, user: Auth0UserProfile) => {
         if (error) {
           console.log("Error: ", error);
-          // window.alert("La sesión ha expirado.");
-          // handleLogout();
         } else {
           const userId = user.sub;
           const userRolesResponse = await fetch(
@@ -227,7 +226,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               },
             }
           );
-
+          const userRoles = await userRolesResponse.json();
+          const hasAdminRole = userRoles.some(
+            (role: { id: String; name: String; description: String }) =>
+              role.name === "alltech-admin"
+          );
+          setIsAdmin(hasAdminRole);
           setUserName(user.nickname);
           setPicture(user.picture);
         }
@@ -241,7 +245,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     } else {
       handleUser();
     }
-  }, [handleUser]);
+  }, []);
   return (
     <Flex /* devuelta es la barra donde esta la parte del administrador arriba */
       ml={{ base: 0, md: 60 }}
@@ -268,7 +272,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         fontFamily="monospace"
         fontWeight="bold"
       >
-        Logo
+        AllTech
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
@@ -320,7 +324,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <MenuItem onClick={() => navigate("/")}>
                 Volver a la tienda
               </MenuItem>
-              <MenuItem onClick={handleLogout}>Salir</MenuItem>
+              <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

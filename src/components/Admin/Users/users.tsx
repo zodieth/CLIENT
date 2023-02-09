@@ -19,26 +19,25 @@ import {
   CardBody
 } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import interfaceCategory from  "../../../features/categories/interfaceCategory";
-import { HiTrash, HiOutlinePencilAlt } from "react-icons/hi";
-import { deleteCateogry, putCateogry } from '../../../app/actionsCreators'
+import { HiOutlinePencilAlt } from "react-icons/hi";
+import { putUser } from '../../../app/actionsCreators'
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useTable } from "react-table";
 
-export default function CategoriesAdmin() {
-  const categoriesStore = useAppSelector((state) => state.categories)
+export default function UsersAdmin() {
+  const usersStore = useAppSelector((state) => state.users)
   const dispatch = useAppDispatch();
   
   const setActive = (id:string, active:Boolean) => {
-    dispatch(putCateogry(id, {active: !active}))
+    dispatch(putUser({active: !active},id))
   }
 
   const data:any = [];
 
-  categoriesStore.allCategories.map((category:interfaceCategory) => {
-    data.push({name: category.name, description: category.description, father: category.father?.name,  active: category, acciones: category._id})
+  usersStore.allUsers.map((user:any) => {
+    data.push({firstName: user.firstName, lastName: user.lastName, email: user.email,  active: user})
   });
 
   const [searchTerm, setSearchTerm] = useState("")
@@ -49,28 +48,24 @@ export default function CategoriesAdmin() {
   const columns = [
     {
       Header: "Nombre",
-      accessor: "name",
+      accessor: "firstName",
     },
     {
-      Header: "Descripcion",
-      accessor: "description",
+      Header: "Apellido",
+      accessor: "lastName",
     },
     {
-      Header: "Categoría Padre",
-      accessor: "father",
+      Header: "Email",
+      accessor: "email",
     },
     {
       Header: "Activo",
       accessor: "active",
     },
-    {
-      Header: "Acciones",
-      accessor: "acciones",
-    },
   ];
 
   const filteredData = data.filter((d:any) =>
-    d.name.toLowerCase().includes(searchTerm.toLowerCase())
+    d.firstName.toLowerCase().includes(searchTerm.toLowerCase()) || d.email.toLowerCase().includes(searchTerm.toLowerCase()) || d.lastName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   function Table2({ columns, data }:any) {
@@ -109,8 +104,6 @@ export default function CategoriesAdmin() {
                     return <Td><LightMode><Button colorScheme='blue'><Link to={`/Admin/categories/edit/${cell.value}`}><HiOutlinePencilAlt size={20}/></Link></Button></LightMode></Td>
                   } else if(cell.column.Header === "Activo"){
                     return <Td><Switch id='email-alerts' isChecked={cell.value.active ? true : false} onChange={() => setActive(cell.value._id, cell.value.active)} /></Td>
-                  } else if(cell.column.Header === "Descripcion"){
-                    return <Td {...cell.getCellProps()}>{cell.value.substring(0,50)+"..."}</Td>
                   }else{
                     return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>
                   }
@@ -123,7 +116,7 @@ export default function CategoriesAdmin() {
     )
   }
 
-  if(categoriesStore.isLoading){
+  if(usersStore.isLoading){
     return (
       <Spinner
         thickness='4px'
@@ -133,7 +126,7 @@ export default function CategoriesAdmin() {
         size='xl'
       />
     )
-  }else if(categoriesStore.errMess){
+  }else if(usersStore.errMess){
     const Toast = Swal.mixin({
       toast: true,
       position: "top-end",

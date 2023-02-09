@@ -1,16 +1,16 @@
 import * as ActionTypes from "../ActionTypes";
 
-export const User = (
+export const Sales = (
   state = {
-    user: {},
+    sales: [],
   },
   action: any
 ) => {
   switch (action.type) {
-    case ActionTypes.GET_USER:
+    case ActionTypes.GET_SALES:
       return {
         ...state,
-        user: action.payload,
+        sales: action.payload,
       };
 
     default:

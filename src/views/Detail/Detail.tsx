@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import {
   postQuestion,
   fetchProductsApi,
+  fetchSalesApi
 } from "../../app/actionsCreators";
 import Footer from "../../components/Footer/Footer";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -16,19 +17,24 @@ import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import Swal from "sweetalert2";
 import NuevoCarrusel from "./NuevoCarrusel";
 import ToggleColorMode from "../../components/DarkMode/ToggleColorMode";
+import StarRating from "./StarRating";
+import { auth } from "../../auth0.service";
+import { AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL } from "../../auth0.config";
 
 function Detail(props: any) {
   const { name } = useParams();
   const products = useAppSelector((state: any) => state.products);
-  const [ question, setQuestion ] = useState("");
+  const salesStore = useAppSelector((state: any) => state.sales);
+  const userStore = useAppSelector((state: any) => state.user);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dispatch = useAppDispatch();
-
   const findDetail = products?.allProducts.filter(
     (product: interfaceProduct) => product.name === name
   );
 
   useEffect(() => {
     dispatch(fetchProductsApi());
+    dispatch(fetchSalesApi());
   }, [dispatch]);
 
   const [onCart, setOncart] = useState(false);
@@ -82,33 +88,35 @@ function Detail(props: any) {
     review: number;
   };
 
-  const startPercentage = () => {
-    let total = 100;
-    props.reviews?.forEach(function (a: review) {
+  const startPercentage = (product: any) => {
+    let total = 0;
+    product.reviews.forEach(function (a: review) {
       total += a.review;
     });
-    const percentage = total / props.reviews?.length;
+    const percentage = total / product.reviews.length;
     const starPercentage = ((percentage ? percentage : 0 / 100) / 5) * 100;
-
+    
     return starPercentage;
   };
   ///////////////////////////////////////////
 
   const handleSubmitQuestion = () => {
-    const question = document.querySelector<HTMLInputElement>('#pregunta');
-    const email = localStorage.getItem("email")
-    if(question?.value.length !== 0){
-      try{
+    const question = document.querySelector<HTMLInputElement>("#pregunta");
+    const email = localStorage.getItem("email");
+    if (question?.value.length !== 0) {
+      try {
         dispatch(postQuestion(email, findDetail[0]._id, question?.value));
         createdAlert();
         question!.value = "";
-      }catch (e){
-        createdAlertError("Algo salio mal, pongase en contacot con un administrador")
+      } catch (e) {
+        createdAlertError(
+          "Algo salio mal, pongase en contacot con un administrador"
+        );
       }
-    }else{
-      createdAlertError("Complete el campo pregunta antes de enviarla")
+    } else {
+      createdAlertError("Complete el campo pregunta antes de enviarla");
     }
-  }
+  };
 
   const createdAlert = () => {
     const Toast = Swal.mixin({
@@ -129,7 +137,7 @@ function Detail(props: any) {
     });
   };
 
-  const createdAlertError = (mensaje:string) => {
+  const createdAlertError = (mensaje: string) => {
     const Toast = Swal.mixin({
       toast: true,
       position: "top-end",
@@ -149,12 +157,46 @@ function Detail(props: any) {
     });
   };
 
+  const accessToken = localStorage.getItem("accessToken");
+  const activeSession = accessToken ? true : false;
+
+  const handleUser = async () => {
+    await auth.client.userInfo(
+      accessToken,
+      async (error: Auth0Error | null, user: Auth0UserProfile) => {
+        if (error) {
+          console.log("Error: ", error);
+        } else {
+          setIsLoggedIn(true);
+        }
+      }
+    );
+  };
+
+  const handleLoginReminder = () => {
+    const Toast = Swal.mixin({
+      toast: false,
+      position: "center",
+      showConfirmButton: true,
+    });
+    Toast.fire({
+      icon: "info",
+      title: "Ten en cuenta...",
+      text: "Para hacer una pregunta, debes iniciar sesión o registrarte. Haz click en 'Ingresar' en la esquina superior derecha de la ventana.",
+    });
+  };
+
+  useEffect(() => {
+    if (activeSession) {
+      handleUser();
+    }
+  }, []);
+
   return (
     <Box>
       <Box className={style.navBar}>
-      <NavBar />
+        <NavBar />
       </Box>
-
       {!findDetail.length ? (
         <Box>No se encontró el producto</Box>
       ) : (
@@ -208,7 +250,7 @@ function Detail(props: any) {
                             <Box className={style.starsOuter}>
                               <Box
                                 className={style.starsInner}
-                                style={{ width: `${startPercentage()}%` }}
+                                style={{ width: `${startPercentage(e)}%` }}
                               ></Box>
                             </Box>
                           </Box> 
@@ -241,9 +283,11 @@ function Detail(props: any) {
                   <Box className={style.tituloPreguntas2}>¡Dejanos tu consulta y te responderemos en la brevedad!</Box>
                   <Box className={style.newQuestion}> 
                     <Textarea name="Pregunta" id="pregunta" placeholder="Escribe tu consulta aquí"></Textarea>
-                    <Button className={style.enviar} colorScheme="blue" onClick={handleSubmitQuestion}>
+                    <Button className={style.enviar} colorScheme="blue" onClick={
+                        isLoggedIn ? handleSubmitQuestion : handleLoginReminder
+                      }>
                       <h5>Enviar</h5>
-                      <TbSend height={8} color={"white"}/>
+                      <TbSend height={8} color={"white"} />
                     </Button>
                   </Box>
                 </Box>
@@ -253,8 +297,12 @@ function Detail(props: any) {
         })
       )}
       <Box>
-      <LightMode><NuevoCarrusel /></LightMode>
-        <LightMode><Footer /></LightMode>
+        <LightMode>
+          <NuevoCarrusel />
+        </LightMode>
+        <LightMode>
+          <Footer />
+        </LightMode>
       </Box>
     </Box>
   );

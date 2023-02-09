@@ -12,54 +12,120 @@ import {
   useColorModeValue,
   Center,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { auth } from "../../auth0.service";
-import { 
+import {
   AUTH0_REALM,
   AUTH0_CALLBACK_URL,
-  AUTH0_RESPONSE_TYPE } from "../../auth0.config";
-import style from "./SignIn.module.css"
+  AUTH0_RESPONSE_TYPE,
+} from "../../auth0.config";
+import style from "./SignIn.module.css";
+import Swal from "sweetalert2";
+import { RememberMe } from "@mui/icons-material";
 
 export default function SimpleCard() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  //Necesitamos un estado global de Redux para guardar los datos del usuario activo. Cuando el usuario se loguee, se llenará ese estado haciendo una request al back...
-  const handleLogin = () => {
-    auth.login({
-      email: email,
-      password: password,
-      realm: AUTH0_REALM,
-      redirectUri: `${AUTH0_CALLBACK_URL}/postlogin`,
-      responseType: AUTH0_RESPONSE_TYPE
-    }, (error, result) => {
-      if(error) {
-        console.log("Error: ", error);
-        if(error.code === "access_denied") {
-          window.alert("El correo electrónico o la contraseña ingresados son incorrectos.");
-        };
-      } else {
-        console.log("Result: ", result);
-      };
-    });
+  const [rememberMe, setRememberMe] = useState(false);
+
+  const navigate = useNavigate();
+  const emailPattern =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  const rememberedEmail = localStorage.getItem("rememberedEmail");
+  const rememberedPassword = localStorage.getItem("rememberedPassword");
+
+  const handleLogin = async () => {
+    if (!emailPattern.test(email) || password.length < 1) {
+      const Toast = Swal.mixin({
+        toast: false,
+        position: "center",
+        showConfirmButton: true,
+      });
+      return Toast.fire({
+        icon: "warning",
+        title: "Atención...",
+        text: "Ingresa tu correo electrónico y tu contraseña.",
+      });
+    }
+    await auth.login(
+      {
+        email: email,
+        password: password,
+        realm: AUTH0_REALM,
+        redirectUri: `${AUTH0_CALLBACK_URL}/postlogin`,
+        responseType: AUTH0_RESPONSE_TYPE,
+      },
+      (error, result) => {
+        if (error) {
+          console.log("Error: ", error);
+          if (error.code === "access_denied") {
+            const Toast = Swal.mixin({
+              toast: false,
+              position: "center",
+              showConfirmButton: true,
+            });
+            Toast.fire({
+              icon: "warning",
+              title: "Atención...",
+              text: "El correo electrónico o la contraseña ingresados son incorrectos.",
+            });
+          }
+        } else {
+          console.log("Result: ", result);
+        }
+      }
+    );
   };
-  const handleGoogleLogin = () => {
-    auth.authorize({
-      connection: "google-oauth2",
-      redirectUri: `${AUTH0_CALLBACK_URL}/postsignup`,
-      responseType: AUTH0_RESPONSE_TYPE
-    }, (error, result) => {
-      if(error) {
-        console.log("Error: ", error);
-        if(error.code === "access_denied") {
-          window.alert("El correo electrónico o la contraseña ingresados son incorrectos.");
-        };
-      } else {
-        console.log("Result: ", result);
-      };
-    });
+  const handleGoogleLogin = async () => {
+    await auth.authorize(
+      {
+        connection: "google-oauth2",
+        redirectUri: `${AUTH0_CALLBACK_URL}/postsignup`,
+        responseType: AUTH0_RESPONSE_TYPE,
+      },
+      (error, result) => {
+        if (error) {
+          console.log("Error: ", error);
+          if (error.code === "access_denied") {
+            const Toast = Swal.mixin({
+              toast: false,
+              position: "center",
+              showConfirmButton: true,
+            });
+            Toast.fire({
+              icon: "warning",
+              title: "Atención...",
+              text: "El correo electrónico o la contraseña ingresados son incorrectos.",
+            });
+          }
+        } else {
+          console.log("Result: ", result);
+        }
+      }
+    );
   };
+
+  useEffect(() => {
+    if (rememberMe) {
+      localStorage.setItem("rememberedEmail", email);
+      localStorage.setItem("rememberedPassword", password);
+    } else {
+      localStorage.removeItem("rememberedEmail");
+      localStorage.removeItem("rememberedPassword");
+    }
+  }, [rememberMe]);
+
+  useEffect(() => {
+    if (rememberedEmail && rememberedPassword) {
+      setEmail(rememberedEmail);
+      setPassword(rememberedPassword);
+      setRememberMe(true);
+      document.getElementById("rememberMe").checked = true;
+    }
+  }, []);
+
   return (
     <Flex
       minH={"100vh"}
@@ -71,7 +137,7 @@ export default function SimpleCard() {
         <Stack align={"center"}>
           <Heading fontSize={"3xl"}>Inicie sesión con una cuenta</Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
-          Disfrute de todos nuestros productos ✌️
+            Disfrute de todos nuestros productos ✌️
           </Text>
         </Stack>
         <Box
@@ -82,9 +148,12 @@ export default function SimpleCard() {
         >
           <Stack spacing={4}>
             <FormControl id="email">
-              <FormLabel className={style.direccion}>Dirección de correo electrónico</FormLabel>
+              <FormLabel className={style.direccion}>
+                Dirección de correo electrónico
+              </FormLabel>
               <Input
                 type="email"
+                value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
                 }}
@@ -94,6 +163,7 @@ export default function SimpleCard() {
               <FormLabel>Contraseña</FormLabel>
               <Input
                 type="password"
+                value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
@@ -105,55 +175,62 @@ export default function SimpleCard() {
                 align={"start"}
                 justify={"space-between"}
               >
-                <Checkbox>Recuérdame</Checkbox>
-                
+                <Checkbox
+                  id="rememberMe"
+                  onChange={() => setRememberMe(!rememberMe)}
+                >
+                  Recuérdame
+                </Checkbox>
               </Stack>
               <Button
                 w={"full"}
                 variant={"outline"}
                 leftIcon={<FcGoogle />}
-                onClick={handleGoogleLogin}>
+                onClick={handleGoogleLogin}
+              >
                 <Center>
-                  <Text>Inicia sesión con Google</Text>
+                  <Text>Iniciar sesión con Google</Text>
                 </Center>
               </Button>
 
-              <Link
-                to={
-                  email === "admin@gmail.com" && password === "admin"
-                    ? "/admin"
-                    : email === "prueba@gmail.com" && password === "prueba"
-                    ? "/"
-                    : ""
-                }
-              >
-                <Button
+              <Button
                 className={style.iniciosesion}
-                  width={"full"}
-                  bg={"blue.400"}
-                  color={"white"}
-                  _hover={{
-                    bg: "blue.500",
-                  }}
-                  onClick={handleLogin}
-                >
-                  Iniciar sesión
-                </Button>
-              </Link>
+                width={"full"}
+                bg={"blue.400"}
+                color={"white"}
+                _hover={{
+                  bg: "blue.500",
+                }}
+                onClick={handleLogin}
+              >
+                Iniciar sesión
+              </Button>
 
-              <Stack classname={style.olvido}>
-                <Link  color={"blue.400"}>¿Olvidaste tu contraseña?</Link>
+              <Stack onClick={() => navigate("/resetpassword")}>
+                <Link style={{ color: "blue" }} color={"blue.400"}>
+                  ¿Olvidaste tu contraseña?
+                </Link>
               </Stack>
 
-              <Stack pt={6}>
+              <Stack>
                 <Text align={"center"}>
-                ¿No tienes un usuario?{" "}
+                  ¿No tienes una cuenta?{" "}
                   <Link
                     style={{ color: "blue" }}
                     to="/signup"
                     color={"blue.400"}
                   >
-                    Crear usuario
+                    Regístrate
+                  </Link>
+                </Text>
+                <Text align={"center"}>
+                  ¿No es lo que necesitas?{" "}
+                  <Link
+                    style={{ color: "blue" }}
+                    to="/signin"
+                    color={"blue.400"}
+                  >
+                    Volver
                   </Link>
                 </Text>
               </Stack>

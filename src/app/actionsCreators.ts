@@ -3,9 +3,17 @@ import * as ActionTypes from "../features/ActionTypes";
 import { RootState } from "./store";
 import axios from "axios";
 
+export const postClaim = (value: any) => {
+  axios.post("https://henry-pf-back.up.railway.app/claims", value);
+  return {
+    type: ActionTypes.POST_CLAIM,
+    payload: value,
+  };
+};
+
 export const updateUser = (value: any) => {
   return {
-    type: ActionTypes.UPDATE_USER,
+    type: ActionTypes.USER_UPDATE,
     payload: value,
   };
 };
@@ -59,7 +67,7 @@ export const createProduct = (value: any) => {
 };
 
 export const footerEmail = (value: any) => {
-  axios.post("http://localhost:3001/emails", value);
+  axios.post("https://henry-pf-back.up.railway.app/emails", value);
   return {
     type: ActionTypes.FOOTER_EMAIL,
     payload: value,
@@ -90,7 +98,6 @@ export const addCountCart = (productName: string) => {
 };
 
 export const removeCountCart = (productName: string, count: number) => {
-  console.log(count);
   return {
     type: ActionTypes.REMOVE_COUNT,
     payload: { productName, count },
@@ -150,7 +157,7 @@ export const fetchProductsApi =
       .get("https://henry-pf-back.up.railway.app/products")
       .then(
         function (response) {
-          if (response.data.length) return response;
+          if (response.status) return response;
           else {
             var error = new Error(
               "Error " + response.status + ": " + response.statusText
@@ -198,7 +205,7 @@ export const fetchBrandApi =
       .get("https://henry-pf-back.up.railway.app/brands")
       .then(
         function (response) {
-          if (response.data.length) return response;
+          if (response.status) return response;
           else {
             var error = new Error(
               "Error " + response.status + ": " + response.statusText
@@ -248,7 +255,7 @@ export const fetchCategoryApi =
       .get("https://henry-pf-back.up.railway.app/category")
       .then(
         function (response) {
-          if (response.data.length) {
+          if (response.status) {
             return response;
           } else {
             var error = new Error(
@@ -576,7 +583,6 @@ export const putProduct =
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     dispatch(productsLoading());
-    console.log(product);
     return axios
       .put("https://henry-pf-back.up.railway.app/product/" + id, product)
       .then(
@@ -720,4 +726,236 @@ export const putQuestion =
       .catch((error) => {
         console.log("PUT question", error.message);
       });
+  };
+
+//Ventas
+
+export const updateSale = (value: any) => {
+  return {
+    type: ActionTypes.SALE_UPDATE,
+    payload: value,
+  };
+};
+
+export const loadingSale = () => {
+  return {
+    type: ActionTypes.SALE_LOADING,
+  };
+};
+
+export const failedSale = (value: any) => {
+  return {
+    type: ActionTypes.SALE_FAILED,
+    payload: value,
+  };
+};
+
+export const addSales = (value: any) => {
+  return {
+    type: ActionTypes.SALES_ADD,
+    payload: value,
+  };
+};
+
+export const addSale = (value: any) => {
+  return {
+    type: ActionTypes.SALE_ADD,
+    payload: value,
+  };
+};
+
+export const fetchSalesApi =
+  (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+    dispatch(loadingSale());
+
+    return await axios
+      .get("https://henry-pf-back.up.railway.app/sale")
+      .then(
+        function (response) {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        function (error) {
+          var errMess = new Error(error.message);
+          throw errMess;
+        }
+      )
+      .then((sales) => dispatch(addSales(sales.data)))
+      .catch((error) => dispatch(failedSale(error.message)));
+  };
+
+export const putSale =
+  (id: string, sale: any): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch) => {
+    return axios
+      .put("https://henry-pf-back.up.railway.app/sale/" + id, sale)
+      .then(
+        (response) => {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .then((response) => {
+        dispatch(updateSale(response.data));
+      })
+      .catch((error) => {
+        console.log("PUT sale", error.message);
+      });
+  };
+
+//USERS
+
+export const updatedUser = (value: any) => {
+  return {
+    type: ActionTypes.USER_UPDATE,
+    payload: value,
+  };
+};
+
+export const loadingUser = () => {
+  return {
+    type: ActionTypes.USER_LOADING,
+  };
+};
+
+export const failedUser = (value: any) => {
+  return {
+    type: ActionTypes.USER_FAILED,
+    payload: value,
+  };
+};
+
+export const addUsers = (value: any) => {
+  return {
+    type: ActionTypes.USERS_ADD,
+    payload: value,
+  };
+};
+
+export const fetchUsersApi =
+  (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+    dispatch(loadingUser());
+
+    return await axios
+      .get("https://henry-pf-back.up.railway.app/users")
+      .then(
+        function (response) {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        function (error) {
+          var errMess = new Error(error.message);
+          throw errMess;
+        }
+      )
+      .then((questions) => dispatch(addUsers(questions.data)))
+      .catch((error) => dispatch(failedUser(error.message)));
+  };
+
+//Valoracion
+
+export const saveReview =
+  (
+    description: any,
+    productoID: any,
+    rating: any
+  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  async (dispatch) => {
+    return axios
+      .post("https://henry-pf-back.up.railway.app/reviews", {
+        description,
+        productoID,
+        rating,
+      })
+      .then((response) => {
+        dispatch(updateProduct(response.data));
+        return true;
+      })
+      .catch((error) => {
+        console.log("Post question", error.message);
+        dispatch(failedQuestion(error.message));
+      });
+  }
+
+  //Claim
+
+  export const updateClaim = (value: any) => {
+    return {
+      type: ActionTypes.CLAIM_UPDATE,
+      payload: value,
+    };
+  };
+  
+  export const loadingClaim = () => {
+    return {
+      type: ActionTypes.CLAIM_LOADING,
+    };
+  };
+  
+  export const failedClaim = (value: any) => {
+    return {
+      type: ActionTypes.CLAIM_FAILED,
+      payload: value,
+    };
+  };
+  
+  export const addClaims = (value: any) => {
+    return {
+      type: ActionTypes.CLAIMS_ADD,
+      payload: value,
+    };
+  };
+  
+  export const addClaim = (value: any) => {
+    return {
+      type: ActionTypes.CLAIM_ADD,
+      payload: value,
+    };
+  };
+
+  export const fetchClaimsApi =
+  (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+    dispatch(loadingClaim());
+
+    return await axios
+      .get("https://henry-pf-back.up.railway.app/claims")
+      .then(
+        function (response) {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        function (error) {
+          var errMess = new Error(error.message);
+          throw errMess;
+        }
+      )
+      .then((claims) => dispatch(addClaims(claims.data)))
+      .catch((error) => dispatch(failedClaim(error.message)));
   };

@@ -110,7 +110,7 @@
 .starsOuter::before {
   content: "\2606 \2606 \2606 \2606 \2606";
   color: rgba(108, 108, 108, 0.314);
-  font-size: 20px;
+  font-size: 30px;
 }
 
 .starsInner {
@@ -125,7 +125,7 @@
 .starsInner::before {
   content: "\2605 \2605 \2605 \2605 \2605";
   color: #f8ce0b;
-  font-size: 50px;
+  font-size: 30px;
 }
 
 .stock {
