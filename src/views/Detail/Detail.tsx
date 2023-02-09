@@ -11,7 +11,7 @@ import interfaceProduct from "../../features/brands/interfaceBrand";
 import style from "./detail.module.css";
 import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
 import { TbSend } from "react-icons/tb";
-import { Box, Button, LightMode, Textarea } from "@chakra-ui/react";
+import { Box, Button, LightMode, Textarea, Text } from "@chakra-ui/react";
 import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import Swal from "sweetalert2";
 import NuevoCarrusel from "./NuevoCarrusel";
@@ -162,53 +162,64 @@ function Detail(props: any) {
           return (
             <Box className={style.detail} key={e}>
               <Box className={style.contenedor}>
-                <Box>
-                  <Box className={style.name}>{e.name}</Box>
-                  <img
-                    src={e.images[0]}
-                    alt="imgDetail"
-                    className={style.imgDetail}
-                  />
-                  <h4 className={style.texto}>* Las imágenes se exhiben con fines ilustrativos.</h4>
-                  <Box className={style.price_cart}>
-                    <Box className={style.price}>US$ {e.price}</Box>
-                    <Button
-                      colorScheme="blue"
-                      onClick={() =>
-                        onCart
-                          ? [handleDeleteFromCart(e), onCartFuncion()]
-                          : onCart === false
-                          ? [addCart(e), onCartFuncion(), addToCartAlert()]
-                          : ""
-                      }
-                    >
-                      {onCart ? (
-                        <HiShoppingCart />
-                      ) : (
-                        <HiOutlineShoppingCart height={8} color={"white"} />
-                      )}
-                    </Button>
-                  </Box>
-                  <Box className={style.calificacion}>
-                    <Box className={style.starsOuter}>
-                      <Box
-                        className={style.starsInner}
-                        style={{ width: `${startPercentage()}%` }}
-                      ></Box>
+{/* -------------------------------------------- primer div del detail */}
+                        <Box className={style.primerDiv}>
+                          
+                          <img
+                            src={e.images[0]}
+                            alt="imgDetail"
+                            className={style.imgDetail}
+                          />
+                          <h4 className={style.texto}>* Las imágenes se exhiben con fines ilustrativos.</h4>
+                          <Box className={style.price_cart}>
+                            <Box className={style.price}>US$ {e.price}</Box>
+                            <Button
+                              colorScheme="blue"
+                              onClick={() =>
+                                onCart
+                                  ? [handleDeleteFromCart(e), onCartFuncion()]
+                                  : onCart === false
+                                  ? [addCart(e), onCartFuncion(), addToCartAlert()]
+                                  : ""
+                              }
+                            >
+                              {onCart ? (
+                                <HiShoppingCart />
+                              ) : (
+                                <HiOutlineShoppingCart height={8} color={"white"} />
+                              )}
+                            </Button>
+                          </Box>
+                          
+                        </Box>
+{/* -------------------------------------------- primer div del detail */}
+{/* ------------------ segundo div del detail */}
+                    <Box className={style.segundoDiv}>
+
+                        <Box className={style.name}>{e.name}</Box>
+
+                      <Box className={style.descripcionDupla}>
+                        <Text className={style.caracteristicas}>Caracteristicas del producto:</Text>
+
+                        <Box className={style.description}>{e.description}</Box>
+                      </Box>
+
+                        <Box className={style.calificacion}>
+                            <Box className={style.starsOuter}>
+                              <Box
+                                className={style.starsInner}
+                                style={{ width: `${startPercentage()}%` }}
+                              ></Box>
+                            </Box>
+                          </Box> 
+
                     </Box>
-                  </Box>
-                </Box>
-
-                <Box className={style.right}>
-                  <Box className={style.description}>{e.description}</Box>
-
-                  
-                </Box>
+{/* ------------------ segundo div del detail */}
               </Box>
 
               <Box className={style.preguntas}>
                 <Box>
-                  <Box className={style.tituloPreguntas}>Preguntas de nuestros clientes</Box>
+                  <Box className={style.tituloPreguntas}>Preguntas y respuestas</Box>
                   {e.questions.length>0?  
                   (e.questions.map((q:any)=>{
                     return(
@@ -218,18 +229,19 @@ function Detail(props: any) {
                           <dd>└─ {q.answer}</dd>
                         </dl>
                       </Box>
+
                     )
                 })): (
-                  <Box className={style.question}>
+                  <Box className={style.question3}>
                     Aún no hay preguntas sobre este producto, sé el primero
                   </Box>)
                 }
                 </Box>
                 <Box className={style.rigth}>
-                  <Box className={style.tituloPreguntas}>Dejanos tu consulta:</Box>
+                  <Box className={style.tituloPreguntas2}>¡Dejanos tu consulta y te responderemos en la brevedad!</Box>
                   <Box className={style.newQuestion}> 
-                    <Textarea name="Pregunta" id="pregunta" placeholder="Escribe tu pregunta aquí"></Textarea>
-                    <Button colorScheme="blue" onClick={handleSubmitQuestion}>
+                    <Textarea name="Pregunta" id="pregunta" placeholder="Escribe tu consulta aquí"></Textarea>
+                    <Button className={style.enviar} colorScheme="blue" onClick={handleSubmitQuestion}>
                       <h5>Enviar</h5>
                       <TbSend height={8} color={"white"}/>
                     </Button>

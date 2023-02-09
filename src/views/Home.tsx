@@ -16,8 +16,10 @@ import CarouselDown from "../components/CarouselDown/CarouselDown";
 import Cards from "../components/ProductCards/Cards";
 import Filter from "../components/Filtro/filter";
 import ToggleColorMode from "../components/DarkMode/ToggleColorMode"; // dark mode
-import { LightMode } from "@chakra-ui/react";
+import { Box, LightMode } from "@chakra-ui/react";
 import Testimonials from "../components/Testimonials/Testimonials";
+import ArmaPCHome from "./ArmaPC/ArmaPCHome";
+import TimeLine from "../components/TimeLine/TimeLine";
 
 function Home() {
   const dispatch = useAppDispatch();
@@ -52,6 +54,10 @@ function Home() {
             <Filter />
           </LightMode>
           <Cards />
+          <Box>
+          <ArmaPCHome/>
+          <TimeLine/>
+          </Box>
           <Testimonials/>
           <CarouselDown />
           <LightMode>
