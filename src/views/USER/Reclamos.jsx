@@ -25,12 +25,13 @@ export default function Reclamos() {
     user: "",
     email: "",
   });
+  console.log('holis2',inputs);
 
   console.log(inputs);
 
   useEffect(() => {
     dispatch(fetchSalesApi());
-    dispatch(searchUserByEmail(localStorage.getItem("email")));
+    //dispatch(searchUserByEmail(localStorage.getItem("email")));
   }, []);
 
   const sales = useAppSelector((state) => state.sales);
