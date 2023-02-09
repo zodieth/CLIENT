@@ -25,9 +25,6 @@ export default function Reclamos() {
     user: "",
     email: "",
   });
-  console.log("holis2", inputs);
-
-  console.log(inputs);
 
   useEffect(() => {
     dispatch(fetchSalesApi());
@@ -48,17 +45,40 @@ export default function Reclamos() {
       [e.target.name]: e.target.value,
     });
   }
+  function error(error) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: "error",
+      title: "Agregado Correctamente",
+      text: error,
+    });
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
     if (inputs.description.length < 10) {
       setErrors(true);
+      error("La descripción no puede ser menor a 10 caracteres");
     } else if (!inputs.user.length) {
       setErrors(true);
+      error("Debe seleccionar un usuario");
     } else if (!inputs.email.length) {
       setErrors(true);
-    } else if (!inputs.sale.length) {
+      error("Debe proporcionar un correo");
+    } else if (inputs.issue === "") {
       setErrors(true);
+      error("Debe seleccionar un problema");
     } else {
       dispatch(postClaim(inputs));
 
@@ -94,12 +114,10 @@ export default function Reclamos() {
         <Box className={style.groupInputs}>
           <label>Compra</label>
           <select
-            className={style.select}
             name="sale"
             placeholder="Compra"
             onChange={(e) => handleChange(e)}
           >
-            <option value="compra">Compra</option>
             {userSales.map((e) => {
               return (
                 <option key={e._id} value={e._id}>
@@ -110,11 +128,6 @@ export default function Reclamos() {
               );
             })}
           </select>
-          {(errors && !inputs.sale) || (errors && inputs.user === "compra") ? (
-            <div className={style.errorMsj}>Debe seleccionar la compra</div>
-          ) : (
-            ""
-          )}
         </Box>
 
         <Box className={style.groupInputs}>
