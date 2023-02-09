@@ -1,0 +1,27 @@
+.starRatingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.star-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.star {
+  display: inline-block;
+  cursor: pointer;
+  font-size: 40px;
+}
+
+.starSelected {
+  color: #ffc107;
+}
+
+.starNotSelected {
+  color: #e4e5e9;
+}

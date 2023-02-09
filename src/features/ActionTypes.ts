@@ -49,3 +49,7 @@ export const SALE_LOADING = "SALE_LOADING";
 export const SALE_FAILED = "SALE_FAILED";
 export const SALE_UPDATE = "SALE_UPDATE";
 
+export const USERS_ADD = "USERS_ADD";
+export const USER_LOADING = "USER_LOADING";
+export const USER_FAILED = "USER_FAILED";
+export const USER_UPDATE = "USER_UPDATE";

@@ -20,7 +20,6 @@ function Cart() {
   const products = useAppSelector((state) => state.cart);
 
   const usuario = useAppSelector((state) => state.user);
-  console.log(usuario);
 
   const userEmail = localStorage.email;
 
@@ -53,11 +52,9 @@ function Cart() {
   const [submitButton, setSubmitButton] = useState(false);
   const [submitDisappear, setSubmitDisappear] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   function sendToBack(value: any) {
     dispatch(sendProducts(value));
   }
-
   const accessToken = localStorage.getItem("accessToken");
   const activeSession = accessToken ? true : false;
 
@@ -92,7 +89,6 @@ function Cart() {
       handleUser();
     }
   }, []);
-
   return (
     <Box className={style.cart}>
       <div className={style.nav}>
