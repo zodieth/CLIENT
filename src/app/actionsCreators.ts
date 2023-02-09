@@ -896,4 +896,66 @@ export const saveReview =
         console.log("Post question", error.message);
         dispatch(failedQuestion(error.message));
       });
+  }
+
+  //Claim
+
+  export const updateClaim = (value: any) => {
+    return {
+      type: ActionTypes.CLAIM_UPDATE,
+      payload: value,
+    };
+  };
+  
+  export const loadingClaim = () => {
+    return {
+      type: ActionTypes.CLAIM_LOADING,
+    };
+  };
+  
+  export const failedClaim = (value: any) => {
+    return {
+      type: ActionTypes.CLAIM_FAILED,
+      payload: value,
+    };
+  };
+  
+  export const addClaims = (value: any) => {
+    return {
+      type: ActionTypes.CLAIMS_ADD,
+      payload: value,
+    };
+  };
+  
+  export const addClaim = (value: any) => {
+    return {
+      type: ActionTypes.CLAIM_ADD,
+      payload: value,
+    };
+  };
+
+  export const fetchClaimsApi =
+  (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+    dispatch(loadingClaim());
+
+    return await axios
+      .get("https://henry-pf-back.up.railway.app/claims")
+      .then(
+        function (response) {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        function (error) {
+          var errMess = new Error(error.message);
+          throw errMess;
+        }
+      )
+      .then((claims) => dispatch(addClaims(claims.data)))
+      .catch((error) => dispatch(failedClaim(error.message)));
   };
