@@ -43,6 +43,13 @@ body {
   color: black;
 }
 
+.pc{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
 @media print {
   #imprimir {
     display: none;
