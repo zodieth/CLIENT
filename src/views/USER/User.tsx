@@ -126,9 +126,9 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       {" "}
       <DarkModeAdmin /> {/* boton modo noche */}
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Link to="/admin">
+        <Link to="/">
           <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-            Logo
+            AllTech
           </Text>
         </Link>
 
@@ -195,12 +195,14 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
   const [userName, setUserName] = useState("");
   const [picture, setPicture] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
   const activeSession = accessToken ? true : false;
   const handleLogout = () => {
+    localStorage.removeItem("email");
     localStorage.removeItem("accessToken");
     auth.logout({
       returnTo: AUTH0_CALLBACK_URL,
@@ -213,8 +215,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       async (error: Auth0Error | null, user: Auth0UserProfile) => {
         if (error) {
           console.log("Error: ", error);
-          // window.alert("La sesión ha expirado.");
-          // handleLogout();
         } else {
           const userId = user.sub;
           const userRolesResponse = await fetch(
@@ -226,7 +226,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               },
             }
           );
-
+          const userRoles = await userRolesResponse.json();
+          const hasAdminRole = userRoles.some(
+            (role: { id: String; name: String; description: String }) =>
+              role.name === "alltech-admin"
+          );
+          setIsAdmin(hasAdminRole);
           setUserName(user.nickname);
           setPicture(user.picture);
         }
@@ -240,7 +245,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     } else {
       handleUser();
     }
-  }, [handleUser]);
+  }, []);
   return (
     <Flex /* devuelta es la barra donde esta la parte del administrador arriba */
       ml={{ base: 0, md: 60 }}
@@ -267,7 +272,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         fontFamily="monospace"
         fontWeight="bold"
       >
-        Logo
+        AllTech
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
@@ -319,7 +324,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <MenuItem onClick={() => navigate("/")}>
                 Volver a la tienda
               </MenuItem>
-              <MenuItem onClick={handleLogout}>Salir</MenuItem>
+              <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

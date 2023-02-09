@@ -22,9 +22,12 @@ export default function Reclamos() {
     sale: "",
     issue: "",
     description: "",
-    user: userState.user._id,
+    user: "",
+    email: "",
   });
   console.log('holis2',inputs);
+
+  console.log(inputs);
 
   useEffect(() => {
     dispatch(fetchSalesApi());
@@ -51,6 +54,8 @@ export default function Reclamos() {
     if (inputs.description.length < 10) {
       setErrors(true);
     } else if (!inputs.user.length) {
+      setErrors(true);
+    } else if (!inputs.email.length) {
       setErrors(true);
     } else {
       dispatch(postClaim(inputs));
@@ -95,7 +100,7 @@ export default function Reclamos() {
               return (
                 <option key={e._id} value={e._id}>
                   {e.products.map((e) => {
-                    return <option>{e.product.name}</option>;
+                    return <option key={e._id}>{e.product.name}</option>;
                   })}
                 </option>
               );
@@ -133,6 +138,21 @@ export default function Reclamos() {
           )}
         </Box>
         <Box className={style.groupInputs}>
+          <label>Email</label>
+          <input
+            name="email"
+            placeholder="Email"
+            onChange={(e) => [handleChange(e)]}
+          ></input>
+          {errors && !inputs.email ? (
+            <div className={style.errorMsj}>
+              Debe completar el campo de Email
+            </div>
+          ) : (
+            ""
+          )}
+        </Box>
+        <Box className={style.groupInputs}>
           <label>Usuario</label>
 
           <select
@@ -145,7 +165,7 @@ export default function Reclamos() {
               {userState.user.userName}
             </option>
           </select>
-          {(errors && !inputs.user) || inputs.user === "usuario" ? (
+          {(errors && !inputs.user) || (errors && inputs.user === "usuario") ? (
             <div className={style.errorMsj}>Debe seleccionar el usuario</div>
           ) : (
             ""
