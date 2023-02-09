@@ -25,7 +25,7 @@ export default function Reclamos() {
     user: "",
     email: "",
   });
-  console.log('holis2',inputs);
+  console.log("holis2", inputs);
 
   console.log(inputs);
 
@@ -56,6 +56,8 @@ export default function Reclamos() {
     } else if (!inputs.user.length) {
       setErrors(true);
     } else if (!inputs.email.length) {
+      setErrors(true);
+    } else if (!inputs.sale.length) {
       setErrors(true);
     } else {
       dispatch(postClaim(inputs));
@@ -92,10 +94,12 @@ export default function Reclamos() {
         <Box className={style.groupInputs}>
           <label>Compra</label>
           <select
+            className={style.select}
             name="sale"
             placeholder="Compra"
             onChange={(e) => handleChange(e)}
           >
+            <option value="compra">Compra</option>
             {userSales.map((e) => {
               return (
                 <option key={e._id} value={e._id}>
@@ -106,6 +110,11 @@ export default function Reclamos() {
               );
             })}
           </select>
+          {(errors && !inputs.sale) || (errors && inputs.user === "compra") ? (
+            <div className={style.errorMsj}>Debe seleccionar la compra</div>
+          ) : (
+            ""
+          )}
         </Box>
 
         <Box className={style.groupInputs}>
