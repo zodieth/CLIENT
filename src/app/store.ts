@@ -9,6 +9,7 @@ import { Categories } from "../features/categories/Categories";
 import { User } from "../features/user/User";
 import { Sales } from "../features/sales/Sales";
 import { Users } from "../features/user/Users";
+import { Claims } from "../features/claims/Claims";
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     questions: Questions,
     sales: Sales,
     users: Users,
+    claims: Claims,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(thunk).concat(logger),

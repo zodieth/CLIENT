@@ -38,7 +38,6 @@ export const GET_USER_BY_EMAIL = "GET_USER_BY_EMAIL";
 export const PUT_USER = "PUT_USER";
 export const UPDATE_USER = "UPDATE_USER";
 
-
 export const GET_SALES = "GET_SALES";
 
 export const POST_CLAIM = "POST_CLAIM";
@@ -53,3 +52,9 @@ export const USERS_ADD = "USERS_ADD";
 export const USER_LOADING = "USER_LOADING";
 export const USER_FAILED = "USER_FAILED";
 export const USER_UPDATE = "USER_UPDATE";
+
+export const CLAIMS_ADD = "CLAIMS_ADD";
+export const CLAIM_ADD = "CLAIM_ADD";
+export const CLAIM_LOADING = "CLAIM_LOADING";
+export const CLAIM_FAILED = "CLAIM_FAILED";
+export const CLAIM_UPDATE = "CLAIM_UPDATE";

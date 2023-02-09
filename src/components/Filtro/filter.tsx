@@ -14,7 +14,6 @@ function Filter() {
 
   const handleSearch = () => {
     const inputSearch = document.querySelector("#search") as HTMLInputElement;
-    //const type = document.querySelector("#type") as HTMLInputElement;
     const order = document.querySelector("#order") as HTMLInputElement;
     const category = document.querySelector("#category") as HTMLInputElement;
     const brand = document.querySelector("#brand") as HTMLInputElement;
@@ -64,7 +63,8 @@ function Filter() {
             onChange={handleSearch}
           >
             { categories.allCategories.map((category:interfaceCategory) => {
-              return <option key={category._id} value={category.name}>{category.name}</option>
+              if(category.active)
+                return <option key={category._id} value={category.name}>{category.name}</option>
             })}
           </Select>
         </div>
@@ -78,7 +78,8 @@ function Filter() {
             onChange={handleSearch}
           >
             { brands.allBrands.map((brand:interfaceBrand) => {
-              return <option key={brand._id} value={brand.name}>{brand.name}</option>
+              if(brand.active)
+                return <option key={brand._id} value={brand.name}>{brand.name}</option>
             })}
           </Select>
         </div>
