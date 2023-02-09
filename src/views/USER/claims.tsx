@@ -34,16 +34,16 @@ export default function ClaimsUser() {
   const userStore = useAppSelector((state: any) => state.user);
   const dispatch = useAppDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [saleId, setSaleId] = useState("");
+  const [sale, setSale] = useState<any>();
 
-  const handleClickOpenModal = (id: string) => {
+  const handleClickOpenModal = (id: any) => {
     setIsModalOpen(true);
-    setSaleId(id);
+    setSale(id);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setSaleId("");
+    setSale("");
   };
 
   const data: any = [];
@@ -55,8 +55,12 @@ export default function ClaimsUser() {
         description: claim.description,
         status: claim.status,
         count: claim.sale.products.length,
+        date: new Date(claim.createdAt).toLocaleDateString("es-ES", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric"
+        }),
         total: claim.sale.total,
-        details: claim._id,
       });
   });
 
@@ -83,12 +87,8 @@ export default function ClaimsUser() {
       accessor: "date",
     },
     {
-      Header: "Total $",
+      Header: "Total USD $",
       accessor: "total",
-    },
-    {
-      Header: "Ver detalles",
-      accessor: "details",
     },
   ];
 
@@ -109,7 +109,7 @@ export default function ClaimsUser() {
     // Render the UI for your table
     return (
       <Table {...getTableProps()} variant="simple" key={Math.random()}>
-        <TableCaption>Listado de compras</TableCaption>
+        <TableCaption>Listado de reclamos</TableCaption>
         <Thead>
           {headerGroups.map((headerGroup) => (
             <Tr {...headerGroup.getHeaderGroupProps()}>
@@ -125,20 +125,7 @@ export default function ClaimsUser() {
             return (
               <Tr {...row.getRowProps()} key={Math.random()}>
                 {row.cells.map((cell) => {
-                  if (cell.column.Header === "Ver detalles") {
-                    return (
-                      <Td key={Math.random()}>
-                        <LightMode>
-                          <Button
-                            colorScheme="blue"
-                            onClick={() => handleClickOpenModal(cell.value)}
-                          >
-                            <ImEye size={20} />
-                          </Button>
-                        </LightMode>
-                      </Td>
-                    );
-                  } else if (cell.column.Header === "Estado") {
+                  if (cell.column.Header === "Asunto") {
                     return (
                       <Td {...cell.getCellProps()}>
                         {cell.value === "missing"
@@ -197,38 +184,6 @@ export default function ClaimsUser() {
   } else {
     return (
       <Card>
-        <Modal isOpen={isModalOpen} size={"xl"} onClose={handleCloseModal}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Detalle de la compra #{saleId}</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th>Nombre</Th>
-                    <Th>Cantidad</Th>
-                    <Th>Total (USD)</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {salesStore.allSales.map((sale: any) =>
-                    sale?._id === saleId
-                      ? sale.products.map((product: any) => (
-                          <Tr key={product.product._id}>
-                            <Td>{product.product.name}</Td>
-                            <Td>{product.quantity}</Td>
-                            <Td>{product.product.price * product.quantity}</Td>
-                          </Tr>
-                        ))
-                      : ""
-                  )}
-                </Tbody>
-              </Table>
-            </ModalBody>
-            <ModalFooter></ModalFooter>
-          </ModalContent>
-        </Modal>
         <CardHeader>
           <Input
             type="text"

@@ -29,6 +29,7 @@ import SalesAdmin from "../components/Admin/Sales/sales";
 import GraphicsAdmin from "../components/Admin/Graphics/graphics";
 import UsersAdmin from "../components/Admin/Users/users";
 import ClaimsUser from "../views/USER/claims";
+import ShoppingUser from "../views/USER/shoppings";
 
 export const router = createBrowserRouter([
   {
@@ -89,16 +90,6 @@ export const router = createBrowserRouter([
   {
     path: "/armatupc",
     element: <ArmaPC />,
-  },
-  {
-    path: "/user/purchases",
-    element: <Admin children={<ProductsAdmin />} />,
-    exact: true,
-  },
-  {
-    path: "/user/claims",
-    element: <Admin children={<CategoriesAdmin />} />,
-    exact: true,
   },
   {
     path: "/Admin/products",
@@ -182,6 +173,11 @@ export const router = createBrowserRouter([
   {
     path: "/user/claims",
     element: <User children={<ClaimsUser />} />,
+    exact: true,
+  },
+  {
+    path: "user/shopping",
+    element: <User children={<ShoppingUser />} />,
     exact: true,
   },
 ]);

@@ -1,6 +1,7 @@
 .largo {
-    width: 100%
+  width: 100%;
 }
 
-
-
+.errorMsj {
+  color: red;
+}

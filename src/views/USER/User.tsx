@@ -98,7 +98,7 @@ export default function SidebarWithHeader({
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      <MobileNav onOpen={onOpen} />
+      {/* <MobileNav onOpen={onOpen} /> */}
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
@@ -240,7 +240,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   };
 
   useEffect(() => {
-    if (activeSession) {
+    if (!activeSession) {
       navigate("/");
     } else {
       handleUser();

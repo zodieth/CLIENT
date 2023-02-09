@@ -26,11 +26,9 @@ export default function Reclamos() {
     email: "",
   });
 
-  console.log(inputs);
-
   useEffect(() => {
     dispatch(fetchSalesApi());
-    dispatch(searchUserByEmail(localStorage.getItem("email")));
+    //dispatch(searchUserByEmail(localStorage.getItem("email")));
   }, []);
 
   const sales = useAppSelector((state) => state.sales);
@@ -45,6 +43,25 @@ export default function Reclamos() {
     setInputs({
       ...inputs,
       [e.target.name]: e.target.value,
+    });
+  }
+  function error(error) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: "error",
+      title: "Agregado Correctamente",
+      text: error,
     });
   }
 
@@ -72,18 +89,18 @@ export default function Reclamos() {
     e.preventDefault();
     if (inputs.description.length < 10) {
       setErrors(true);
-      error("La descripción no puede ser menor a 10 caracteres")
+      error("La descripción no puede ser menor a 10 caracteres");
     } else if (!inputs.user.length) {
       setErrors(true);
-      error("Debe seleccionar un usuario")
+      error("Debe seleccionar un usuario");
     } else if (!inputs.email.length) {
       setErrors(true);
-      error("Debe proporcionar un correo")
-    } else if (inputs.issue === ""){
+      error("Debe proporcionar un correo");
+    } else if (inputs.issue === "") {
       setErrors(true);
-      error("Debe seleccionar un problema")
+      error("Debe seleccionar un problema");
     } else {
-      //dispatch(postClaim(inputs));
+      dispatch(postClaim(inputs));
 
       const Toast = Swal.mixin({
         toast: true,
@@ -117,6 +134,7 @@ export default function Reclamos() {
         <Box className={style.groupInputs}>
           <label>Compra</label>
           <select
+            className={style.select}
             name="sale"
             placeholder="Compra"
             onChange={(e) => handleChange(e)}

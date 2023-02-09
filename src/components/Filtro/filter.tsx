@@ -45,7 +45,7 @@ function Filter() {
             <option >Ordenamiento</option>
             <option value="PRICE|ASC">Precio ascendente</option>
             <option value="PRICE|DESC">Precio descendente</option>
-            <option value="AFL|ASC">Alfabético ascendente</option>
+            <option value="ALF|ASC">Alfabético ascendente</option>
             <option value="ALF|DESC">Alfabético descendente</option>
           </Select>
           </div>
