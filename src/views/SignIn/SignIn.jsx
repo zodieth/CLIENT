@@ -177,6 +177,7 @@ export default function SimpleCard() {
               >
                 <Checkbox
                   id="rememberMe"
+                  checked={rememberMe}
                   onChange={() => setRememberMe(!rememberMe)}
                 >
                   Recuérdame
