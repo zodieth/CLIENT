@@ -227,7 +227,7 @@ export default function SimpleCard() {
                   ¿No es lo que necesitas?{" "}
                   <Link
                     style={{ color: "blue" }}
-                    to="/signin"
+                    to="/"
                     color={"blue.400"}
                   >
                     Volver
