@@ -36,8 +36,7 @@ import { ReactText } from "react";
 import { useAppDispatch } from "../../app/hooks";
 import {
   fetchProductsApi,
-  fetchBrandApi,
-  fetchCategoryApi,
+  fetchClaimsApi
 } from "../../app/actionsCreators";
 import { auth } from "../../auth0.service";
 import {
@@ -58,15 +57,11 @@ interface LinkItemProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome, url: "/" },
+  { name: "Inicio", icon: FiHome, url: "/" },
   { name: "Perfil", icon: FiTrendingUp, url: "/user/perfil" },
-  {
-    name: "Reclamos",
-    icon: FiCompass,
-    url: "/user/reclamos",
-  },
-  // { name: "Marcas", icon: FiStar, url: "/admin/brands" },
-  // { name: "Usuarios", icon: FiSettings, url: "#" },
+  { name: "Mis compras", icon: FiTrendingUp, url: "/user/shopping" },
+  { name: "Mis reclamos", icon: FiTrendingUp, url: "/user/claims" },
+  { name: "Reclamos", icon: FiCompass, url: "/user/reclamos", },
 ];
 
 export default function SidebarWithHeader({
@@ -77,6 +72,11 @@ export default function SidebarWithHeader({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    dispatch(fetchProductsApi());
+    dispatch(fetchClaimsApi());
+  }, [dispatch]);
+  
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       {" "}
@@ -98,7 +98,7 @@ export default function SidebarWithHeader({
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      <MobileNav onOpen={onOpen} />
+      {/* <MobileNav onOpen={onOpen} /> */}
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>

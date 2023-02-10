@@ -34,7 +34,7 @@ export default function Iconos() {
                 w={'full'}
                 variant={'outline'}
                 leftIcon={<InfoOutlineIcon  />}
-                onClick={() => window.location.href="https://www.google.com/maps/place/AllTech/@-31.41272,-64.191335,16z/data=!4m5!3m4!1s0x0:0x8016b37754d612fb!8m2!3d-31.4127197!4d-64.1913348?hl=es-419"}
+                onClick={() => window.open("https://www.google.com/maps/place/AllTech/@-31.41272,-64.191335,16z/data=!4m5!3m4!1s0x0:0x8016b37754d612fb!8m2!3d-31.4127197!4d-64.1913348?hl=es-419", "_blank")}
                 >
             <Center>
                 <Text>9 de Julio 573, Córdoba, Argentina</Text>
@@ -59,15 +59,17 @@ export default function Iconos() {
         </Button>
 
         {/* Mandar email */}
-        <Button w={'full'} variant={'outline'} leftIcon={<FcGoogle />} onClick={() => window.location.href = "https://mail.google.com/mail/u/0/#inbox?compose=new"}>
+        <Button w={'full'} variant={'outline'} leftIcon={<FcGoogle />} onClick={() => window.open("https://mail.google.com/mail/u/0/#inbox?compose=new", "_blank")}>
           <Center>
             <Text>alltech@gmail.com</Text>
           </Center>
         </Button>
 
                 <Box p={2}  className={style.botones}>
+
                     <Box><BotonInstagram/></Box>
                     <Box display="flex" justifyContent="flex-end"><BotonFace/></Box>
+
                 </Box>
 
 

@@ -13,7 +13,7 @@ export const postClaim = (value: any) => {
 
 export const updateUser = (value: any) => {
   return {
-    type: ActionTypes.UPDATE_USER,
+    type: ActionTypes.USER_UPDATE,
     payload: value,
   };
 };
@@ -98,7 +98,6 @@ export const addCountCart = (productName: string) => {
 };
 
 export const removeCountCart = (productName: string, count: number) => {
-  console.log(count);
   return {
     type: ActionTypes.REMOVE_COUNT,
     payload: { productName, count },
@@ -584,7 +583,6 @@ export const putProduct =
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
   (dispatch) => {
     dispatch(productsLoading());
-    console.log(product);
     return axios
       .put("https://henry-pf-back.up.railway.app/product/" + id, product)
       .then(
@@ -818,4 +816,146 @@ export const putSale =
       .catch((error) => {
         console.log("PUT sale", error.message);
       });
+  };
+
+//USERS
+
+export const updatedUser = (value: any) => {
+  return {
+    type: ActionTypes.USER_UPDATE,
+    payload: value,
+  };
+};
+
+export const loadingUser = () => {
+  return {
+    type: ActionTypes.USER_LOADING,
+  };
+};
+
+export const failedUser = (value: any) => {
+  return {
+    type: ActionTypes.USER_FAILED,
+    payload: value,
+  };
+};
+
+export const addUsers = (value: any) => {
+  return {
+    type: ActionTypes.USERS_ADD,
+    payload: value,
+  };
+};
+
+export const fetchUsersApi =
+  (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+    dispatch(loadingUser());
+
+    return await axios
+      .get("https://henry-pf-back.up.railway.app/users")
+      .then(
+        function (response) {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        function (error) {
+          var errMess = new Error(error.message);
+          throw errMess;
+        }
+      )
+      .then((questions) => dispatch(addUsers(questions.data)))
+      .catch((error) => dispatch(failedUser(error.message)));
+  };
+
+//Valoracion
+
+export const saveReview =
+  (
+    description: any,
+    productoID: any,
+    rating: any
+  ): ThunkAction<void, RootState, unknown, AnyAction> =>
+  async (dispatch) => {
+    return axios
+      .post("https://henry-pf-back.up.railway.app/reviews", {
+        description,
+        productoID,
+        rating,
+      })
+      .then((response) => {
+        dispatch(updateProduct(response.data));
+        return true;
+      })
+      .catch((error) => {
+        console.log("Post question", error.message);
+        dispatch(failedQuestion(error.message));
+      });
+  }
+
+  //Claim
+
+  export const updateClaim = (value: any) => {
+    return {
+      type: ActionTypes.CLAIM_UPDATE,
+      payload: value,
+    };
+  };
+  
+  export const loadingClaim = () => {
+    return {
+      type: ActionTypes.CLAIM_LOADING,
+    };
+  };
+  
+  export const failedClaim = (value: any) => {
+    return {
+      type: ActionTypes.CLAIM_FAILED,
+      payload: value,
+    };
+  };
+  
+  export const addClaims = (value: any) => {
+    return {
+      type: ActionTypes.CLAIMS_ADD,
+      payload: value,
+    };
+  };
+  
+  export const addClaim = (value: any) => {
+    return {
+      type: ActionTypes.CLAIM_ADD,
+      payload: value,
+    };
+  };
+
+  export const fetchClaimsApi =
+  (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch) => {
+    dispatch(loadingClaim());
+
+    return await axios
+      .get("https://henry-pf-back.up.railway.app/claims")
+      .then(
+        function (response) {
+          if (response.status) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            throw error;
+          }
+        },
+        function (error) {
+          var errMess = new Error(error.message);
+          throw errMess;
+        }
+      )
+      .then((claims) => dispatch(addClaims(claims.data)))
+      .catch((error) => dispatch(failedClaim(error.message)));
   };

@@ -42,7 +42,7 @@ export default function BotonInstagram() {
           size="full"
           position="absolute"
           top={0}
-          onClick={() => window.location.href = 'https://instagram.com/alltechgamming?igshid=ZDdkNTZiNTM='}
+          onClick={() => window.open('https://instagram.com/alltechgamming?igshid=ZDdkNTZiNTM=', "_blank")}
         />
       </Box>
     </Flex>

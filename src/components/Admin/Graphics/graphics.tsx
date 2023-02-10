@@ -43,13 +43,15 @@ export default function GraphicsAdmin() {
   const countSalesPerProduct = () => {
     const salesCount: any = {};
     salesStore.allSales.forEach((sale: any) => {
-      sale.products.forEach((product: any) => {
-        if (salesCount[product.product.name]) {
-          salesCount[product.product.name] += product.quantity;
-        } else {
-          salesCount[product.product.name] = product.quantity;
-        }
-      });
+      if(sale.active){
+        sale.products.forEach((product: any) => {
+          if (salesCount[product.product.name]) {
+            salesCount[product.product.name] += product.quantity;
+          } else {
+            salesCount[product.product.name] = product.quantity;
+          }
+        });
+      }
     });
     return salesCount;
   }
@@ -57,10 +59,12 @@ export default function GraphicsAdmin() {
   const countSalesPerStatus = () => {
     const salesCount: any = {};
     salesStore.allSales.forEach((sale: any) => {
-      if (salesCount[sale.status]) {
-        salesCount[sale.status] += 1;
-      } else {
-        salesCount[sale.status] = 1;
+      if(sale.active){
+        if (salesCount[sale.status]) {
+          salesCount[sale.status] += 1;
+        } else {
+          salesCount[sale.status] = 1;
+        }
       }
     });
     return salesCount;
@@ -124,6 +128,7 @@ export default function GraphicsAdmin() {
           <TabPanels>
             <TabPanel>
               <Bar
+                style={{ margin: "0 auto" }}
                 width={1300}
                 height={600}
                 options={options}
@@ -132,6 +137,7 @@ export default function GraphicsAdmin() {
             </TabPanel>
             <TabPanel>
               <Pie
+                style={{ margin: "0 auto" }}
                 height={600}
                 width={600}
                 options={{ responsive: false, maintainAspectRatio: false, plugins: {

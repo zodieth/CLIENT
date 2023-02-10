@@ -97,7 +97,6 @@ export const Products = (
       let totalOrder= order.split("|")
       
       if (totalOrder[0] === "ALF") {
-        console.log('hola+++',totalOrder);
         if (totalOrder[1] === "ASC") {
           filterCost.sort(function (a: interfaceProduct, b: interfaceProduct) {
             if (a.name > b.name) {

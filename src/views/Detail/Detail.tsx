@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { postQuestion, fetchProductsApi } from "../../app/actionsCreators";
+import {
+  postQuestion,
+  fetchProductsApi,
+  fetchSalesApi
+} from "../../app/actionsCreators";
 import Footer from "../../components/Footer/Footer";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import NavBar from "../../components/NavBar/NavBar";
@@ -8,27 +12,29 @@ import interfaceProduct from "../../features/brands/interfaceBrand";
 import style from "./detail.module.css";
 import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
 import { TbSend } from "react-icons/tb";
-import { Box, Button, LightMode, Textarea } from "@chakra-ui/react";
+import { Box, Button, LightMode, Textarea, Text } from "@chakra-ui/react";
 import { addToCart, deleteFromCart } from "../../app/actionsCreators";
 import Swal from "sweetalert2";
 import NuevoCarrusel from "./NuevoCarrusel";
 import ToggleColorMode from "../../components/DarkMode/ToggleColorMode";
+import StarRating from "./StarRating";
 import { auth } from "../../auth0.service";
 import { AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL } from "../../auth0.config";
 
 function Detail(props: any) {
   const { name } = useParams();
   const products = useAppSelector((state: any) => state.products);
-  const [question, setQuestion] = useState("");
+  const salesStore = useAppSelector((state: any) => state.sales);
+  const userStore = useAppSelector((state: any) => state.user);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dispatch = useAppDispatch();
-
   const findDetail = products?.allProducts.filter(
     (product: interfaceProduct) => product.name === name
   );
 
   useEffect(() => {
     dispatch(fetchProductsApi());
+    dispatch(fetchSalesApi());
   }, [dispatch]);
 
   const [onCart, setOncart] = useState(false);
@@ -82,14 +88,14 @@ function Detail(props: any) {
     review: number;
   };
 
-  const startPercentage = () => {
-    let total = 100;
-    props.reviews?.forEach(function (a: review) {
+  const startPercentage = (product: any) => {
+    let total = 0;
+    product.reviews.forEach(function (a: review) {
       total += a.review;
     });
-    const percentage = total / props.reviews?.length;
+    const percentage = total / product.reviews.length;
     const starPercentage = ((percentage ? percentage : 0 / 100) / 5) * 100;
-
+    
     return starPercentage;
   };
   ///////////////////////////////////////////
@@ -188,7 +194,6 @@ function Detail(props: any) {
       <Box className={style.navBar}>
         <NavBar />
       </Box>
-
       {!findDetail.length ? (
         <Box>No se encontró el producto</Box>
       ) : (
@@ -196,90 +201,88 @@ function Detail(props: any) {
           return (
             <Box className={style.detail} key={e}>
               <Box className={style.contenedor}>
-                <Box>
-                  <Box className={style.name}>{e.name}</Box>
-                  <img
-                    src={e.images[0]}
-                    alt="imgDetail"
-                    className={style.imgDetail}
-                  />
-                  <h4 className={style.texto}>
-                    * Las imágenes se exhiben con fines ilustrativos.
-                  </h4>
-                  <Box className={style.price_cart}>
-                    <Box className={style.price}>US$ {e.price}</Box>
-                    <Button
-                      colorScheme="blue"
-                      onClick={() =>
-                        onCart
-                          ? [handleDeleteFromCart(e), onCartFuncion()]
-                          : onCart === false
-                          ? [addCart(e), onCartFuncion(), addToCartAlert()]
-                          : ""
-                      }
-                    >
-                      {onCart ? (
-                        <HiShoppingCart />
-                      ) : (
-                        <HiOutlineShoppingCart height={8} color={"white"} />
-                      )}
-                    </Button>
-                  </Box>
-                  <Box className={style.calificacion}>
-                    <Box className={style.starsOuter}>
-                      <Box
-                        className={style.starsInner}
-                        style={{ width: `${startPercentage()}%` }}
-                      ></Box>
-                    </Box>
-                  </Box>
-                </Box>
+{/* -------------------------------------------- primer div del detail */}
+                        <Box className={style.primerDiv}>
+                          
+                          <img
+                            src={e.images[0]}
+                            alt="imgDetail"
+                            className={style.imgDetail}
+                          />
+                          <h4 className={style.texto}>* Las imágenes se exhiben con fines ilustrativos.</h4>
+                          <Box className={style.price_cart}>
+                            <Box className={style.price}>US$ {e.price}</Box>
+                            <Button
+                              colorScheme="blue"
+                              onClick={() =>
+                                onCart
+                                  ? [handleDeleteFromCart(e), onCartFuncion()]
+                                  : onCart === false
+                                  ? [addCart(e), onCartFuncion(), addToCartAlert()]
+                                  : ""
+                              }
+                            >
+                              {onCart ? (
+                                <HiShoppingCart />
+                              ) : (
+                                <HiOutlineShoppingCart height={8} color={"white"} />
+                              )}
+                            </Button>
+                          </Box>
+                          
+                        </Box>
+{/* -------------------------------------------- primer div del detail */}
+{/* ------------------ segundo div del detail */}
+                    <Box className={style.segundoDiv}>
 
-                <Box className={style.right}>
-                  <Box className={style.description}>{e.description}</Box>
-                </Box>
+                        <Box className={style.name}>{e.name}</Box>
+
+                      <Box className={style.descripcionDupla}>
+                        <Text className={style.caracteristicas}>Caracteristicas del producto:</Text>
+
+                        <Box className={style.description}>{e.description}</Box>
+                      </Box>
+
+                        <Box className={style.calificacion}>
+                            <Box className={style.starsOuter}>
+                              <Box
+                                className={style.starsInner}
+                                style={{ width: `${startPercentage(e)}%` }}
+                              ></Box>
+                            </Box>
+                          </Box> 
+
+                    </Box>
+{/* ------------------ segundo div del detail */}
               </Box>
 
               <Box className={style.preguntas}>
                 <Box>
-                  <Box className={style.tituloPreguntas}>
-                    Preguntas de nuestros clientes
-                  </Box>
-                  {e.questions.length > 0 ? (
-                    e.questions.map((q: any) => {
-                      if (q.active) {
-                        return (
-                          <Box className={style.question}>
-                            <dl>
-                              <dt>{q.question}</dt>
-                              <dd>└─ {q.answer}</dd>
-                            </dl>
-                          </Box>
-                        );
-                      }
-                    })
-                  ) : (
-                    <Box className={style.question}>
-                      Aún no hay preguntas sobre este producto, sé el primero
-                    </Box>
-                  )}
+                  <Box className={style.tituloPreguntas}>Preguntas y respuestas</Box>
+                  {e.questions.length>0?  
+                  (e.questions.map((q:any)=>{
+                    return(
+                      <Box className={style.question}>
+                        <dl>
+                          <dt>{q.question}</dt>
+                          <dd>└─ {q.answer}</dd>
+                        </dl>
+                      </Box>
+
+                    )
+                })): (
+                  <Box className={style.question3}>
+                    Aún no hay preguntas sobre este producto, sé el primero
+                  </Box>)
+                }
                 </Box>
                 <Box className={style.rigth}>
-                  <Box className={style.tituloPreguntas}>
-                    Dejanos tu consulta:
-                  </Box>
-                  <Box className={style.newQuestion}>
-                    <Textarea
-                      name="Pregunta"
-                      id="pregunta"
-                      placeholder="Escribe tu pregunta aquí"
-                    ></Textarea>
-                    <Button
-                      colorScheme="blue"
-                      onClick={
+                  <Box className={style.tituloPreguntas2}>¡Dejanos tu consulta y te responderemos en la brevedad!</Box>
+                  <Box className={style.newQuestion}> 
+                    <Textarea name="Pregunta" id="pregunta" placeholder="Escribe tu consulta aquí"></Textarea>
+                    <Button className={style.enviar} colorScheme="blue" onClick={
                         isLoggedIn ? handleSubmitQuestion : handleLoginReminder
-                      }
-                    >
+                      }>
                       <h5>Enviar</h5>
                       <TbSend height={8} color={"white"} />
                     </Button>

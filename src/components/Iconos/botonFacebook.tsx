@@ -48,9 +48,9 @@ export default function BotonFace() {
           size="full"
           position="absolute"
           top={0}
-          onClick={() => window.location.href = 'https://www.facebook.com/groups/535401966884796?locale=es_LA'}
+          onClick={() => window.open('https://www.facebook.com/groups/535401966884796?locale=es_LA', "_blank")}
         />
       </Box>
     </Flex>
   );
-}
+} 
