@@ -56,9 +56,7 @@ export default function SignupCard() {
   const phonePattern = /^\d{8,}$/;
   const validateUserData = () => {
     if (userName.length < 5) {
-      setUserNameError(
-        "El nombre de usuario debe tener al menos cinco caracteres."
-      );
+      setUserNameError("El nombre de usuario debe tener al menos cinco caracteres.");
     } else setUserNameError("");
     if (password.length < 8) {
       setPasswordError("La contraseña debe tener al menos ocho caracteres.");
@@ -106,12 +104,12 @@ export default function SignupCard() {
       addressError,
       zipError,
     ];
-    const someErrors = errors.some((error) => error !== "");
+    const someErrors = errors.some((error) => error != "");
     if (someErrors) {
       setAllowSignUp(false);
     } else {
       setAllowSignUp(true);
-    }
+    };
   };
   const handleUserCreation = async (
     province: String,
@@ -238,7 +236,7 @@ export default function SignupCard() {
         title: "Atención...",
         text: "Algunos de los datos ingresados NO son válidos.",
       });
-    }
+    };
     const successfulUserCreation = await handleUserCreation(
       province,
       city,

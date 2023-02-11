@@ -76,7 +76,7 @@ export default function SignupCard() {
       cityError,
       addressError,
       zipError];
-    const someErrors = errors.some(error => error !== "");
+    const someErrors = errors.some(error => error != "");
     if(someErrors) {
       setAllowSignUp(false);
     } else {
