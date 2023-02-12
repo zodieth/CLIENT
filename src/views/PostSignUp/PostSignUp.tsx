@@ -70,7 +70,6 @@ export default function SignupCard() {
   const checkErrors = () => {
     const errors = [
       userNameError,
-      userNameError,
       phoneNumberError,
       provinceError,
       cityError,
@@ -266,7 +265,20 @@ export default function SignupCard() {
   useEffect(() => {
     validateUserData();
     checkErrors();
-  }, [userName, phoneNumber, province, city, address, zip]);
+  }, [
+    userName,
+    phoneNumber,
+    province,
+    city,
+    address,
+    zip,
+    userNameError,
+    phoneNumberError,
+    provinceError,
+    cityError,
+    addressError,
+    zipError
+  ]);
   return (
     <Flex
       minH={"100vh"}
