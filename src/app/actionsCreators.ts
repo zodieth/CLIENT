@@ -429,11 +429,14 @@ export const postBrand =
       name: name,
     };
 
+    const accessToken = localStorage.getItem("accessToken");
+
     return fetch("https://henry-pf-back.up.railway.app/brands", {
       method: "POST",
       body: JSON.stringify(newBrand),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`
       },
     })
       .then(
