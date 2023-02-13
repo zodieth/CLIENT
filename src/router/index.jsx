@@ -20,6 +20,8 @@ import ProductsAdmin from "../components/Admin/Products/products";
 import EditProductAdmin from "../components/Admin/Products/editProduct";
 import PreguntasFrecuentes from "../views/PreguntasFrecuentes/PreguntasFrecuentes";
 import ComoComprar from "../views/ComoComprar/ComoComprar";
+import TerminosCondiciones from "../views/TerminosCondiciones/TerminosCondiciones"
+import Politicas from "../views/Politicas/Politicas"
 import EditUser from "../views/USER/EditUser";
 import QuestionsAdmin from "../components/Admin/Questions/questions";
 import AllQuestionsAdmin from "../components/Admin/Questions/allQuestions";
@@ -143,6 +145,16 @@ export const router = createBrowserRouter([
   {
     path: "/preguntas",
     element: <PreguntasFrecuentes />,
+    exact: true,
+  },
+  {
+    path: "/terminos",
+    element: <TerminosCondiciones />,
+    exact: true,
+  },
+  {
+    path: "/politicas",
+    element: <Politicas />,
     exact: true,
   },
   {

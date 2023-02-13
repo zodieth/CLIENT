@@ -1,0 +1,25 @@
+.dialogos1{
+    float: left;
+     /* width: 2000px; */
+    /* height: 100px; */ 
+    /* margin-left: -200px; */
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); */
+}
+.dialogos2{
+    margin: 1000px;
+    /* float:unset; */
+    /* width: 2000px; */
+  /*   width: 650px;
+    height: 400px; */
+    /* margin-left: 1000px; */
+    /* margin-right: 100px; */
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); */
+}
+.dialogos3{
+    float: right;
+    /* width: 2000px; */
+/*     width: 650px;
+    height: 400px; */
+    /* margin-right: -200px; */
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); */
+}
