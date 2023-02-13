@@ -98,7 +98,7 @@ export default function SidebarWithHeader({
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      {/* <MobileNav onOpen={onOpen} /> */}
+      <MobileNav onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
@@ -191,16 +191,14 @@ interface MobileProps extends FlexProps {
 }
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
-  const userState = useAppSelector((state) => state.user);
-
-  const [userName, setUserName] = useState("");
+  const [activeSession, setActiveSession] = useState(true);
   const [picture, setPicture] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
-  const activeSession = accessToken ? true : false;
+  const userState = useAppSelector((state) => state.user);
   const handleLogout = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("accessToken");
@@ -215,7 +213,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       async (error: Auth0Error | null, user: Auth0UserProfile) => {
         if (error) {
           console.log("Error: ", error);
+          setActiveSession(false);
         } else {
+          setActiveSession(true);
           const userId = user.sub;
           const userRolesResponse = await fetch(
             `https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`,
@@ -232,20 +232,22 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               role.name === "alltech-admin"
           );
           setIsAdmin(hasAdminRole);
-          setUserName(user.nickname);
           setPicture(user.picture);
-        }
+        };
       }
     );
   };
 
   useEffect(() => {
-    if (!activeSession) {
+    if (!accessToken) {
       navigate("/");
     } else {
       handleUser();
-    }
+    };
   }, []);
+  useEffect(() => {
+    if(!activeSession) navigate("/");
+  }, [activeSession]);
   return (
     <Flex /* devuelta es la barra donde esta la parte del administrador arriba */
       ml={{ base: 0, md: 60 }}
@@ -287,7 +289,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         />
         <Flex alignItems={"center"}>
           <Menu>
-            <MenuButton
+            {activeSession ? <MenuButton
               py={2}
               transition="all 0.3s"
               _focus={{ boxShadow: "none" }}
@@ -302,14 +304,14 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 >
                   <Text fontSize="sm">{userState.user.userName}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    {userState.user.userName}
+                  Cuenta de usuario
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
                   <FiChevronDown />
                 </Box>
               </HStack>
-            </MenuButton>
+            </MenuButton> : null}
             <MenuList
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
@@ -317,9 +319,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <MenuItem onClick={() => navigate("/cart")}>
                 Mi carrito de compras
               </MenuItem>
-              <MenuItem onClick={() => navigate("/user")}>
-                Mi cuenta de usuario
-              </MenuItem>
+              {isAdmin ? <MenuItem onClick={() => navigate("/admin")}>
+                Mi cuenta de administrador
+              </MenuItem> : null}
               <MenuDivider />
               <MenuItem onClick={() => navigate("/")}>
                 Volver a la tienda
