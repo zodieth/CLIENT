@@ -112,8 +112,8 @@ export default function LargeWithNewsletter() {
             <ListHeader>Soporte</ListHeader>
             <Link to="/comocomprar">Cómo comprar</Link>
             <Link to="/preguntas">Preguntas Frecuentes</Link>
-            <Link to="">Términos y condiciones</Link>
-            <Link to="">Políticas de privacidad</Link>
+            <Link to="/terminos">Términos y condiciones</Link>
+            <Link to="/politicas">Políticas de privacidad</Link>
 
             
           </Stack>
