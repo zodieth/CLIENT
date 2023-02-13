@@ -1,0 +1,25 @@
+.buy {
+  margin-bottom: 200px;
+  margin-top: 50px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+.title {
+  margin-left: 10rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  margin-left: 1rem;
+}
+.contenido {
+  margin-left: 10rem;
+  margin-right: 10rem;
+
+  height: 300px;
+}

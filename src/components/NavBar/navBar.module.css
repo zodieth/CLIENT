@@ -5,6 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-shadow: 0 4px 30px rgba(73, 164, 206, 0.2); /* esto cambie para el modo noche */
 }
 a {
   margin: 0 auto;
