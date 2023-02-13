@@ -17,6 +17,7 @@ import {
   Stack,
   Center,
   useColorModeValue,
+  Text,
 } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { auth } from "../../auth0.service";
@@ -30,6 +31,7 @@ import {
 import ToggleColorMode from "../DarkMode/ToggleColorMode";
 import Swal from "sweetalert2";
 import { searchUserByEmail } from "../../app/actionsCreators";
+import { ReactNode } from "react";
 
 function NavBar(props: any) {
   const dispatch = useAppDispatch();
@@ -127,6 +129,14 @@ function NavBar(props: any) {
     }
   }, []);
 
+  const ListHeader = ({ children }: { children: ReactNode }) => {
+    return (
+      <Text fontWeight={"500"} fontSize={"20"} mb={3}>
+        {children}
+      </Text>
+    );
+  };
+
   return (
     <Box className={style.navBar}>
       <Box className={style.logo}>
@@ -140,6 +150,12 @@ function NavBar(props: any) {
           </h1>
         </Link>
       </Box>
+      <Box>
+            <Box width="100%" height="5%"  padding="1px" textAlign="center" /* bg={useColorModeValue("white", "whiteAlpha.100")} */ textColor="gray" fontSize={20}>
+                <Link to="/nosotros">Equipo AllTech</Link>
+            </Box>
+      </Box>
+
       <Box className={style.buttons}>
         <ToggleColorMode />
         <Link to={"/cart"} className={style.cartI}>
@@ -223,6 +239,7 @@ function NavBar(props: any) {
           </Link>
         )}
       </Box>
+
     </Box>
   );
 }

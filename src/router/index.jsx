@@ -22,6 +22,7 @@ import PreguntasFrecuentes from "../views/PreguntasFrecuentes/PreguntasFrecuente
 import ComoComprar from "../views/ComoComprar/ComoComprar";
 import TerminosCondiciones from "../views/TerminosCondiciones/TerminosCondiciones"
 import Politicas from "../views/Politicas/Politicas"
+import Nosotros from "../views/Nosotros/Nosotros"
 import EditUser from "../views/USER/EditUser";
 import QuestionsAdmin from "../components/Admin/Questions/questions";
 import AllQuestionsAdmin from "../components/Admin/Questions/allQuestions";
@@ -160,6 +161,11 @@ export const router = createBrowserRouter([
   {
     path: "/comocomprar",
     element: <ComoComprar />,
+    exact: true,
+  },
+  {
+    path: "/nosotros",
+    element: <Nosotros />,
     exact: true,
   },
   {
