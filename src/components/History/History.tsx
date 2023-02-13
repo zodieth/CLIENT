@@ -144,7 +144,7 @@ const History = () => {
             marginLeft={{ base: '0', sm: '5%' }}
             marginTop="5%">
                 
-            <Link to="/productos/Headset" /* textDecoration="none" _hover={{ textDecoration: 'none' }} */ >
+            <Link to="/productos/Silla%20de%20escritorio" /* textDecoration="none" _hover={{ textDecoration: 'none' }} */ >
               <Image 
                 borderRadius="lg"
                 src={
