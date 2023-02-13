@@ -161,16 +161,13 @@ function Detail(props: any) {
   const activeSession = accessToken ? true : false;
 
   const handleUser = async () => {
-    await auth.client.userInfo(
-      accessToken,
-      async (error: Auth0Error | null, user: Auth0UserProfile) => {
-        if (error) {
-          console.log("Error: ", error);
-        } else {
-          setIsLoggedIn(true);
-        }
-      }
-    );
+    await auth.client.userInfo(accessToken, async (error : Auth0Error | null, user : Auth0UserProfile) => {
+      if(error) {
+        console.log("Error: ", error);
+      } else {
+        setIsLoggedIn(true);
+      };
+    });
   };
 
   const handleLoginReminder = () => {

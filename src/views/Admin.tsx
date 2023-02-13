@@ -54,6 +54,7 @@ import {
 } from "../auth0.config";
 import ToggleColorMode from "../components/DarkMode/ToggleColorMode";
 import DarkModeAdmin from "../components/DarkMode/DarkModeAdmin";
+import { useAppSelector } from "../hooks/hooks";
 
 interface LinkItemProps {
   name: string;
@@ -201,13 +202,13 @@ interface MobileProps extends FlexProps {
 }
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
-  const [userName, setUserName] = useState("");
+  const [activeSession, setActiveSession] = useState(true);
   const [picture, setPicture] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
-
   const accessToken = localStorage.getItem("accessToken");
-  const activeSession = accessToken ? true : false;
+  const userState = useAppSelector((state) => state.user);
   const handleLogout = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("accessToken");
@@ -222,7 +223,10 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       async (error: Auth0Error | null, user: Auth0UserProfile) => {
         if (error) {
           console.log("Error: ", error);
+          setActiveSession(false);
+          setIsAdmin(false);
         } else {
+          setActiveSession(true);
           const userId = user.sub;
           const userRolesResponse = await fetch(
             `https://${AUTH0_DOMAIN}/api/v2/users/${userId}/roles`,
@@ -238,8 +242,8 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             (role: { id: String; name: String; description: String }) =>
               role.name === "alltech-admin"
           );
-          if (!hasAdminRole) navigate("/");
-          setUserName(user.nickname);
+          if(!hasAdminRole) navigate("/");
+          setIsAdmin(hasAdminRole);
           setPicture(user.picture);
         }
       }
@@ -251,8 +255,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       navigate("/");
     } else {
       handleUser();
-    }
+    };
   }, []);
+  useEffect(() => {
+    if(!activeSession) navigate("/");
+  }, [activeSession]);
   return (
     <Flex /* devuelta es la barra donde esta la parte del administrador arriba */
       ml={{ base: 0, md: 60 }}
@@ -286,15 +293,15 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         {" "}
         {/* seccion chiquita donde esta la parte del administrador */}{" "}
         {/* Arriba a la derecha */}
-        <IconButton
+        {isAdmin ? <IconButton
           size="lg"
           variant="ghost"
           aria-label="open menu"
           icon={<FiBell />}
-        />
+        /> : null}
         <Flex alignItems={"center"}>
           <Menu>
-            <MenuButton
+            {isAdmin ? <MenuButton
               py={2}
               transition="all 0.3s"
               _focus={{ boxShadow: "none" }}
@@ -307,16 +314,16 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">{userName}</Text>
+                  <Text fontSize="sm">{userState.user.userName}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Administrador
+                  Cuenta de administrador
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
                   <FiChevronDown />
                 </Box>
               </HStack>
-            </MenuButton>
+            </MenuButton> : null}
             <MenuList
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}

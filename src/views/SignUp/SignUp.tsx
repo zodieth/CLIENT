@@ -18,7 +18,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { auth } from "../../auth0.service";
-import { API_SERVER_URL, AUTH0_REALM } from "../../auth0.config";
+import {
+  API_SERVER_URL,
+  AUTH0_REALM,
+  AUTH0_MANAGEMENT_API_ACCESS_TOKEN } from "../../auth0.config";
 import style from "./SignUp.module.css";
 import { error } from "console";
 import { Password } from "@mui/icons-material";
@@ -56,9 +59,7 @@ export default function SignupCard() {
   const phonePattern = /^\d{8,}$/;
   const validateUserData = () => {
     if (userName.length < 5) {
-      setUserNameError(
-        "El nombre de usuario debe tener al menos cinco caracteres."
-      );
+      setUserNameError("El nombre de usuario debe tener al menos cinco caracteres.");
     } else setUserNameError("");
     if (password.length < 8) {
       setPasswordError("La contraseña debe tener al menos ocho caracteres.");
@@ -104,14 +105,14 @@ export default function SignupCard() {
       provinceError,
       cityError,
       addressError,
-      zipError,
+      zipError
     ];
-    const someErrors = errors.some((error) => error !== "");
+    const someErrors = errors.some((error) => error != "");
     if (someErrors) {
       setAllowSignUp(false);
     } else {
       setAllowSignUp(true);
-    }
+    };
   };
   const handleUserCreation = async (
     province: String,
@@ -238,7 +239,7 @@ export default function SignupCard() {
         title: "Atención...",
         text: "Algunos de los datos ingresados NO son válidos.",
       });
-    }
+    };
     const successfulUserCreation = await handleUserCreation(
       province,
       city,
@@ -296,12 +297,25 @@ export default function SignupCard() {
     confirmPassword,
     firstName,
     lastName,
+    userName,
     email,
     phoneNumber,
     province,
     city,
     address,
     zip,
+    userNameError,
+    passwordError,
+    confirmPasswordError,
+    firstNameError,
+    lastNameError,
+    userNameError,
+    emailError,
+    phoneNumberError,
+    provinceError,
+    cityError,
+    addressError,
+    zipError
   ]);
   return (
     <Flex

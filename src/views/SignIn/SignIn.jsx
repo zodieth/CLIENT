@@ -177,6 +177,8 @@ export default function SimpleCard() {
               >
                 <Checkbox
                   id="rememberMe"
+                  leftIcon={RememberMe}
+                  checked={rememberMe}
                   onChange={() => setRememberMe(!rememberMe)}
                 >
                   Recuérdame
@@ -227,7 +229,7 @@ export default function SimpleCard() {
                   ¿No es lo que necesitas?{" "}
                   <Link
                     style={{ color: "blue" }}
-                    to="/signin"
+                    to="/"
                     color={"blue.400"}
                   >
                     Volver
