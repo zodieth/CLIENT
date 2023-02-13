@@ -19,7 +19,6 @@ import ToggleColorMode from "../components/DarkMode/ToggleColorMode"; // dark mo
 import { Box, LightMode } from "@chakra-ui/react";
 import Testimonials from "../components/Testimonials/Testimonials";
 import ArmaPCHome from "./ArmaPC/ArmaPCHome";
-import TimeLine from "../components/TimeLine/TimeLine";
 import History from "../components/History/History";
 import Saludos from "../components/Saludos/Saludos";
 
