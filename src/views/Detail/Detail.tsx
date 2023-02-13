@@ -110,7 +110,7 @@ function Detail(props: any) {
         question!.value = "";
       } catch (e) {
         createdAlertError(
-          "Algo salio mal, pongase en contacot con un administrador"
+          "Algo salio mal, pongase en contacto con un administrador"
         );
       }
     } else {
@@ -242,16 +242,47 @@ function Detail(props: any) {
 
                         <Box className={style.description}>{e.description}</Box>
                       </Box>
-
+{/* -----------------------------ESTRELLAS */}
                         <Box className={style.calificacion}>
+                        {
+                    userStore.user ? 
+                    salesStore.allSales.length > 0 ?
+                    (
+                      <>
+                        {
+                          salesStore.allSales.some((sale: any) => 
+                            (sale.user._id === userStore.user._id && sale.products.some((product: any) => 
+                              product.product._id === e._id
+                            ))
+                          ) ?
+                            <StarRating product={e._id}/>
+                          : 
                             <Box className={style.starsOuter}>
                               <Box
                                 className={style.starsInner}
                                 style={{ width: `${startPercentage(e)}%` }}
                               ></Box>
                             </Box>
+                        }
+                      </>
+                    )
+                  :
+                    <Box className={style.starsOuter}>
+                      <Box
+                        className={style.starsInner}
+                        style={{ width: `${startPercentage(e)}%` }}
+                      ></Box>
+                    </Box>
+                    : 
+                      <Box className={style.starsOuter}>
+                        <Box
+                          className={style.starsInner}
+                          style={{ width: `${startPercentage(e)}%` }}
+                        ></Box>
+                      </Box>
+                    }
                           </Box> 
-
+{/* -----------------------------ESTRELLAS */}
                     </Box>
 {/* ------------------ segundo div del detail */}
               </Box>
@@ -261,6 +292,7 @@ function Detail(props: any) {
                   <Box className={style.tituloPreguntas}>Preguntas y respuestas</Box>
                   {e.questions.length>0?  
                   (e.questions.map((q:any)=>{
+                    if (q.active){
                     return(
                       <Box className={style.question}>
                         <dl>
@@ -268,8 +300,8 @@ function Detail(props: any) {
                           <dd>└─ {q.answer}</dd>
                         </dl>
                       </Box>
-
-                    )
+                      )
+                    }
                 })): (
                   <Box className={style.question3}>
                     Aún no hay preguntas sobre este producto, sé el primero
