@@ -14,7 +14,7 @@
 
 ### Important ⚠️ ###
 For deployment purposes, two repos were used:
-- API: https://github.com/juanleiton/PI-Videogames_api
+- API: https://github.com/zodieth/CLIENT
 - Client: https://github.com/juanleiton/PI-Videogames_client
 
 ### Goal 🏁 ###
