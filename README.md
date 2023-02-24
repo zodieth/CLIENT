@@ -4,7 +4,7 @@
   </a>
 </div>
 
-# **HenryGames** #
+# **AllTech** #
 ### Final project developed in Henry, Web development bootcamp. ###
 <div align="center">
   <a href="https://client-ochre-five.vercel.app/">
