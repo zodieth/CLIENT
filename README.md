@@ -46,7 +46,7 @@ Develop an electronics 🖥️ **e-commerce** 🛒 type **full stack Web app** u
    <img src="https://user-images.githubusercontent.com/108427945/220798061-16bd9b8a-e763-4004-b95a-1bfecd456404.png" width="50" height="50" >
   </a>
   <a href="https://mongoosejs.com/">
-   <img src="https://user-images.githubusercontent.com/108427945/220798508-6728ea7d-e461-4df5-a24a-f6a378dca838.png" width="50" height="50" >
+   <img src="https://user-images.githubusercontent.com/108427945/220798508-6728ea7d-e461-4df5-a24a-f6a378dca838.png" width="50" >
   </a>
   <a href="https://nodejs.org/en/">
    <img src="https://user-images.githubusercontent.com/108427945/220450396-5786cd98-e2ce-47e8-b15f-056a251bd01b.png" width="50" height="50" >
