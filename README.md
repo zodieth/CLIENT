@@ -21,13 +21,12 @@ For deployment purposes, two repos were used:
 Develop an electronics 🖥️ **e-commerce** 🛒 type **full stack Web app** on a team under the **Scrum** methodology in four weeks' time.
 
 ### Features ✔️ ###
-- 🚪 Main view, in which all videogames are visualized, whether they were added by the user or not.
-- 🔍 Searchbar on every view, by which videogames whose title contains the entered text are returned. Results include videogames from the API, as well as those added by the user.
-- 📑 Detail view, in which further information for a particular videocame can be visualized.
+- 🔍 Searchbar, by which products whose name contains the entered text are returned. Results include products added by the admin.
+- 📑 Detail view, in which the whole description for a particular product can be visualized.
 - 🗐 Dynamic paging, regardless of the number of results or the selected filters and ordering.
-- 🎚️ Combined filters and ordering in the main view, as well as in the search view. The user can choose between visualizing all videogames, only those created by the him/her, or only those returned by the external API. It is also possible to filter by one or more genres, and sort either by title or rating, in both ascending and descending order; ascending sorting by title is selected by default.
+- 🎚️ Combined filters and ordering, which means the user can choose between visualizing all products or only those belonging to a specific category and/or brand. It is also possible to set a price range to filter down the available products or search results, or even just a maximum or minimum. Products can also be sorted by name and price, in both ascending and descending order. All available products, regardless of their current stock, are visible by default.
+- ⛔ Real-time data validation when adding or updating products, categories or brands from the admin view, or upon signing up. The Submit button is disabled or enabled depending on whether the entered data meet certain criteria or not, which is detailed under each field; for example, when the number of characters in the name exceeds the maximum allowed. Submission is canceled if an item with the same field data already exists.
 - ➕ CRUD. In addition to viewing and adding videogames, it is also possible to create or delete an already existing one, this can be done through a couple of buttons in the detail view, which are disabled if the videogame in question was not added by the user.
-- ⛔ Real-time data validation when adding or updating videogames. The Submit button is disabled/enabled depending on whether the entered data meet certain criteria or not, which is detailed under each field; for example, when the number of characters in the title exceeds the maximum allowed.
 
 ### Tools & technologies 🖥️ ###
   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
