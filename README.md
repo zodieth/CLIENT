@@ -63,8 +63,8 @@ Develop an electronics 🖥️ **e-commerce** 🛒 type **full stack Web app** u
   <a href="https://auth0.com/">
    <img src="https://user-images.githubusercontent.com/108427945/220799198-a8e6e836-f9d1-436b-9853-515d6cc769bd.png" width="50" >
   </a>
-  <a href="https://user-images.githubusercontent.com/108427945/221325239-969dd655-978a-44e6-a026-510903c37229.png">
-   <img src="https://www.mercadopago.com.co/developers/es/docs/sdks-library/landing" width="50" >
+  <a href="https://www.mercadopago.com.co/developers/es/docs/sdks-library/landing">
+   <img src="https://user-images.githubusercontent.com/108427945/221325344-8d1808cf-d111-4b5e-89c8-6182a24d6e05.png" width="50" >
   </a>
   <a href="https://chakra-ui.com/">
    <img src="https://user-images.githubusercontent.com/108427945/221325099-edcd7f9b-2ff1-4a9a-a2dc-858588b41921.png" width="50" >
