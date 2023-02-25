@@ -64,7 +64,7 @@ Develop an electronics 🖥️ **e-commerce** 🛒 type **full stack Web app** u
    <img src="https://user-images.githubusercontent.com/108427945/220799198-a8e6e836-f9d1-436b-9853-515d6cc769bd.png" width="50" >
   </a>
   <a href="https://chakra-ui.com/">
-   <img src="https://user-images.githubusercontent.com/108427945/221324942-415fa518-b3b1-467b-bd94-45b441d05674.png" width="50" >
+   <img src="https://user-images.githubusercontent.com/108427945/221325099-edcd7f9b-2ff1-4a9a-a2dc-858588b41921.png" width="50" >
   </a>
   <a href="https://git-scm.com/">
    <img src="https://user-images.githubusercontent.com/108427945/220799354-9b2a07b1-d80c-4684-9bc3-33ce34d8f2e5.png" width="50" >
