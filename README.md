@@ -27,6 +27,7 @@ Develop an electronics 🖥️ **e-commerce** 🛒 type **full stack Web app** o
 - 🎚️ Combined filters and ordering, which means the user can choose between visualizing all products or only those belonging to a specific category and/or brand. It is also possible to set a price range to filter down the available products or search results, or even just a maximum or minimum. Products can also be sorted by name and price, in both ascending and descending order. All available products, regardless of their current stock, are visible by default.
 - ⛔ Real-time data validation when adding or updating products, categories or brands from the admin view, or upon signing up. The Submit button is disabled or enabled depending on whether the entered data meet certain criteria or not, which is detailed under each field; for example, when the number of characters in the name exceeds the maximum allowed. Submission is canceled if an item with the same field data already exists.
 - ➕ CRUD. In addition to viewing and adding products, categories and brands, it is also possible to create or delete an already existing one, this can be done through a couple of buttons on the item row on the corresponding list, accesible only from the admin view.
+- 📌 Data persistence. When logged out, certain user data, such as the items in the shopping cart, will remain through all views, even when the tab or window is closed.
 
 ### Tools & technologies 🖥️ ###
   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
