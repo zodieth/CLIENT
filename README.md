@@ -18,7 +18,7 @@ For deployment purposes, two repos were used:
 - Client: https://github.com/zodieth/CLIENT
 
 ### Goal 🏁 ###
-Develop an electronics 🖥️ **e-commerce** 🛒 type **full stack Web app** under the **Scrum** methodology in four weeks' time.
+Develop an electronics 🖥️ **e-commerce** 🛒 type **full stack Web app** on a team under the **Scrum** methodology in four weeks' time.
 
 ### Features ✔️ ###
 - 🚪 Main view, in which all videogames are visualized, whether they were added by the user or not.
