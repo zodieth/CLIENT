@@ -21,14 +21,14 @@ For deployment purposes, two repos were used:
 Develop an electronics 🖥️ **e-commerce** 🛒 type **full stack Web app** on a team under the **Scrum** methodology in four weeks' time.
 
 ### Features ✔️ ###
-- 🔍 Searchbar, by which products whose name contains the entered text are returned. Results include products added by the admin.
-- 📑 Detail view, in which the whole description for a particular product can be visualized.
-- 🗐 Dynamic paging, regardless of the number of results or the selected filters and ordering.
-- 🎚️ Combined filters and ordering, which means the user can choose between visualizing all products or only those belonging to a specific category and/or brand. It is also possible to set a price range to filter down the available products or search results, or even just a maximum or minimum. Products can also be sorted by name and price, in both ascending and descending order. All available products, regardless of their current stock, are visible by default.
-- ⛔ Real-time data validation when adding or updating products, categories or brands from the admin view, or upon signing up. The Submit button is disabled or enabled depending on whether the entered data meet certain criteria or not, which is detailed under each field or through an alert window; for example, when the number of characters in the name exceeds the maximum allowed. Submission is canceled if an item with the same field data already exists.
-- ➕ CRUD. In addition to viewing and adding products, categories and brands, it is also possible to create or delete an already existing one, this can be done through a couple of buttons on the item row on the corresponding list, accesible only from the admin view.
-- 📌 Data persistence. When logged out, certain user data, such as the items in the shopping cart, will remain through all views, even when the tab or window is closed.
-- 🆔 Own and third-party user authentication.
+- 🔍 Searchbar
+- 📑 Product detail view
+- 🗐 Dynamic paging
+- 🎚️ Combined filtering and sorting settings
+- ⛔ Real-time data validation
+- ➕ CRUD
+- 📌 Data persistence
+- 🆔 Own and third-party user authentication
 - 💰 Payment gateway
 - 🖼️ Image uploading
 - ⭐ Rating and reviews
