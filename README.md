@@ -28,6 +28,22 @@ Develop an electronics 🖥️ **e-commerce** 🛒 type **full stack Web app** o
 - ⛔ Real-time data validation when adding or updating products, categories or brands from the admin view, or upon signing up. The Submit button is disabled or enabled depending on whether the entered data meet certain criteria or not, which is detailed under each field or through an alert window; for example, when the number of characters in the name exceeds the maximum allowed. Submission is canceled if an item with the same field data already exists.
 - ➕ CRUD. In addition to viewing and adding products, categories and brands, it is also possible to create or delete an already existing one, this can be done through a couple of buttons on the item row on the corresponding list, accesible only from the admin view.
 - 📌 Data persistence. When logged out, certain user data, such as the items in the shopping cart, will remain through all views, even when the tab or window is closed.
+- 🆔 Own and third-party user authentication.
+- 💰 Payment gateway
+- 🖼️ Image uploading
+- ⭐ Rating and reviews
+- 📧 Email notifications
+- 📰 Newsletter
+- 🗑️ Logical deletion
+- 🛎️ Admin view
+- 🧍 User view
+- 📒 Stock management
+- 📍 Purchase order tracking
+- 🌙 Dark mode
+- 🛒 Shopping cart
+- 🧡 Favorites
+- 💬 Customer assistance chatbot
+- 🔧 "Build your PC"
 
 ### Tools & technologies 🖥️ ###
   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
