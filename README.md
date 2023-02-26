@@ -18,7 +18,7 @@ For deployment purposes, two repos were used:
 - Client: https://github.com/zodieth/CLIENT
 
 ### Goal 🏁 ###
-Develop an electronics 🖥️ **e-commerce** 🛒 **full stack Web app** on a team under the **Scrum** methodology in four weeks' time.
+Develop an electronics 🖥️ **e-commerce** 🛒 **full stack Web app** under the **Scrum** methodology in four weeks' time.
 
 ### Features ✔️ ###
 - 🔍 Searchbar
