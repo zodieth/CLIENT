@@ -8,7 +8,7 @@
 ### Final project developed in Henry, Web development bootcamp. ###
 <div align="center">
   <a href="https://client-ochre-five.vercel.app/">
-    <img src="https://user-images.githubusercontent.com/108427945/220424776-f2c06892-dc47-4073-a475-5eb41ff8927c.png" width="500" >
+    <img src="https://user-images.githubusercontent.com/108427945/221656973-c5822912-0e2e-4333-a80b-cb395beb475e.png" width="500" >
   </a>
 </div>
 
