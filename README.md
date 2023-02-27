@@ -96,22 +96,26 @@ Develop an electronics 🖥️ **e-commerce** 🛒 **full stack Web app** under 
   </a>
 
 ### How to run this project locally ⚙️ ###
-1. Install PostgreSQL.
-2. Create a database with the name "videogames".
-3. Inside "PI-Videogames_api", create a .env file, then copy and paste the following:
+1. Inside "HenryPI/API", create a .env file, then copy and paste the following:
 ```
-DB_USER={user}
-DB_PASSWORD={password}
-DB_HOST=localhost
-API_KEY=7a8e8bb3505d4946bdffee2a3ef9eb56
+DB_USER = henry-pi
+DB_PASSWORD = gNLTLjHr520k99Vz
+DB_HOST = cluster0.imxmqtn.mongodb.net
+DB_NAME = test
 
-# Replace {user} and {password} with your own Postgres credentials.
+PORT = 3001
+CLIENT_ORIGIN_URL = http://localhost:3000
+AUTH0_AUDIENCE = https://all-tech.com
+AUTH0_DOMAIN = dev-6d0rlv0acg7xdkxt.us.auth0.com
+
+USER=lourdesrosaa1@gmail.com
+PASS=kccbpblgcwqfqapz
 ```
-4. Using the NPM package manager, inside "PI-Videogames_api" and "PI-Videogames_client" run the following command:
+2. Using the NPM package manager, inside "HenryPI/API" and "CLIENT" run the following command:
 ```
 npm install
 ```
-5. Once all dependencies have been correctly installed, run the following command, first in "PI-Videogames_api" and then in "PI-Videogames_client":
+3. Once all dependencies have been correctly installed, run the following command, first in "HenryPI/API" and then in "CLIENT":
 ```
 npm start
 ```
