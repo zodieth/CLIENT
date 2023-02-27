@@ -96,11 +96,15 @@ Develop an electronics 🖥️ **e-commerce** 🛒 **full stack Web app** under 
   </a>
 
 ### How to run this project locally ⚙️ ###
+1. Go to "https://www.mongodb.com/cloud/atlas/register" and sign up.
+2. Build a database with the name "test", provide an access user and password.
+3. Go to the "Network Access" section on the dashboard and click on the "Add IP Address" button, then select "ALLOW ACCESS FROM ANYWHERE" and click on confirm.
+4. Go to the "Database" section on the dashboard and click on "Connect", then select "Connect your application" and copy the "cluster0.****.mongodb.net" part of the string.
 1. Inside "HenryPI/API", create a .env file, then copy and paste the following:
 ```
-DB_USER = henry-pi
-DB_PASSWORD = gNLTLjHr520k99Vz
-DB_HOST = cluster0.imxmqtn.mongodb.net
+DB_USER = {user}
+DB_PASSWORD = {password}
+DB_HOST = {host}
 DB_NAME = test
 
 PORT = 3001
@@ -110,6 +114,9 @@ AUTH0_DOMAIN = dev-6d0rlv0acg7xdkxt.us.auth0.com
 
 USER=lourdesrosaa1@gmail.com
 PASS=kccbpblgcwqfqapz
+
+# Replace {user} and {password} with your own database credentials.
+# Replace {host} with the previously copied string. 
 ```
 2. Using the NPM package manager, inside "HenryPI/API" and "CLIENT" run the following command:
 ```
