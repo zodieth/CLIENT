@@ -119,5 +119,11 @@ npm install
 ```
 npm start
 ```
-### How to reach me 📫 ###
-If any trouble arises while running this project 🚩, or to address any related concerns ❓, email me 📧 at jgleitonl@gmail.com.
+### How to reach us 📫 ###
+If any trouble arises while running this project 🚩, or to address any related concerns ❓, email us 📧 at:
+- contact.prodzodi@gmail.com
+- jgleitonl@gmail.com
+- lourdesrosaa1@gmail.com
+- lucasandresparra@gmail.com
+- matiasfiermarin@gmail.com
+- santiagovera280@gmail.com
